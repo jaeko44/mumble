@@ -46,10 +46,40 @@ class Person {
         //Doesn't exist, create person
         $result = Table::insert(Person::TABLE, array(
                     Person::COL_NAME => $name,
-                    Person::COL_PASSWORD => $password,
+                    Person::COL_PASSWORD => password_hash($password, "PASSWORD_BCRYPT"),
                     Person::COL_AVATAR => -1
         ));
         return $result;
+    }
+
+    /**
+     * Authenticates the supplied username and password against those stored
+     * in the database.
+     * @param type $username The username
+     * @param type $password The password
+     * @return type Returns the id if the person is authenticated or false otherwise
+     */
+    public static function Authenticate($username, $password) {
+        $result = Table::select(Person::TABLE, array(
+                    Person::COL_NAME => $this->$username
+        ));
+        if (password_verify($password, $result[Person::COL_PASSWORD])) {
+            return $result[Person::COL_ID];
+        }
+        return false;
+    }
+
+    /**
+     * Gets the information about this person
+     * Columns retrieved in order:
+     * id, name, avatar_title, avatar_file
+     */
+    public function Get() {
+        return Table::query(""
+                        . "select p." . Person::COL_ID . ", p." . Person::COL_NAME . ", a." . Avatar::COL_TITLE . ", a." . Avatar::COL_FILE . ""
+                        . "from " . Avatar::TABLE . " a, " . Person::TABLE . " p"
+                        . "where a." . Avatar::COL_ID . " = p." . Person::COL_AVATAR . ""
+                        . "and p." . Person::COL_ID . "=" . $this->id . "");
     }
 
     /**
