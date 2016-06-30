@@ -26,6 +26,15 @@ class Room {
     public function __construct($_id) {
         $this->id = $_id;
     }
+    
+    /**
+     * Deletes the room from the database
+     */
+    public function Delete() {
+        Table::delete(Room::TABLE, array(
+            Room::COL_ID => $this->id
+        ));
+    }
 
     /**
      * Installs the table

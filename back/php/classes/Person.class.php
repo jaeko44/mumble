@@ -49,6 +49,16 @@ class Person {
         ));
         return $result;
     }
+    
+    /**
+     * Deletes the person from the database
+     */
+    public function Delete() {
+        //Delete person
+        Table::delete(Person::TABLE, array(
+            Person::COL_ID => $this->id
+        ));
+    }
 
     /**
      * Installs the table

@@ -18,17 +18,29 @@ class PersonRoom {
     const COL_LAST_POST = "last_post";
 
 //===== ARGUMENTS =====
-    private $id;
+    private $person, $room;
 
 //===== METHODS =====
     /**
      * Creates a room object with id
      * @param type $_id
      */
-    public function __construct($_id) {
-        $this->id = $_id;
+    public function __construct($_person, $_room) {
+        $this->person = $_person;
+        $this->room = $_room;
     }
 
+    
+    
+    /**
+     * Deletes the person room connection from the database
+     */
+    public function Delete() {
+        Table::delete(PersonRoom::TABLE, array(
+            PersonRoom::COL_PERSON => $this->person,
+            PersonRoom::COL_ROOM => $this->room
+        ));
+    }
     
     /**
      * Installs the table
