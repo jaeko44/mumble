@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Implementation of the rooms_people database table and related functions
  * Author: Geoff Grundy 30/06/2016
@@ -30,8 +29,30 @@ class PersonRoom {
         $this->room = $_room;
     }
 
-    
-    
+    /**
+     * Attempts to create a new Person Room connection, 
+     * @param type $person The id of the person
+     * @param type $room The id of the room to put them in
+     * @return type
+     */
+    public static function Create($person, $room) {
+        $exists = Table::select(Room::TABLE, array(
+                    PersonRoom::COL_PERSON => $person,
+                    PersonRoom::COL_ROOM => $room
+        ));
+        //The room exists, return
+        if ($exists != false)
+            return;
+
+        //Doesn't exist, create connection
+        $result = Table::insert(Room::TABLE, array(
+                    PersonRoom::COL_PERSON => $person,
+                    PersonRoom::COL_ROOM => $room,
+                    PersonRoom::COL_LAST_POST => -1
+        ));
+        return $result;
+    }
+
     /**
      * Deletes the person room connection from the database
      */
@@ -41,7 +62,7 @@ class PersonRoom {
             PersonRoom::COL_ROOM => $this->room
         ));
     }
-    
+
     /**
      * Installs the table
      */
@@ -52,6 +73,7 @@ class PersonRoom {
             PersonRoom::COL_PERSON => "INTEGER",
             PersonRoom::COL_LAST_POST => "INTEGER"
         ));
-        $table->create_table_extended("PRIMARY KEY (".PersonRoom::COL_ROOM.", ".PersonRoom::COL_PERSON.")");
+        $table->create_table_extended("PRIMARY KEY (" . PersonRoom::COL_ROOM . ", " . PersonRoom::COL_PERSON . ")");
     }
+
 }

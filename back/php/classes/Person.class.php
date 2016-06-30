@@ -13,6 +13,7 @@ class Person {
     const COL_ID = "id";
     const COL_NAME = "name";
     const COL_PASSWORD = "password";
+    const COL_AVATAR = "avatar";
     const STATUS_PERSON = -1;
 
 //===== ARGUMENTS =====
@@ -45,11 +46,12 @@ class Person {
         //Doesn't exist, create person
         $result = Table::insert(Person::TABLE, array(
                     Person::COL_NAME => $name,
-                    Person::COL_PASSWORD => $password
+                    Person::COL_PASSWORD => $password,
+                    Person::COL_AVATAR => -1
         ));
         return $result;
     }
-    
+
     /**
      * Deletes the person from the database
      */
@@ -68,7 +70,8 @@ class Person {
         $table = new Table(Person::TABLE, array(
             Person::COL_ID => "INTEGER PRIMARY KEY",
             Person::COL_NAME => "CHAR(64)",
-            Person::COL_PASSWORD => "CHAR(64)"
+            Person::COL_PASSWORD => "CHAR(64)",
+            Person::COL_AVATAR => "INTEGER"
         ));
         $table->check_table();
 
@@ -84,7 +87,8 @@ class Person {
         Table::insert(Person::TABLE, array(
             Person::COL_NAME => "Status",
             Person::COL_PASSWORD => "",
-            Person::COL_ID => Person::STATUS_PERSON
+            Person::COL_ID => Person::STATUS_PERSON,
+            Person::COL_AVATAR => -1
         ));
     }
 
