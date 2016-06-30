@@ -1,0 +1,30 @@
+//Does resetting to remove default browser styles so that it renders the same
+//on each browser
+@import "reset";
+
+//Holds variables that are used through the project
+@import "variables";
+
+//Holds any sass mixins we define
+@import "mixins";
+
+
+//Contains basic style implementation for specific html elements
+@import "elements";
+
+//Contains general style guide implementation
+@import "general";
+
+//Import sections
+@import "chat";
+
+/*
+Coding guide:
+Use rem or em for units in padding, margin, font size etc.
+Use vh, vw, % for units in responsive layouts.
+All colors used should be variables - Can use darken & lighten functions on existing
+colors to implement style guide
+If it's a general style, put it in elements
+If it's going to be used by one class or id, put it in the appropriate section
+Make your selectors specific
+*/

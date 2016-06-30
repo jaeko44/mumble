@@ -1,0 +1,19 @@
+/*
+Format of variables:
+$[SECTION]-[CSS PROPERTY]
+
+For example:
+$body-font-size: 1rem;
+$p-margin: 0 0;
+
+
+*/
+
+$body-font-family: "Verdana", sans-serif;
+$body-color: #000000;
+$body-background: #ffffff;
+
+$structure-background-color: #dddddd;
+$loading-background-image: "../images/ajax-loader.gif";
+
+$out-chat-background-color: #ffffff;
