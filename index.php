@@ -12,6 +12,6 @@
             <div id="content"></div>
         </div>
 
-        <script type="text/javascript" src="back/js/mumble.js"></script>
+        <script type="text/javascript" src="back/js/initialise.js"></script>
     </body>
 </html>
