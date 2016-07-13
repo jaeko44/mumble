@@ -54,5 +54,52 @@
             callback(new User(1, "name", 1));
     };   
     
+    /**
+     * A class handling notifications to the user about events that occur
+     * @param {type} _notifyType The type of notification as a constant
+     * @param {type} _message The message to send to the user
+     * @param {type} _triggeringUser The User that triggered the notification if
+     * applicable
+     * @param {type} _time The time that the event occurred
+     * @returns {undefined}
+     */
+    mumble.Notification = function(_notifyType, _message, _triggeringUser, _time){
+      this.notificationType = _notifyType;
+      this.message = _message;
+      this.triggeringUser = _triggeringUser;
+      this.time = _time;
+    };
+    //Notification type constants
+    mumble.Notification.MENTION = 0;
+    mumble.Notification.JOIN = 1;
+    mumble.Notification.LEAVE = 2;
+    mumble.Notification.MESSAGE = 3;
+    
+    //An array that contains handlers registered to be called when a user is
+    //notified of an event
+    var notificationHandlers = [];
+    /**
+     * Adds an event handler to be called when the user is notified about an event
+     * @param {type} callback A callback function with the signature func(notification)
+     * where notification is a notification object containing the properties:
+     * notificationType (An integer representing the NotificationType flag)
+     * message (The message to be sent to the user)
+     * triggeringUser (The user who caused the event to be triggered if applicable)
+     * time (The time that the event was triggered)
+     */
+    mumble.User.addNotifyEventHandler = function(callback){
+        notificationHandlers.push(callback);
+    };
+    
+    /**
+     * Called when a notify event occurs, triggering any registered notify event
+     * handlers
+     * @param {type} notification A notification object
+     * @returns {undefined}
+     */
+    function onNotify(notification){
+        for(var i = 0; i<notificationHandlers.length; i++)
+            notificationHandlers(notification);
+    }
         
 })(window.mumble = (window.mumble || {}, window.Date ));
