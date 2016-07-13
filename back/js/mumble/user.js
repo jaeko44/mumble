@@ -90,6 +90,15 @@
     mumble.User.addNotifyEventHandler = function(callback){
         notificationHandlers.push(callback);
     };
+    /**
+     * Removes a previously registered event handler from the list if it exists
+     * @param {type} callback The handler to remove
+     */
+    mumble.User.removeNotifyEventHandler = function(callback){
+        for(var i = notificationHandlers.length-1; i >= 0; i--)
+            if(notificationHandlers[i] == callback)
+                notificationHandlers.splice(i, 1);
+    };
     
     /**
      * Called when a notify event occurs, triggering any registered notify event
