@@ -63,9 +63,11 @@
      */
     mumble.Chat.sendMessage = function (_roomId, _message, callback) {
         if (_callback != undefined) {
-            callback(true);
+            callback(true); //TODO: implement send message logic
         }
     };
+    
+    //TODO: implement timer
     
     /**
      * Called on a timer or when the database is polled, receives messages from
@@ -74,7 +76,7 @@
      * @returns {undefined}
      */
     var checkMessages = function(callback){
-        
+        //TODO: implement functionality
     };
     
     //Array of message EventHandlers

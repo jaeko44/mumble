@@ -8,7 +8,7 @@
     </head>
     <body>
         <div class="structure">
-            <div id="loading"></div>
+            <div id="loading">Test</div>
             <div id="content"></div>
         </div>
 

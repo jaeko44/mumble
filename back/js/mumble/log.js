@@ -75,6 +75,17 @@
         return this.messages[index];
     };
     
+    /**
+     * Gets the last message from the message log. If there are no messages,
+     * returns false
+     * @returns {engine_L1.mumble.Log.messages} A LogMessage object
+     */
+    mumble.Log.prototype.getLast = function(){
+        if(this.messages.length === 0)
+            return false;
+        return this.messages[this.messages.length-1];
+    };
+    
         
         
 })(window.mumble = (window.mumble || {}, window.Date ));
