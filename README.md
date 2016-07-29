@@ -3,7 +3,7 @@
 Mumble is a self hosted secure chat application meant for businesses and teams to collaborate. 
 
 ## Demo
-![Mumble chat demo](http://jphilipos.surge.sh/mumble)
+[Mumble chat demo](http://jphilipos.surge.sh/mumble)
 
 ## Installation via Package Manger
 
