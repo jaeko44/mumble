@@ -50,6 +50,28 @@ class Table {
     }
 
     /**
+     * Creates the table
+     * @param type $args Additional arguments to the table constructor
+     */
+    public function create_table_extended($args) {
+        $db = new DB();
+        echo "Creating " . $this->table_name . ".<br/>";
+                
+        //Turn definitions into a useful string
+        $definitions = array();
+        foreach ($this->columns as $col => $defn) {
+            $definitions[] = $col . " " . $defn;
+        }
+
+        //Create the query
+        $query = "create table {$this->table_name} ("
+                . implode(",", $definitions) . ", ".$args.");";
+        $result = $db->query($query);
+        //Relay success
+        echo $this->table_name . " table creation " . ($result ? "" : "not ") . "successful.<br/>";
+    }
+
+    /**
      * Check if the columns match the definitions
      * @param type $db
      */
