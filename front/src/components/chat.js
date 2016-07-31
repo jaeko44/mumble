@@ -1,9 +1,11 @@
 import {Profile} from '../app/profile';
+import {$} from 'jquery';
 
 export class Chat {
 
   constructor() {
     this.appName = '... mumble';
+    this.navigation = 1;
     this.setfName = '';
     this.getfName = 'Jonathan';
     this.setlName = '';
@@ -15,6 +17,7 @@ export class Chat {
   addUser() {
     if (this.setfName) {
       alert("Adding custom user now");
+      this.navigation = 2;
       this.user = new Profile(this.setfName, this.getlName, this.getEmail);
       this.getfName = this.setfName;
       this.setfName = '';
@@ -32,6 +35,14 @@ export class Chat {
       this.user = new Profile(this.getfName, this.getlName, this.setEmail);
       this.getEmail = this.setEmail;
       this.setEmail = '';
+    }
+  }
+  toggleNavigation() {
+    if (this.navigation == 2) {
+      this.navigation = 1;
+    }
+    else {
+      this.navigation = 2;
     }
   }
 }
