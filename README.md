@@ -35,15 +35,15 @@ npm install
 ```
 ## Building The App
 
-...
+```
 au build
 ```
 
 ## Running the App
 
-...
+```
 au run
-...
+```
 
 > Note: It should now be running in localhost:9000, updating code will automatically build and refresh your browser.
 
