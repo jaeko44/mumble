@@ -10,7 +10,8 @@ export class App {
   configureRoutes(cfg) {
     cfg.title = 'Mumble ';
     cfg.map([
-      { route: ['', ':filter'], moduleId: 'chat' }
+      { route: ['', 'home'], moduleId: 'app/chat' },
+      { route: 'login', name: 'login',  moduleId: 'users/login'}
     ]);
   }
 }
