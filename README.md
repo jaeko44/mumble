@@ -2,7 +2,7 @@
 
 Mumble is a self hosted secure chat application meant for businesses and teams to collaborate. 
 
-## Demo
+## HTML Demo
 [Mumble chat demo](http://jphilipos.surge.sh/mumble)
 
 ```
@@ -10,6 +10,39 @@ Mumble is a self hosted secure chat application meant for businesses and teams t
 * Bootstrap
 * Font Awesome
 * jQuery
+* AureliaJS
+
+## Front-End Setup
+
+At the current stage I am experimenting with AureliaJS for client-side interaction, it uses Vanilla ES2016 JavaScript so development doesn't
+include 'framework' explicit code. 
+
+* Install NodeJS >= 4.x
+    * You can [download it here](https://nodejs.org/en/).
+
+Once you have the prerequisites installed, you can install the Aurelia CLI itself. From the command line, use npm to install the CLI globally:
+
+```
+npm install aurelia-cli -g
+```
+
+Now, navigate to the 'front' Directory & install it's dependancies (this might take a while)
+
+```
+npm install
+```
+## Building The App
+
+```
+au build
+```
+
+## Running the App
+...
+au run
+...
+
+> Note: It should now be running in localhost:9000, updating code will automatically build and refresh your browser.
 
 
 # License
