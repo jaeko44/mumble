@@ -1,24 +1,31 @@
-<template> 
-    <div class="menu_section">
-    <h3 style="
-        padding-top: 75px;
-        font-size: 15px;
-    ">General</h3>
-    <ul class="nav side-menu">
-    <li><a><i class="fa fa-hashtag"></i> Channels <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-            <li><a href="#">New Channel <span class="fa fa-plus"></a></li>
-            <li><a href="#"># General</a></li>
-            <li><a href="#"># Development</a></li>
-        </ul>
-    </li>
-        <li><a><i class="fa fa-envelope"></i> Messages <span class="fa fa-chevron-down"></span></a>
-        <ul class="nav child_menu">
-            <li><a href="#">New Message <span class="fa fa-plus"></a></li>
-            <li><a href="#">Michael Long</a></li>
-            <li><a href="#">Daniel Ting</a></li>
-        </ul>
-        </li>
-    </ul>
+<template>
+    <require from="./navbar"></require>
+    <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+        <div class="menu_section active">
+            <h3 style="
+            padding-top: 100px;
+            font-size: 15px;
+        ">General</h3>
+            <ul class="nav side-menu">
+                <li class="">
+                    <a navbar>
+                        <i class="fa fa-hashtag"></i> Channels <span class="fa fa-chevron-down"></span>
+                    </a>
+                    <ul class="nav child_menu" style="display: none;">
+                        <li class="current-page"><a href="index.html">New Channel <span class="fa fa-plus"></span></a></li>
+                        <li><a href="index2.html"># General</a></li>
+                        <li><a href="index3.html"># Development</a></li>
+                    </ul>
+                </li>
+                <li class="">
+                    <a navbar><i class="fa fa-envelope"></i> Messages <span class="fa fa-chevron-down"></span></a>
+                    <ul class="nav child_menu" style="display: none;">
+                        <li class="current-page"><a href="index.html">New Message <span class="fa fa-plus"></span></a></li>
+                        <li><a href="index2.html">Michael Long</a></li>
+                        <li><a href="index3.html">Daniel Ting</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
     </div>
-</template> 
+</template>

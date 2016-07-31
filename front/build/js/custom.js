@@ -51,6 +51,7 @@ var CURRENT_URL = window.location.href.split('?')[0],
 
 // Sidebar
 $(document).ready(function() {
+    console.log('Ready bois');
     // TODO: This is some kind of easy fix, maybe we can improve this
     var setContentHeight = function () {
         // reset height
@@ -92,6 +93,7 @@ $(document).ready(function() {
 
     // toggle small or large menu
     $MENU_TOGGLE.on('click', function() {
+        console.log('CLICKED MENU TOGGLE');
         if ($BODY.hasClass('nav-md')) {
             $SIDEBAR_MENU.find('li.active ul').hide();
             $SIDEBAR_MENU.find('li.active').addClass('active-sm').removeClass('active');
@@ -113,14 +115,7 @@ $(document).ready(function() {
     }).parent('li').addClass('current-page').parents('ul').slideDown(function() {
         setContentHeight();
     }).parent().addClass('active');
-
-    // recompute content when resizing
-    $(window).smartresize(function(){  
-        setContentHeight();
-    });
-
-    setContentHeight();
-
+    
     // fixed sidebar
     if ($.fn.mCustomScrollbar) {
         $('.menu_fixed').mCustomScrollbar({
