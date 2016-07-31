@@ -1,4 +1,4 @@
-import {Profile} from './profile';
+import {Profile} from '../app/profile';
 
 export class Chat {
 

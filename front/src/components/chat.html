@@ -1,0 +1,24 @@
+<template>
+  <body class="nav-md">
+    <div class="container body">
+      <div class="main_container">
+        <div class="row">
+          <div class="col-md-3 left_col">
+            <div slot="leftView">
+              <compose view="./leftView.html"></compose>  
+            </div>
+          </div>
+          <div slot="topNav">
+            <compose view="./top-nav.html"></compose>  
+          </div>
+
+          <div slot="rightView">
+            <div class="right_col" role="main">
+               <compose view="./chat-main.html"></compose>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    </body>
+</template>
