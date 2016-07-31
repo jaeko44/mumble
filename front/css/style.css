@@ -1,3 +1,13 @@
+/*
+Coding guide:
+Use rem or em for units in padding, margin, font size etc.
+Use vh, vw, % for units in responsive layouts.
+All colors used should be variables - Can use darken & lighten functions on existing
+colors to implement style guide
+If it's a general style, put it in elements
+If it's going to be used by one class or id, put it in the appropriate section
+Make your selectors specific
+*/
 /*Used to reset any default styles used by different browsers*/
 * {
   margin: 0;
@@ -30,6 +40,125 @@ $p-margin: 0 0;
   height: 100%;
   min-height: 10rem; }
 
+input.form-control.tall-input {
+  height: 60px; }
+
+.left_col {
+  background: rgba(51, 122, 183, 0.18); }
+
+li.message_dark {
+  background: rgba(44, 83, 117, 0.27) !important; }
+
+body {
+  margin: 0; }
+
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%; }
+
+button, input, optgroup, select, textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0; }
+
+input {
+  line-height: normal; }
+
+* {
+  box-sizing: border-box; }
+  *::before, *::after {
+    box-sizing: border-box; }
+
+.controls-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 96px; }
+
+.conversation-input {
+  display: flex;
+  box-sizing: content-box;
+  position: absolute;
+  width: 100%;
+  min-height: 56px;
+  bottom: 0px;
+  overflow: hidden;
+  background-color: #fff; }
+
+.conversation {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px; }
+
+.app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  min-width: 768px;
+  background-color: #fafafa; }
+  .app .right {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 304px;
+    left: 33%; }
+
+/* @media all and (min-width:1312px) */
+body {
+  color: #323639;
+  font-size: 16px;
+  font-family: BlinkMacSystemFont,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  overflow-y: hidden !important;
+  text-rendering: optimizeLegibility; }
+
+[class^='icon-'], [class*=' icon-'] {
+  font-family: "Wire" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+.button-icon-large {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px; }
+
+[class^='icon-'], [class*=' icon-'] {
+  font-size: 16px; }
+
+.controls-right-button {
+  flex: 0 0 auto;
+  margin-left: 12px;
+  margin-right: 12px; }
+
+.icon-library::before {
+  content: "\e145"; }
+
+.icon-attachment::before {
+  content: "\e154"; }
+
+.icon-ping::before {
+  content: "\e137"; }
+
+.button-icon-large > input {
+  position: absolute;
+  left: -9999px; }
+
 /*Include any styling specific to the chat page here*/
 #content {
   padding: 1rem;
@@ -53,16 +182,5 @@ $p-margin: 0 0;
   display: inline-block;
   height: 2rem;
   width: 20%; }
-
-/*
-Coding guide:
-Use rem or em for units in padding, margin, font size etc.
-Use vh, vw, % for units in responsive layouts.
-All colors used should be variables - Can use darken & lighten functions on existing
-colors to implement style guide
-If it's a general style, put it in elements
-If it's going to be used by one class or id, put it in the appropriate section
-Make your selectors specific
-*/
 
 /*# sourceMappingURL=style.css.map */

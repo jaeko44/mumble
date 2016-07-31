@@ -1,0 +1,27 @@
+<template>
+  <router-view></router-view>
+
+<form submit.trigger="addUser()">
+  <input type="text" value.bind="setfName">
+  <button type="submit">Add User</button>
+</form>
+
+  <ul>
+    <li>
+      <span>
+        ${user.fName}
+      </span>
+      <span>
+        ${user.lName}
+      </span>
+      <span>
+        ${user.email}
+      </span>
+    </li>    
+  </ul>
+
+  <form submit.trigger="updateEmail()">
+  <input type="text" value.bind="setEmail">
+  <button type="submit">Update Email</button>
+</form>
+</template>

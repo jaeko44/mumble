@@ -1,0 +1,4 @@
+.vscode/
+/front/.sass-cache
+/front/.vscode
+/front/node_modules
