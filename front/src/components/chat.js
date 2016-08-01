@@ -1,5 +1,6 @@
 import {Profile} from '../app/profile';
-import {$} from 'jquery';
+import $ from 'jquery';
+import 'bootstrap';
 
 export class Chat {
 

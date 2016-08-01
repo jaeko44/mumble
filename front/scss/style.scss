@@ -1,7 +1,13 @@
+
+// Import Libraries
+@import "bootstrap";
+@import "font-awesome";
+
 // Import global css rules
-@import "./global/*";
+@import "global/base";
+@import "global/global";
 
 // Import chat page css rules
-@import "./chat/*";
+@import "chat/chat";
 
-// Import settings page css rules
+// Import settings page css rules (coming soon)

@@ -17,8 +17,8 @@ export class navbar {
     this.element.removeEventListener('click', () =>  this.open());
   }
   open() {
-    console.log(this.element); //undefined - Why is it undefined here??
-    console.log(this.parent); //undefined
+    console.log(this.element);
+    console.log(this.parent);
     if ($(this.parent).is('.active')) {
       console.log('Is active');
       $(this.parent).removeClass('active active-sm');
