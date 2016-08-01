@@ -3,15 +3,22 @@
 Mumble is a self hosted secure chat application meant for businesses and teams to collaborate. 
 
 ## HTML Demo
-[Mumble chat demo](http://jphilipos.surge.sh/mumble)
+[Mumble chat demo](http://philipos.me/mumble)
 
-## Scripts included:
+## Front-End Dependancies:
 ```
 * Bootstrap
 * Font Awesome
 * jQuery
 * AureliaJS
 ```
+
+## Development Dependancies:
+```
+* SASS
+* Gulp (Optional)
+```
+
 
 ## Front-End Setup
 
@@ -30,10 +37,10 @@ npm install aurelia-cli -g
 
 ```
 
-N̶o̶w̶,̶ ̶n̶a̶v̶i̶g̶a̶t̶e̶ ̶t̶o̶ ̶t̶h̶e̶ ̶'̶f̶r̶o̶n̶t̶'̶ ̶D̶i̶r̶e̶c̶t̶o̶r̶y̶ ̶&̶ ̶i̶n̶s̶t̶a̶l̶l̶ ̶i̶t̶'̶s̶ ̶d̶e̶p̶e̶n̶d̶a̶n̶c̶i̶e̶s̶ ̶(̶t̶h̶i̶s̶ ̶m̶i̶g̶h̶t̶ ̶t̶a̶k̶e̶ ̶a̶ ̶w̶h̶i̶l̶e̶)̶
+N̶o̶w̶,̶ ̶n̶a̶v̶i̶g̶a̶t̶e̶ ̶t̶o̶ ̶t̶h̶e̶ ̶'̶f̶r̶o̶n̶t̶'̶ ̶D̶i̶r̶e̶c̶t̶o̶r̶y̶ ̶&̶ ̶i̶n̶s̶t̶a̶l̶l̶ ̶i̶t̶'̶s̶ ̶d̶e̶p̶e̶n̶d̶a̶n̶c̶i̶e̶s̶ ̶(̶t̶h̶i̶s̶ ̶m̶i̶g̶h̶t̶ ̶t̶a̶k̶e̶ ̶a̶ ̶w̶h̶i̶l̶e̶)̶ (Bug):  [Github - Aurelia CLI issue #253](https://github.com/aurelia/cli/issues/253)
 
 ```
-n̶p̶m̶ ̶i̶n̶s̶t̶a̶l̶l̶  (Currently there is a bug with trying to run apps that you have installed it's dependancies through NPM [Github - Aurelia CLI issue #253](https://github.com/aurelia/cli/issues/253))
+n̶p̶m̶ ̶i̶n̶s̶t̶a̶l̶l̶  (Currently there is a bug with trying to run apps that you have installed it's dependancies through NPM)
 
 ```
 Instead, create a new aurelia project and then copy it's tempProj/node_modules folder into the front DIR. You can then delete the tempProj folder.
@@ -41,9 +48,15 @@ Instead, create a new aurelia project and then copy it's tempProj/node_modules f
 au new
 ```
 
+Finally, we need to compile the scss files into css:
+```
+cd front
+sass --update scss:css
+```
+
 ## Running the App
 
-Navigate to the /front DIR and run the following command
+Now run the following command inside the 'front' directory.
 
 ```
 au run 

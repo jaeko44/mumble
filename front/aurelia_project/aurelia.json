@@ -96,11 +96,14 @@
           {
             "name": "bootstrap",
             "path": "../node_modules/bootstrap/dist",
-            "main": "js/bootstrap.min",
+            "main": "js/bootstrap",
             "deps": [
               "jquery"
             ],
-            "exports": "$"
+            "exports": "$",
+            "resources": [
+              "css/bootstrap.css"
+             ]
           },
           "aurelia-binding",
           "aurelia-bootstrapper",
