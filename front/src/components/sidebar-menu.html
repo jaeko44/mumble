@@ -1,5 +1,8 @@
 <template>
     <require from="./navbar"></require>
+    <require from="./contact-list"></require>
+    <require from="./channel-list"></require>
+
     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
         <div class="menu_section active">
             <h3 style="
@@ -7,24 +10,8 @@
             font-size: 15px;
         ">General</h3>
             <ul class="nav side-menu">
-                <li class="">
-                    <a navbar>
-                        <i class="fa fa-hashtag"></i> Channels <span class="fa fa-chevron-down"></span>
-                    </a>
-                    <ul class="nav child_menu" style="display: none;">
-                        <li class="current-page"><a href="index.html">New Channel <span class="fa fa-plus"></span></a></li>
-                        <li><a href="index2.html"># General</a></li>
-                        <li><a href="index3.html"># Development</a></li>
-                    </ul>
-                </li>
-                <li class="">
-                    <a navbar><i class="fa fa-envelope"></i> Messages <span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu" style="display: none;">
-                        <li class="current-page"><a href="index.html">New Message <span class="fa fa-plus"></span></a></li>
-                        <li><a href="index2.html">Michael Long</a></li>
-                        <li><a href="index3.html">Daniel Ting</a></li>
-                    </ul>
-                </li>
+                <channel-list><!-- Channels menu --></channel-list>
+                <contact-list><!-- Messages menu --></contact-list>
             </ul>
         </div>
     </div>

@@ -1,0 +1,12 @@
+<template>
+    <require from="./navbar"></require>
+    <li class="">
+        <a navbar>
+            <i class="fa fa-envelope"></i> Messages <span class="fa fa-chevron-down"></span>
+        </a>
+        <ul class="nav child_menu" style="display: none;">
+            <li class="current-page"><a href="#">New Message <span class="fa fa-plus"></span></a></li>
+            <li repeat.for="contact of contacts"><a href="#">${contact.firstName} ${contact.lastName}</a></li>
+        </ul>
+    </li>
+</template>
