@@ -11,35 +11,45 @@ let contacts = [
     firstName: 'John',
     lastName: 'Tolkien',
     email: 'tolkien@inklings.com',
-    phoneNumber: '867-5309'
+    phoneNumber: '867-5309',
+    isOnline: 'online',
+    unreadMsgs: 0
   },
   {
     id: getId(),
     firstName: 'Clive',
     lastName: 'Lewis',
     email: 'lewis@inklings.com',
-    phoneNumber: '867-5309'
+    phoneNumber: '867-5309',
+    isOnline: 'online',
+    unreadMsgs: 4
   },
   {
     id: getId(),
     firstName: 'Owen',
     lastName: 'Barfield',
     email: 'barfield@inklings.com',
-    phoneNumber: '867-5309'
+    phoneNumber: '867-5309',
+    isOnline: 'offline',
+    unreadMsgs: 0
   },
   {
     id: getId(),
     firstName: 'Charles',
     lastName: 'Williams',
     email: 'williams@inklings.com',
-    phoneNumber: '867-5309'
+    phoneNumber: '867-5309',
+    isOnline: 'away',
+    unreadMsgs: 1
   },
   {
     id: getId(),
     firstName: 'Roger',
     lastName: 'Green',
     email: 'green@inklings.com',
-    phoneNumber: '867-5309'
+    phoneNumber: '867-5309',
+    isOnline: 'offline',
+    unreadMsgs: 0
   }
 ];
 id = 0;
@@ -70,7 +80,10 @@ export class WebAPI {
                   id: x.id,
                   firstName: x.firstName,
                   lastName: x.lastName,
-                  email: x.email
+                  email: x.email,
+                  isOnline: x.isOnline,
+                  alert: 1,
+                  unreadMsgs: x.unreadMsgs
                 };
             });
           resolve(results);
