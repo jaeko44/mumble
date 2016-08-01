@@ -35,9 +35,15 @@
       }
       i {
         font-size: 27px;
-        margin: 13px 0 0 3px;
+        padding-bottom: 2px;
+        padding-top: 3px;
+        margin: 13px 0 0;
       }
     }
+  }
+  a.site_title {
+    padding-left: 0px;
+    padding-right: 5px;
   }
 }
 
@@ -85,7 +91,7 @@
       margin-bottom: 5px;
     }
   }
-  > .nav.side-menu > li.active-sm > a {
+  > .nav.side-menu li.active-sm > a {
     color: #1ABB9C !important;
   }
   ul.nav.child_menu {
@@ -133,7 +139,7 @@
 
 .img-circle.profile_img {
   width: 70%;
-  background: #fff;
+  background: #334c5e;
   margin-left: 15%;
   z-index: 1000;
   position: inherit;
@@ -356,9 +362,15 @@ body .main-wrapper.body .right_col {
 }
 
 .bg-red {
-  background: #E74C3C !important;
+  transition: none;
+  background-color: #E74C3C !important;
   border: 1px solid #E74C3C !important;
   color: #fff;
+}
+
+.bg-red.cooldown {
+  transition: background-color 25s ease;
+  background-color: rgba(231, 76, 60, 0.5) !important
 }
 
 .bg-blue {
@@ -390,12 +402,12 @@ body .main-wrapper.body .right_col {
   padding: 0;
 }
 
-.navbar-nav > li > a, .navbar-brand, .navbar-nav > li > a {
+.navbar-nav li > a, .navbar-brand, .navbar-nav li > * > a {
   color: #fff !important;
 }
 
 .top_nav .nav {
-  > li > a {
+  li > a, li > * > a {
     &:focus, &:hover {
       background: #D9DEE4;
     }
@@ -618,7 +630,7 @@ a {
 }
 
 .nav {
-  &.side-menu > li {
+  &.side-menu li, &.side-menu > * li {
     position: relative;
     display: block;
     cursor: pointer;
@@ -631,7 +643,7 @@ a {
       }
     }
   }
-  > li > a:focus {
+  li > a:focus, > * li > a:focus {
     text-decoration: none;
     background: transparent;
   }
@@ -642,6 +654,10 @@ a {
         background-color: rgba(255, 255, 255, 0.06);
       }
       padding-left: 36px;
+      padding-right: 5px;
+    }
+    li.online, li.away {
+      padding-right: 0px;
     }
   }
 }
@@ -669,14 +685,19 @@ a {
     top: 0;
   }
 }
-
+.nav-md ul.nav.child_menu li.online:before {
+    background: #1abb9c;
+}
+.nav-md ul.nav.child_menu li.away:before {
+    background: #facf00;
+}
 .nav {
-  &.side-menu > li > a {
+  &.side-menu li > a {
     color: #E7E7E7;
     font-weight: 500;
   }
   &.child_menu {
-    > li > a {
+    li > a {
       color: #E7E7E7;
       font-weight: 500;
     }
@@ -691,14 +712,17 @@ a {
       }
     }
   }
-  > li > a {
+  li > a {
     position: relative;
     display: block;
     padding: 13px 15px 12px;
   }
-  &.side-menu > li {
-    &.current-page, &.active {
+  &.side-menu li {
+    &.active > a, &.online > a {
       border-right: 5px solid #1ABB9C;
+    }
+    &.away > a {
+      border-right: 5px solid #facf00;
     }
   }
   li {
@@ -714,14 +738,14 @@ a {
       }
     }
   }
-  &.side-menu > li.active > a {
+  &.side-menu li.active > a {
     text-shadow: rgba(0, 0, 0, 0.25) 0 -1px 0;
     background: linear-gradient(#334556, #2C4257), #2A3F54;
     box-shadow: rgba(0, 0, 0, 0.25) 0 1px 0, inset rgba(255, 255, 255, 0.16) 0 1px 0;
   }
 }
 
-.navbar-brand, .navbar-nav > li > a {
+.navbar-brand, .navbar-nav li > a {
   font-weight: 500;
   color: #ECF0F1 !important;
   margin-left: 0 !important;
@@ -749,16 +773,16 @@ a {
 }
 
 .nav {
-  &.navbar-nav > li > a {
+  &.navbar-nav li > a, &.navbar-nav > * li > a {
     color: #515356 !important;
   }
-  &.top_menu > li > a {
+  &.top_menu li > a, &.top_menu > * li >  a {
     position: relative;
     display: block;
     padding: 10px 15px;
     color: #34495E !important;
   }
-  > li > a {
+  li > a, li > * > a {
     &:hover, &:focus {
       background-color: transparent;
     }
@@ -803,7 +827,7 @@ a {
   }
 }
 
-.nav.child_menu > li > a {
+.nav.child_menu li > a, .nav.child_menu li >  a  {
   color: rgba(255, 255, 255, 0.75);
   font-size: 12px;
   padding: 9px;
@@ -812,7 +836,7 @@ a {
 .panel_toolbox {
   float: right;
   min-width: 70px;
-  > li {
+  li {
     float: left;
     cursor: pointer;
     > a {
@@ -834,7 +858,7 @@ a {
   padding: 0;
 }
 
-.bs-docs-sidebar .nav > li > a {
+.bs-docs-sidebar .nav li > a {
   display: block;
   padding: 4px 6px;
 }
@@ -926,7 +950,7 @@ article.media {
     padding: 0;
     margin: 20px 0;
     color: #555;
-    > li {
+    li {
       list-style: none;
       border-top: 1px solid #ddd;
       display: block;
@@ -936,7 +960,7 @@ article.media {
     &:last-child {
       border-bottom: 1px solid #ddd;
     }
-    > li:hover {
+    li:hover {
       background: #efefef;
     }
   }
@@ -1546,7 +1570,7 @@ ul.msg_list li {
   border: 1px solid #D9DEE4;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
-  > li > a {
+  li > a {
     color: #5A738E;
   }
 }
@@ -1718,7 +1742,8 @@ span.right {
     float: left;
     background: #172D44;
     &:hover {
-      background: #425567;
+      background: #2c5375;
+      color: #fff;
     }
   }
 }
@@ -2703,7 +2728,7 @@ ul.bar_tabs {
   z-index: 1;
   width: 100%;
   border-bottom: 1px solid #E6E9ED;
-  > li {
+  li {
     border: 1px solid #E6E9ED;
     color: #333 !important;
     margin-top: -17px;
@@ -3484,20 +3509,20 @@ ul {
   border-left: 1px solid #F7F7F7;
 }
 
-.tabs-left > li, .tabs-right > li {
+.tabs-left li, .tabs-right li {
   float: none;
   margin-bottom: 2px;
 }
 
-.tabs-left > li {
+.tabs-left li {
   margin-right: -1px;
 }
 
-.tabs-right > li {
+.tabs-right li {
   margin-left: -1px;
 }
 
-.tabs-left > li.active > a {
+.tabs-left li.active > a {
   border-bottom-color: #F7F7F7;
   border-right-color: transparent;
   &:hover, &:focus {
@@ -3506,7 +3531,7 @@ ul {
   }
 }
 
-.tabs-right > li.active > a {
+.tabs-right li.active > a {
   border-bottom: 1px solid #F7F7F7;
   border-left-color: transparent;
   &:hover, &:focus {
@@ -3515,7 +3540,7 @@ ul {
   }
 }
 
-.tabs-left > li > a {
+.tabs-left li > a {
   border-radius: 4px 0 0 4px;
   margin-right: 0;
   display: block;
@@ -3524,7 +3549,7 @@ ul {
   overflow: hidden;
 }
 
-.tabs-right > li > a {
+.tabs-right li > a {
   border-radius: 0 4px 4px 0;
   margin-right: 0;
   background: #F7F7F7;
@@ -3536,7 +3561,7 @@ ul {
   margin-top: 50px;
   border: none;
   position: relative;
-  > li {
+  li {
     height: 20px;
     width: 120px;
     margin-bottom: 100px;
@@ -3562,11 +3587,11 @@ ul {
   }
   &.tabs-right {
     right: -50px;
-    > li {
+    li {
       transform: rotate(90deg);
     }
   }
-  &.tabs-left > li {
+  &.tabs-left li {
     transform: rotate(-90deg);
   }
 }
@@ -4122,7 +4147,7 @@ fieldset {
   }
   .docs-options .dropdown-menu {
     width: 100%;
-    > li {
+    li {
       padding: 3px 20px;
       &:hover {
         background-color: #f7f7f7;

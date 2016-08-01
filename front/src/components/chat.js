@@ -13,18 +13,19 @@ export class Chat {
     this.getlName = 'Philipos';
     this.setEmail = '';
     this.getEmail = 'jonathan@det.io';
-    this.user = new Profile();
+    this.user = new Profile(this.getfName, this.getlName, this.getEmail);
+    this.userIcon = 'face5';
   }
   addUser() {
     if (this.setfName) {
-      alert("Adding custom user now");
+      console.log('get fked');
       this.navigation = 2;
       this.user = new Profile(this.setfName, this.getlName, this.getEmail);
       this.getfName = this.setfName;
       this.setfName = '';
     }
     else {
-      alert("Adding default user now");
+      console.log('get fked');
       this.user = new Profile(this.getfName, this.getlName, this.getEmail);
     }
   }
