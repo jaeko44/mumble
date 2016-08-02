@@ -1,0 +1,14 @@
+<template>
+    <require from="./navbar"></require>
+    <li class="">
+        <a navbar>
+            <i class="fa fa-envelope"></i> Messages <span class="fa fa-chevron-down"></span>
+        </a>
+        <ul class="nav child_menu" style="display: none;">
+            <li class="current-page"><a href="#">New Message <span class="fa fa-plus"></span></a></li>
+            <li click.trigger="refresh(contact)" repeat.for="contact of contacts" class.bind="contact.isOnline == 'online' ? 'online' : contact.isOnline == 'away' ? 'away' : ''">
+                <a>${contact.firstName} ${contact.lastName} 
+                <span show.bind="contact.unreadMsgs >= 1" class.bind="contact.alert == 1  ? 'bg-red' : contact.alert == 2  ? 'bg-red cooldown' : 'bg-red'" class="badge pull-right">${contact.unreadMsgs}</span></a></li>
+        </ul>
+    </li>
+</template>
