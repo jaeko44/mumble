@@ -1,10 +1,21 @@
 <template>
-    <div repeat.for="chat of activeChats" class="col-lg-4 col-md-6 col-sm-12">
-        <div class="x_panel">
+    <div repeat.for="chat of chats" class="animate-chat" class.bind="chatStyles[chat.id - 1].closed == 'true'  ? 'col-xs-2 col-md-1' :
+                                                                     chatsOpen == 3  ? ' col-lg-4 col-md-6 col-sm-12' :
+                                                                     chatsOpen == 2  ? ' col-lg-5 col-md-6 col-sm-12' :
+                                                                     chatsOpen == 1  ? 'col-lg-9 col-md-9 col-sm-12' : ''">
+        <div css="height: ${chatStyles[chat.id - 1].styles.height};" class="x_panel" class.bind="chatStyles[chat.id - 1].closed == 'true'  ? 'closedchat' : '' " id="chat-${chat.id}">
             <div class="x_title">
                 <div class="col-md-12 pad-left">
-                    <h2><i class="fa" class.bind="chat.type == 'channel' ? 'fa-hashtag' : chat.type == 'message' ? 'fa-user' : 'fa-question'"></i> ${chat.title}
-                    <small>${chat.type}</small></h2>
+                    <h2 if.bind="chat.type == 'channel'">
+                        <i class="fa fa-hashtag"></i> 
+                        ${channelDetails(chat.from).channelName}
+                        <small>${chat.type}</small>
+                    </h2>
+                    <h2 if.bind="chat.type == 'message'">
+                        <i class="fa fa-user"></i> 
+                        ${userDetails(chat.from).firstName}
+                        <small>${chat.type}</small>
+                    </h2>
                     <ul class="nav navbar-right panel_toolbox">
                     <li class="dropdown">
                         <a aria-expanded="false" class="dropdown-toggle"
@@ -21,9 +32,13 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a class="close-link"><i class=
-                        "fa fa-close"></i></a>
+                    <li show.bind="chatStyles[chat.id - 1].closed == 'true'">
+                        <a click.trigger="open(chat.id)" class="open-link"><i class=
+                        "fa fa-plus-square"></i></a>
+                    </li>
+                    <li show.bind="chatStyles[chat.id - 1].closed == 'false'">
+                        <a click.trigger="close(chat.id)" class="close-link"><i class=
+                        "fa fa-minus-square"></i></a>
                     </li>
                 </ul>
                 </div>
@@ -40,7 +55,7 @@
                                         <img alt="img" src="images/${userDetails(message.from).icon}">
                                     </span>
                                     <span>
-                                        <span>${userDetails(message.from).firstName}</span>
+                                        <span>${userDetails(message.from).firstName} ${userDetails(message.from).lastName}</span>
                                         <span class="time">3 mins ago</span>
                                     </span>
                                     <span class="message">
@@ -67,7 +82,7 @@
                         </div>
                         <div class="col-lg-3 col-md-12">
                             <label class="full control-label" style="float:right"><a class=
-                            "btn btn-app" click.trigger="displayChats()"><i class="fa fa-envelope-o"></i>
+                            "btn btn-app" click.trigger=""><i class="fa fa-envelope-o"></i>
                             send</a></label>
                         </div>
                     </div>

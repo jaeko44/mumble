@@ -70,12 +70,12 @@ let activeChats = [
   {
     id: getId(),
     type: 'message', //message or channel
-    title: 'Michael Long', //Title of chat
+    from: 2, //What channel or user it is from
     messages: [ //array of messages (store only upto 100 messages locally, rest should be archived.)
       {
-        from: 2,
-        data: 'Hey bro, I really need your help on some stuff..',
-        date: '2012-04-23T18:25:43.511Z'
+        from: 2, //user who sent this message
+        data: 'Hey bro, I really need your help on some stuff..', //message contents
+        date: '2012-04-23T18:25:43.511Z' //the date & time this was sent on
       },
       {
         from: 1,
@@ -102,7 +102,7 @@ let activeChats = [
   {
     id: getId(),
     type: 'channel',
-    title: 'Development',
+    from: 2,
     messages: [
       {
         from: 3,
@@ -128,9 +128,9 @@ let activeChats = [
   },
   {
     id: getId(),
-    type: 'channel', //message or channel
-    title: 'General', //Title of chat
-    messages: [ //array of messages (store only upto 100 messages locally, rest should be archived.)
+    type: 'channel', 
+    from: 1, 
+    messages: [ 
       {
         from: 5,
         data: 'Can someone link me with a good Ember tutorial?',
@@ -207,7 +207,7 @@ export class WebAPI {
               return {
                   id: x.id,
                   type: x.type,
-                  title: x.title,
+                  from: x.from,
                   messages: x.messages
                 };
             });
@@ -234,6 +234,10 @@ export class WebAPI {
   }
   getContactDetails(id) {
     let found = contacts.filter(x => x.id == id)[0];
+    return found;
+  }
+  getChannelDetails(id) {
+    let found = channels.filter(x => x.id == id)[0];
     return found;
   }
   getProfile() {

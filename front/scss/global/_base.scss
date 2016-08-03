@@ -24,6 +24,7 @@
   }
   .main-wrapper.body .right_col {
     padding: 10px 20px;
+    overflow: auto;
     margin-left: 70px;
     z-index: 2;
   }
@@ -1045,9 +1046,26 @@ h2 {
   -moz-column-break-inside: avoid;
   column-break-inside: avoid;
   opacity: 1;
+  &.closedchat {
+      overflow: hidden;
+      .x_title h2 {
+        display: none;
+      }
+      .x_content {
+        overflow: hidden;
+        display: none;
+      }
+	  .panel_toolbox {
+		min-width: initial;
+	  }	
+	}
+}
+.animate-chat {
   transition: all .2s ease;
 }
-
+.no-grid-closed {
+	width: 80px !important;
+}
 .x_title {
   border-bottom: 2px solid #E6E9ED;
   padding: 1px 5px 6px;
@@ -4891,5 +4909,3 @@ ul.notifications {
   min-height: 300px;
   border: 1px solid #e5e5e5;
 }
-
-/** /Dropzone.js **/
