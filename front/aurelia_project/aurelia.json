@@ -105,14 +105,6 @@
               "css/bootstrap.css"
              ]
           },
-          { 
-            "name": "toastr",
-            "path": "../node_modules/toastr",
-            "main": "/build/toastr.min",
-            "resources": [
-              "build/toastr.min.css"
-             ]
-          },
           "aurelia-binding",
           "aurelia-bootstrapper",
           "aurelia-dependency-injection",

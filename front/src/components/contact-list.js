@@ -1,5 +1,5 @@
 import {WebAPI} from '../data/web-api';
-let latency = 5000; 
+let alertDelay = 5000; 
 
 export class ContactList {
   static inject() { return [WebAPI] };
@@ -13,10 +13,6 @@ export class ContactList {
     this.api.getContactList().then(contacts => this.contacts = contacts);
   }
 
-  select(contact){
-    this.selectedId = contact.id;
-    return true;
-  }
   refresh(contact) {
     if (contact.unreadMsgs >= 1) {
       contact.unreadMsgs = 0;
@@ -26,7 +22,7 @@ export class ContactList {
       contact.unreadMsgs = 2; //EXAMPLE OF MSG POPPING UP
       setTimeout(() => {
           contact.alert = 2;
-      }, latency);
+      }, alertDelay);
       contact.alert = 1;
     }
   }

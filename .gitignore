@@ -1,7 +1,7 @@
-/.vscode/
-/front/.sass-cache
-/front/.vscode
-/front/node_modules
-/front/jspm_packages
+**/.vscode/
+**/.sass-cache/
+**/.node_modules/
+**/jspm_packages/
 /front/css
-/node_modules
+/front/scripts/app-bundle.js**
+/front/scripts/vendor-bundle.js
