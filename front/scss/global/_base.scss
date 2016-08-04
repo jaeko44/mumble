@@ -24,6 +24,7 @@
   }
   .main-wrapper.body .right_col {
     padding: 10px 20px;
+	height: 90vh;
     overflow: auto;
     margin-left: 70px;
     z-index: 2;
@@ -1055,6 +1056,10 @@ h2 {
         overflow: hidden;
         display: none;
       }
+	  .form-group {
+		visibility: hidden;
+		overflow: hidden;
+	  }
 	  .panel_toolbox {
 		min-width: initial;
 	  }	
@@ -1534,6 +1539,26 @@ div.box {
 /* *********  /dashboard widget  **************************** */
 /* *********  widgets  *************************************** */
 
+#attachments {
+	img {
+		width: 50%;
+		height: 50%;
+	}
+	.video {
+    width: 90%;
+    position: relative;
+    padding-bottom: 40%;
+    padding-top: 25px;
+	}
+	.video iframe {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	}
+}
+
 ul.msg_list li {
   background: #f7f7f7;
   padding: 5px;
@@ -1545,6 +1570,7 @@ ul.msg_list li {
     padding: 10px;
   }
   a {
+	width: 100%;
     padding: 3px 5px !important;
     .image img {
       border-radius: 2px 2px 2px 2px;
@@ -1562,6 +1588,7 @@ ul.msg_list li {
     }
     .message {
       margin-left: 50px;
+	  width: 90%;
       display: block !important;
       font-size: 11px;
     }

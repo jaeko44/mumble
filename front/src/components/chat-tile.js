@@ -92,12 +92,8 @@ export class chatTile {
         this.chats[id - 1].messages.push(this.message);
         this.tempMessage[id] = '';
         this.inputId = "chat-input-" + id;
-        this.contentId = "chat-content-" + id;
         this.inputEl = document.getElementById(this.inputId).value = '';
         this.message = {};
-        console.log(this.tempMessage);
-        this.contentEl = document.getElementById(this.contentId);
-        console.log(this.contentEl.scrollHeight, this.contentEl.clientHeight);
         setTimeout(function (){
             this.contentId = "chat-content-" + id;
             this.contentEl = document.getElementById(this.contentId);

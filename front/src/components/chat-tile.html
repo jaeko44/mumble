@@ -62,8 +62,8 @@
                                         ${message.data}
                                         <div if.bind="message.attachments" id="attachments">
                                             <div repeat.for="attachment of message.attachments" id="attachment">
-                                                <div id="youtube" if.bind="attachment.type == 'video'">
-                                                    <iframe src="http://www.youtube.com/embed/${attachment.id}" width="427" height="240" frameborder="0" allowfullscreen=""></iframe>
+                                                <div id="youtube" class="video" if.bind="attachment.type == 'video'">
+                                                    <iframe src="http://www.youtube.com/embed/${attachment.id}" width="90%" height="auto" frameborder="0" allowfullscreen=""></iframe>
                                                 </div>
                                                 <span class="image" if.bind="attachment.type == 'image'">
                                                     <img alt="img" src="images/${attachment.id}">
