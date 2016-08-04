@@ -24,6 +24,8 @@
   }
   .main-wrapper.body .right_col {
     padding: 10px 20px;
+	height: 90vh;
+    overflow: auto;
     margin-left: 70px;
     z-index: 2;
   }
@@ -1045,9 +1047,30 @@ h2 {
   -moz-column-break-inside: avoid;
   column-break-inside: avoid;
   opacity: 1;
+  &.closedchat {
+      overflow: hidden;
+      .x_title h2 {
+        display: none;
+      }
+      .x_content {
+        overflow: hidden;
+        display: none;
+      }
+	  .form-group {
+		visibility: hidden;
+		overflow: hidden;
+	  }
+	  .panel_toolbox {
+		min-width: initial;
+	  }	
+	}
+}
+.animate-chat {
   transition: all .2s ease;
 }
-
+.no-grid-closed {
+	width: 80px !important;
+}
 .x_title {
   border-bottom: 2px solid #E6E9ED;
   padding: 1px 5px 6px;
@@ -1516,6 +1539,30 @@ div.box {
 /* *********  /dashboard widget  **************************** */
 /* *********  widgets  *************************************** */
 
+#attachments {
+	margin-top: 10px;
+	img {
+		width: 50%;
+		height: 50%;
+	}
+	#youtube.video {
+		border-top: 5px solid #F44336;
+	}
+	.video {
+		width: 90%;
+		position: relative;
+		padding-bottom: 40%;
+		padding-top: 25px;
+	}
+	.video iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+	}
+}
+
 ul.msg_list li {
   background: #f7f7f7;
   padding: 5px;
@@ -1527,6 +1574,7 @@ ul.msg_list li {
     padding: 10px;
   }
   a {
+	width: 100%;
     padding: 3px 5px !important;
     .image img {
       border-radius: 2px 2px 2px 2px;
@@ -1544,6 +1592,7 @@ ul.msg_list li {
     }
     .message {
       margin-left: 50px;
+	  width: 90%;
       display: block !important;
       font-size: 11px;
     }
@@ -1659,6 +1708,8 @@ ul.quick-list {
 }
 
 .dashboard-widget-content {
+  overflow-y: auto;
+  max-height: 70vh;
   padding-top: 9px;
   .sidebar-widget {
     width: 50%;
@@ -4891,5 +4942,3 @@ ul.notifications {
   min-height: 300px;
   border: 1px solid #e5e5e5;
 }
-
-/** /Dropzone.js **/
