@@ -84,11 +84,48 @@ export class chatTile {
         this.chatsOpen++;
     }
     sendMessage(id) {
-        this.message = {
-            data: this.tempMessage[id],
-            from: 1,
-            date: 'now'
+        this.youtubeCom = this.tempMessage[id].indexOf('youtube.com/watch?v=');
+        this.youtubeBe = this.tempMessage[id].indexOf('youtu.be/');
+        this.youtubeId = '';
+        if (this.tempMessage[id] == '') {
+
         }
+        else if (this.youtubeCom >= 1) {
+            this.youtubeId = this.tempMessage[id].substring(this.youtubeCom + 31, this.youtubeCom + 20); //youtube.com/watch?v= is 20 characters, and the ID is another 11.
+            this.message = {
+                data: this.tempMessage[id],
+                from: 1,
+                date: 'now',
+                attachments: [
+                    {
+                        type: 'video',
+                        id: this.youtubeId
+                    }
+                ],
+            }
+        }
+        else if (this.youtubeBe >= 1) {
+            this.youtubeId = this.tempMessage[id].substring(this.youtubeBe + 20, this.youtubeBe + 9); //youtu.be/ is 9 characters, and the ID is another 11.
+            this.message = {
+                data: this.tempMessage[id],
+                from: 1,
+                date: 'now',
+                attachments: [
+                    {
+                        type: 'video',
+                        id: this.youtubeId
+                    }
+                ],
+            }
+        }
+        else {
+            this.message = {
+                data: this.tempMessage[id],
+                from: 1,
+                date: 'now',
+            }
+        }
+
         this.chats[id - 1].messages.push(this.message);
         this.tempMessage[id] = '';
         this.inputId = "chat-input-" + id;

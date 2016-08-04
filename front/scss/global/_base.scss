@@ -1540,22 +1540,26 @@ div.box {
 /* *********  widgets  *************************************** */
 
 #attachments {
+	margin-top: 10px;
 	img {
 		width: 50%;
 		height: 50%;
 	}
+	#youtube.video {
+		border-top: 5px solid #F44336;
+	}
 	.video {
-    width: 90%;
-    position: relative;
-    padding-bottom: 40%;
-    padding-top: 25px;
+		width: 90%;
+		position: relative;
+		padding-bottom: 40%;
+		padding-top: 25px;
 	}
 	.video iframe {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 	}
 }
 

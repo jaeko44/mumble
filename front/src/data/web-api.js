@@ -22,17 +22,17 @@ let contacts = [
     phoneNumber: '867-5309',
     isOnline: 'online',
     unreadMsgs: 0,
-    icon: 'face.ico'
+    icon: 'face2.ico'
   },
   {
     id: getId(),
-    firstName: 'Clive',
-    lastName: 'Lewis',
-    email: 'lewis@inklings.com',
+    firstName: 'Borat',
+    lastName: '',
+    email: 'borat@inklings.com',
     phoneNumber: '867-5309',
     isOnline: 'online',
     unreadMsgs: 4,
-    icon: 'face2.ico'
+    icon: 'face.ico'
   },
   {
     id: getId(),
