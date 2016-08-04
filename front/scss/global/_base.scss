@@ -1573,6 +1573,15 @@ ul.msg_list li {
     margin-bottom: 6px;
     padding: 10px;
   }
+  &.message_highlighted {
+    outline: 1px solid red;
+	background: rgba(255, 0, 0, 0.05);
+	&.cooldown {
+		transition: 7s all ease;
+		outline: 1px solid white;
+		background: rgb(247, 247, 247);
+	}
+  }
   a {
 	width: 100%;
     padding: 3px 5px !important;
