@@ -1,6 +1,7 @@
 import {WebAPI} from '../data/web-api';
 import {Profile} from '../app/profile';
 import {inject} from 'aurelia-framework';
+import $ from 'jquery';
 
 @inject(WebAPI, Profile)
 export class chatTile {
@@ -10,6 +11,7 @@ export class chatTile {
         this.api = api;
         this.account = profile.getProfile();
         this.chats = [];
+        this.tempMessage = [];
         this.chatsOpen = 3;
         this.chatStyles = [
             {
@@ -43,7 +45,6 @@ export class chatTile {
                 }
             }
         ]
-    
     }
 
     created() {
@@ -64,7 +65,7 @@ export class chatTile {
     displayChats() {
         alert('Display chats called');
         console.log('Folllowed by activechats array: [] ');
-        console.log(this.activeChats);
+        console.log(this.chats);
     }
     myHeight(id) {
         this.element = "chat-" + id;
@@ -81,5 +82,26 @@ export class chatTile {
         this.chatStyles[id - 1].styles.height = '100%';
         this.chatStyles[id - 1].closed = 'false';
         this.chatsOpen++;
+    }
+    sendMessage(id) {
+        this.message = {
+            data: this.tempMessage[id],
+            from: 1,
+            date: 'now'
+        }
+        this.chats[id - 1].messages.push(this.message);
+        this.tempMessage[id] = '';
+        this.inputId = "chat-input-" + id;
+        this.contentId = "chat-content-" + id;
+        this.inputEl = document.getElementById(this.inputId).value = '';
+        this.message = {};
+        console.log(this.tempMessage);
+        this.contentEl = document.getElementById(this.contentId);
+        console.log(this.contentEl.scrollHeight, this.contentEl.clientHeight);
+        setTimeout(function (){
+            this.contentId = "chat-content-" + id;
+            this.contentEl = document.getElementById(this.contentId);
+            $('#' + this.contentId ).animate({ scrollTop: this.contentEl.scrollHeight }, 300);
+        }, 30);
     }
 }

@@ -46,10 +46,10 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <div class="dashboard-widget-content">
+                <div id="chat-content-${chat.id}" class="dashboard-widget-content">
                     <div class="col-md-12">
                         <ul class="list-unstyled msg_list">
-                            <li repeat.for="message of chat.messages">
+                            <li repeat.for="message of chat.messages" class.bind="message.from == 1  ? 'message_dark' : ''">
                                 <a>
                                     <span class="image">
                                         <img alt="img" src="images/${userDetails(message.from).icon}">
@@ -75,19 +75,23 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="form-group">
-                        <div class="col-lg-9 col-md-12">
-                            <input class="form-control tall-input"
-                            placeholder="Message..." type="text">
-                        </div>
-                        <div class="col-lg-3 col-md-12">
-                            <label class="full control-label" style="float:right"><a class=
-                            "btn btn-app" click.trigger=""><i class="fa fa-envelope-o"></i>
-                            send</a></label>
-                        </div>
-                    </div>
+
                 </div>
             </div>
+            <form>
+                <div class="form-group">
+                    <div class="col-lg-9 col-md-12">
+                        <input id="chat-input-${chat.id}"" value.bind="tempMessage[chat.id]" class="form-control tall-input"
+                        placeholder="Message..." type="text">
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <label class="full control-label" style="float:right"><a class=
+                        "btn btn-app" click.trigger="sendMessage(chat.id)"><i class="fa fa-envelope-o"></i>
+                        send</a></label>
+                    </div>
+                    <input type="submit" style="display: none" click.trigger="sendMessage(chat.id)" value="Submit">
+                </div>
+            </form>
         </div>
     </div>
 </template>
