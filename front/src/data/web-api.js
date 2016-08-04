@@ -159,16 +159,45 @@ let activeChats = [
       }
     ]
   }
+  ,
+  {
+    id: getId(),
+    type: 'message', 
+    from: 5, 
+    messages: [ 
+      {
+        from: 1,
+        data: 'Yo do you have the extracts ready for submission?',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 5,
+        data: 'No you do it, I dont like working on this assignment',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'That\s unsportsmanlike man!',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 5,
+        data: 'IDC ! I got better things to worry about!',
+        date: '2012-04-23T18:25:43.511Z'
+      }
+    ]
+  }
 ]
 id = 0;
 let channels = [
   {
     id: getId(),
-    channelName: 'General'
+    channelName: 'General',
+    chatId: 3
   },
   {
     id: getId(),
-    channelName: 'Development'
+    channelName: 'Development',
   },
   {
     id: getId(),
@@ -238,6 +267,10 @@ export class WebAPI {
   }
   getChannelDetails(id) {
     let found = channels.filter(x => x.id == id)[0];
+    return found;
+  }
+  getMessageDetails(id) {
+    let found = activeChats.filter(x => x.id == id)[0];
     return found;
   }
   getProfile() {

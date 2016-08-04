@@ -13,42 +13,45 @@ export class chatTile {
         this.chats = [];
         this.tempMessage = [];
         this.chatsOpen = 3;
-        this.chatStyles = [
+        this.chatsActive = [
             {
                 id: 1,
+                chatId: 1,
                 closed: 'false',
-                height: 'auto',
                 styles: {
-                    width: '100%',
                     height: '100%',
-                    'background-color': 'red'
                 },
             },
             {
                 id: 2,
+                chatId: 4,
                 closed: 'false',
-                height: 'auto',
                 styles: {
-                    width: '100%',
                     height: '100%',
-                    'background-color': 'blue'
                 },
             },
             {
                 id: 3,
+                chatId: 3,
                 closed: 'false',
-                height: 'auto',
                 styles: {
-                    width: '100%',
                     height: '100%',
-                    'background-color': 'yellow'
                 }
             }
         ]
     }
 
     created() {
-       this.api.getMsgs().then(chats => this.chats = chats);
+    //    this.api.getMsgs().then(chats => this.chats = chats);
+        this.chats = this.extractData();
+    }
+    
+    extractData() {
+        this.tempData = [];
+        for (this.id = 0; this.id < this.chatsActive.length; this.id++) { 
+            this.tempData.push(this.messageDetails(this.chatsActive[this.id].chatId));
+        }
+        return this.tempData;
     }
 
     userDetails(userId) {
@@ -62,6 +65,9 @@ export class chatTile {
     channelDetails(channelId) {
         return this.api.getChannelDetails(channelId);
     }
+    messageDetails(messageId) {
+        return this.api.getMessageDetails(messageId);
+    }
     displayChats() {
         alert('Display chats called');
         console.log('Folllowed by activechats array: [] ');
@@ -74,13 +80,13 @@ export class chatTile {
     }
     close(id) {
         this.height = this.myHeight(id);
-        this.chatStyles[id - 1].styles.height = this.height + 'px';
-        this.chatStyles[id - 1].closed = 'true';
+        this.chatsActive[id - 1].styles.height = this.height + 'px';
+        this.chatsActive[id - 1].closed = 'true';
         this.chatsOpen--;
     }
     open(id) {
-        this.chatStyles[id - 1].styles.height = '100%';
-        this.chatStyles[id - 1].closed = 'false';
+        this.chatsActive[id - 1].styles.height = '100%';
+        this.chatsActive[id - 1].closed = 'false';
         this.chatsOpen++;
     }
     sendMessage(id) {
@@ -125,8 +131,9 @@ export class chatTile {
                 date: 'now',
             }
         }
-
-        this.chats[id - 1].messages.push(this.message);
+        let found = this.chatsActive.filter(x => x.chatId == id)[0];
+        console.log(found);
+        this.chats[found.id - 1].messages.push(this.message);
         this.tempMessage[id] = '';
         this.inputId = "chat-input-" + id;
         this.inputEl = document.getElementById(this.inputId).value = '';
