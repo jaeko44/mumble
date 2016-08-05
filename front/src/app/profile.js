@@ -1,16 +1,20 @@
+import {WebAPI} from '../data/web-api';
+
 export class Profile {
-    constructor(fName, lName, email) {
-        this.fName = fName;
-        this.lName = lName;
-        this.email = email;
+    static inject() { return [WebAPI] };
+
+    constructor(api) {
+        this.api = api;
+        this.contacts = [];
+        this.user = '';
     }
-    set changefName(fName) {
-        this.fName = fName;
+
+    getUser(userId) {
+        this.api.getContactDetails(userId).then(user => this.user = user);
+        return this.user;
     }
-    set changelName(lName) {
-        this.lName = lName;
-    }
-    set changeEmail(email) {
-        this.email = email;
+
+    getProfile() {
+        return this.api.getProfile();
     }
 }

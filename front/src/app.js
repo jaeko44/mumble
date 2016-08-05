@@ -8,10 +8,12 @@ export class App {
     this.router.configure(this.configureRoutes);
   }
   configureRoutes(cfg) {
-    cfg.title = 'Mumble ';
+    cfg.title = '... mumble';
     cfg.map([
-      { route: ['', 'home'], moduleId: 'components/chat' },
-      { route: 'login', name: 'login',  moduleId: 'users/login'}
+      { route: ['', 'home'], moduleId: 'components/chat', title: 'home' },
+      { route: 'contacts/:id',  moduleId: 'contact-detail', name: 'contacts' },
+      { route: 'account/login', name: 'login',  moduleId: 'users/login'},
+      { route: 'account/register', name: 'register',  moduleId: 'users/register'}
     ]);
   }
 }

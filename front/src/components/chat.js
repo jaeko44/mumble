@@ -1,37 +1,30 @@
 import {Profile} from '../app/profile';
+import {inject} from 'aurelia-framework';
+import $ from 'jquery';
+import 'bootstrap';
 
+@inject(Profile)
 export class Chat {
 
-  constructor() {
-    this.appName = '... mumble';
-    this.setfName = '';
-    this.getfName = 'Jonathan';
-    this.setlName = '';
-    this.getlName = 'Philipos';
-    this.setEmail = '';
-    this.getEmail = 'jonathan@det.io';
-    this.user = new Profile();
+  constructor(profile) {
+    this.profile = profile;
+    this.account = profile.getProfile();
+    this.appName = 'mumble';
+    this.navigation = 1;
   }
-  addUser() {
-    if (this.setfName) {
-      alert("Adding custom user now");
-      this.user = new Profile(this.setfName, this.getlName, this.getEmail);
-      this.getfName = this.setfName;
-      this.setfName = '';
+
+  fullName() {
+    console.log('printing account1');
+    console.log(this.account);
+    return `${this.account.firstName} ${this.account.lastName}`;
+  }
+
+  toggleNavigation() {
+    if (this.navigation == 2) {
+      this.navigation = 1;
     }
     else {
-      alert("Adding default user now");
-      this.user = new Profile(this.getfName, this.getlName, this.getEmail);
-    }
-  }
-  fullName() {
-    return `${this.getfName} ${this.getlName}`;
-  }
-  updateEmail() {
-    if (this.setEmail) {
-      this.user = new Profile(this.getfName, this.getlName, this.setEmail);
-      this.getEmail = this.setEmail;
-      this.setEmail = '';
+      this.navigation = 2;
     }
   }
 }
