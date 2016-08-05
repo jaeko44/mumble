@@ -1,0 +1,143 @@
+/* line 1, ../../scss/global/global.scss */
+input.form-control.tall-input {
+  height: 60px; }
+
+/* line 5, ../../scss/global/global.scss */
+.left_col {
+  background: rgba(51, 122, 183, 0.18); }
+
+/* line 9, ../../scss/global/global.scss */
+li.message_dark {
+  background: rgba(44, 83, 117, 0.27) !important; }
+
+/* line 13, ../../scss/global/global.scss */
+body {
+  margin: 0; }
+
+/* line 17, ../../scss/global/global.scss */
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%; }
+
+/* line 23, ../../scss/global/global.scss */
+button, input, optgroup, select, textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0; }
+
+/* line 29, ../../scss/global/global.scss */
+input {
+  line-height: normal; }
+
+/* line 33, ../../scss/global/global.scss */
+* {
+  box-sizing: border-box; }
+  /* line 35, ../../scss/global/global.scss */
+  *::before, *::after {
+    box-sizing: border-box; }
+
+/* line 40, ../../scss/global/global.scss */
+.controls-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 96px; }
+
+/* line 47, ../../scss/global/global.scss */
+.conversation-input {
+  display: flex;
+  box-sizing: content-box;
+  position: absolute;
+  width: 100%;
+  min-height: 56px;
+  bottom: 0px;
+  overflow: hidden;
+  background-color: #fff; }
+
+/* line 58, ../../scss/global/global.scss */
+.conversation {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px; }
+
+/* line 66, ../../scss/global/global.scss */
+.app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  bottom: 0px;
+  width: 100%;
+  min-width: 768px;
+  background-color: #fafafa; }
+  /* line 67, ../../scss/global/global.scss */
+  .app .right {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 304px;
+    left: 33%; }
+
+/* @media all and (min-width:1312px) */
+/* line 88, ../../scss/global/global.scss */
+body {
+  color: #323639;
+  font-size: 16px;
+  font-family: BlinkMacSystemFont,-apple-system,"Helvetica Neue",Arial,sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  overflow-y: hidden !important;
+  text-rendering: optimizeLegibility; }
+
+/* line 98, ../../scss/global/global.scss */
+[class^='icon-'], [class*=' icon-'] {
+  font-family: "Wire" !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale; }
+
+/* line 110, ../../scss/global/global.scss */
+.button-icon-large {
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  padding: 8px; }
+
+/* line 117, ../../scss/global/global.scss */
+[class^='icon-'], [class*=' icon-'] {
+  font-size: 16px; }
+
+/* line 121, ../../scss/global/global.scss */
+.controls-right-button {
+  flex: 0 0 auto;
+  margin-left: 12px;
+  margin-right: 12px; }
+
+/* line 127, ../../scss/global/global.scss */
+.icon-library::before {
+  content: "\e145"; }
+
+/* line 131, ../../scss/global/global.scss */
+.icon-attachment::before {
+  content: "\e154"; }
+
+/* line 135, ../../scss/global/global.scss */
+.icon-ping::before {
+  content: "\e137"; }
+
+/* line 139, ../../scss/global/global.scss */
+.button-icon-large > input {
+  position: absolute;
+  left: -9999px; }
+
+/*# sourceMappingURL=global.css.map */
