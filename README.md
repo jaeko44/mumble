@@ -69,6 +69,24 @@ au run
 au run --watch
 ```
 
+## Failed to Launch/Load in Browser
+
+If you get an error in the console when typing 'au run', please report it.
+
+However, sometimes trying to load the app in the browser will result in a blank screen. Right click and click 'Inspect'.
+Navigate to the 'console' tab, if you see an error at the top saying 'jQuery' cannot be detected. OR you scroll down and it says (0, bootstrap).*.... is not a function. 
+
+Then follow these steps: 
+
+1. Navigate to /front/node_modules/jquery/dist
+2. Open the jquery.js file with a text editor.
+3. Comment or remove lines 7 through 9 (which starts with = 'if (typeof jQuery === 'undefined') {')
+4. Save
+5. Launch the application again.
+
+This happens as sometimes JQuery is not detected and ends up cancelling out bootstrap (as bootstrap can't operate without JQuery) resulting in an unhandled error which 
+cancels the rendering of the UI.
+
 # License
 
 |                      |                                          |
