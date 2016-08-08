@@ -7,7 +7,6 @@ input.form-control.tall-input {
 }
 
 li.message_dark {
-  outline: none;
   background: rgba(44, 83, 117, 0.27) !important;
 }
 
@@ -88,7 +87,7 @@ input {
 
 body {
   background: #f7f7f7;
-  color: #323639;
+  color: #304456;
   font-size: 16px;
   font-family: BlinkMacSystemFont,-apple-system,"Helvetica Neue",Arial,sans-serif;
   font-weight: 300;
@@ -140,5 +139,61 @@ body {
 
 .button-icon-large > input {
   position: absolute;
-  left: -9999px;
+  left: -9991px;
+}
+.nav.side-menu li > a {
+  > span.onhover.fa {
+    visibility: hidden;
+  }
+  &:hover > span.onhover.fa, &.active > span.onhover.fa {
+    visibility: visible;
+  }
+}
+img.icon.small {
+  height: 100px;
+}
+input.upload-icon {
+  /* text-align: center !important; */
+  /* margin: auto; */
+  float: left;
+  padding-left: 33%;
+  color: white;
+  height: 50px;
+  /* vertical-align: 30px; */
+  line-height: 50px;
+}
+label.btn-file:hover > input.upload-icon {
+  color: #e6e6e6;;
+}
+.btn-upl {
+  line-height: 50px;
+}
+.centered-50 {
+  width: 50%;
+  margin:auto;
+  text-align:center;
+}
+.btn {
+  transition: 0.6s all ease;
+  &.btn-save {
+    border-color: #1cbb9c;
+    background-color: rgba(28,187,156,0.5);
+    color: #2e4356;
+    &:hover {
+      background-color: #1cbb9c;
+      color: white;
+    }
+  }
+  &.btn-cancel {
+    background-color: rgba(175,18,18,0.5);
+    color: #304356;
+    border: solid 1px rgb(175, 18, 18);
+    &:hover {
+      background-color: rgb(175, 18, 18);
+      color: white;
+    }
+  }
+}
+.float-right {
+  float: right;
 }

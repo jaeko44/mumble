@@ -396,6 +396,13 @@ let activeChats = [
   }
 ]
 
+let mySettings = {
+    id: 1,
+    maxChats: 3,
+    navigation: 1,
+    appName: 'mumble',
+    mnumber: 0
+}
 export class WebAPI {
   isRequesting = false;
 
@@ -427,6 +434,7 @@ export class WebAPI {
           let results = activeChats.map(x => {
               return {
                   id: x.id,
+                  chatId: x.chatId,
                   type: x.type,
                   from: x.from,
                   messages: x.messages
@@ -444,7 +452,6 @@ export class WebAPI {
           let results = channels.map(x => {
               return {
                   id: x.id,
-                  chatId: x.chatId,
                   channelName: x.channelName,
                   users: ['User1', 'User2', 'User3']
                 };
@@ -454,6 +461,10 @@ export class WebAPI {
         }, latency);
     });
   }
+   getMessageDetails(id) {
+     let found = activeChats.filter(x => x.id === id)[0];
+     return found;
+   }
   getContactDetails(id) {
     let found = contacts.filter(x => x.id === id)[0];
     return found;
@@ -488,5 +499,28 @@ export class WebAPI {
             resolve(instance);
           }, latency);
       });
+  }
+  
+  getSettings() {
+    return mySettings;
+  }
+
+  saveSettings(settings) {
+    this.isRequesting = true;
+    return new Promise(resolve => {
+        setTimeout(() => {
+            let instance = JSON.parse(JSON.stringify(settings));
+            mySettings = instance;
+            this.isRequesting = false;
+            resolve(instance);
+          }, latency);
+      });
+  }
+
+  getNavigationState() {
+      return mySettings.navigation;
+  }
+  saveNavigationState(navId) {
+      mySettings.navigation = navId;
   }
 }

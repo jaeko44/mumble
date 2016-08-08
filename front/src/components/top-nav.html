@@ -5,7 +5,6 @@
             <div class="nav toggle">
             <a click.delegate="toggleNavigation()"><i class="fa fa-bars"></i></a>
             </div>
-
             <ul class="nav navbar-nav navbar-right">
             <li class="" style="width: 220px;">
                 <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -15,7 +14,8 @@
                 <ul class="dropdown-menu dropdown-usermenu pull-right">
                 <li><a href="javascript:;"> Profile</a></li>
                 <li>
-                    <a href="javascript:;">
+                    <a route-href="route: settings;
+                                   params.bind: { page: 'profile' }" href="#">
                     <span class="badge bg-red pull-right">50%</span>
                     <span>Settings</span>
                     </a>

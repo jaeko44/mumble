@@ -1,0 +1,22 @@
+<template>
+  <div class.bind="navigation == 1 ? 'nav-sm' : 'nav-md'">
+    <div class="main-wrapper body">
+      <div class="main_container">
+        <div slot="leftView">
+          <compose view-model="./leftView" model.bind="page"></compose>
+        </div>
+        <div slot="topNav">
+          <compose view="../components/top-nav.html"></compose>
+        </div>
+        <div slot="rightView">
+          <div class="right_col" role="main">
+            <compose if.bind="page == 'profile'" view-model="../users/settingsProfile"></compose>
+            <compose if.bind="page == 'security'" view="../users/settings-security.html"></compose>
+            <compose if.bind="page == 'appearance'" view="../users/settings-appearance.html"></compose>
+            <compose if.bind="page == 'home'" view="../components/chat-main.html"></compose>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
