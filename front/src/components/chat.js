@@ -14,8 +14,6 @@ export class Chat {
   }
 
   fullName() {
-    console.log('printing account1');
-    console.log(this.account);
     return `${this.account.firstName} ${this.account.lastName}`;
   }
 

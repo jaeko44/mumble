@@ -1,4 +1,8 @@
 <template>
+  <require from="./chat-tile"></require>
+  <require from="./leftView.html"></require>
+  <require from="./top-nav.html"></require>
+
   <div class.bind="navigation == 1 ? 'nav-sm' : 'nav-md'">
     <div class="main-wrapper body">
       <div class="main_container">
@@ -10,10 +14,13 @@
         </div>
         <div slot="rightView">
           <div class="right_col" role="main">
-            <compose view="./chat-main.html"></compose>
-          </div>
+              <div class="row">
+                  <chat-tile view-model.ref="chat"></chat-tile>
+              </div>
+           </div>
         </div>
       </div>
     </div>
   </div>
 </template>
+

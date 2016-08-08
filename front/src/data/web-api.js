@@ -16,6 +16,7 @@ let myAccount = {
 let contacts = [
   {
     id: getId(),
+    chatId: 1,
     firstName: 'John',
     lastName: 'Tolkien',
     email: 'tolkien@inklings.com',
@@ -26,6 +27,7 @@ let contacts = [
   },
   {
     id: getId(),
+    chatId: 2,
     firstName: 'Borat',
     lastName: '',
     email: 'borat@inklings.com',
@@ -36,6 +38,7 @@ let contacts = [
   },
   {
     id: getId(),
+    chatId: 3,
     firstName: 'Owen',
     lastName: 'Barfield',
     email: 'barfield@inklings.com',
@@ -46,29 +49,50 @@ let contacts = [
   },
   {
     id: getId(),
+    chatId: 4,
     firstName: 'Charles',
     lastName: 'Williams',
     email: 'williams@inklings.com',
     phoneNumber: '867-5309',
     isOnline: 'away',
-    unreadMsgs: 1,
+    unreadMsgs: 0,
     icon: 'face4.ico'
   },
   {
     id: getId(),
+    chatId: 5,
     firstName: 'Roger',
     lastName: 'Green',
     email: 'green@inklings.com',
     phoneNumber: '867-5309',
     isOnline: 'offline',
-    unreadMsgs: 0,
+    unreadMsgs: 1,
     icon: 'face5.ico'
   }
 ];
 id = 0;
-let activeChats = [
+let channels = [
   {
     id: getId(),
+    chatId: 6,
+    channelName: 'General'
+  },
+  {
+    id: getId(),
+    chatId: 7,
+    channelName: 'Development'
+  },
+  {
+    id: getId(),
+    chatId: 8,
+    channelName: 'Design'
+  }
+];
+
+id = 0;
+let activeChats = [
+  {
+    id: 1,
     type: 'message', //message or channel
     from: 2, //What channel or user it is from
     messages: [ //array of messages (store only upto 100 messages locally, rest should be archived.)
@@ -100,34 +124,245 @@ let activeChats = [
     ]
   },
   {
-    id: getId(),
-    type: 'channel',
-    from: 2,
+    id: 2,
+    type: 'message',
+    from: 3,
     messages: [
       {
+        from: 1,
+        data: 'Haha dude, have you seen the project we had to review?', //message contents
+        date: '2012-04-23T18:25:43.511Z' //the date & time this was sent on
+      },
+      {
         from: 3,
-        data: 'Hey guys, how\'s the app developing so far?',
+        data: 'What about it??',
         date: '2012-04-23T18:25:43.511Z'
       },
       {
         from: 1,
-        data: 'Buggy buggy, we need more resources or time to get this done.',
-        date: '2012-04-23T18:25:43.511Z'
-      },
-      {
-        from: 4,
-        data: 'Yea, this is no where close to release.',
+        data: 'It\'s horrible! Ours is like 5 times better and is a real usecase!',
         date: '2012-04-23T18:25:43.511Z'
       },
       {
         from: 3,
-        data: 'Hey guys, how\'s the app developing so far?',
+        data: 'Good! I hope our marks reflect that...',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 3,
+        data: 'oi man i need help...',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 3,
+        data: 'r u there???',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 3,
+        data: 'seriously!',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 3,
+        data: 'hellloooo',
         date: '2012-04-23T18:25:43.511Z'
       }
     ]
   },
   {
-    id: getId(),
+    id: 3,
+    type: 'message',
+    from: 4,
+    messages: [
+      {
+        from: 4,
+        data: 'The weather is crazy! Can you pick me up!', //message contents
+        date: '2012-04-23T18:25:43.511Z' //the date & time this was sent on
+      },
+      {
+        from: 1,
+        data: 'My cars in the repair shop man, Im sorry. Maybe angela can pick you up.',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 4,
+        data: 'She\'s stuck up! I doubt it',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'I can tell her for you if you want??.',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 4,
+        data: 'Please do asap im waiting in the rain... this is horrible',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'ok one sec brb',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 4,
+        data: 'what did sshe say???',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'shes on her way now, see not so bad.',
+        date: '2012-04-23T18:25:43.511Z'
+      }
+    ]
+  },
+  {
+    id: 4,
+    type: 'message',
+    from: 5,
+    messages: [
+      {
+        from: 5,
+        data: 'lololol so bored wanna play league of legends??', //message contents
+        date: '2012-04-23T18:25:43.511Z' //the date & time this was sent on
+      },
+      {
+        from: 1,
+        data: 'yee lets go ranked!',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 5,
+        data: 'pls carry me ye?',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'im the man for that job :D',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'yee lets go ranked!',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 5,
+        data: 'pls carry me ye?',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'im the man for that job :D',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'yee lets go ranked!',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 5,
+        data: 'Im bored, lets do something?',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: '',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'yee lets go ranked!',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 5,
+        data: 'Im bored, lets do something?',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'ummmm....',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'How about a game of league??',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 5,
+        data: 'Why the hell not?',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'Sounds like a plan, ranked or normals?',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'I wanna rank tbh',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 5,
+        data: 'pls carry me ye?',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'im the man for that job :D',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'yee lets go ranked!',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 5,
+        data: 'now that\'s what im talking about!',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'cool stuff',
+        date: '2012-04-23T18:25:43.511Z'
+      }
+    ]
+  },
+  {
+    id: 5,
+    type: 'message', 
+    from: 6, 
+    messages: [ 
+      {
+        from: 1,
+        data: 'Oi do you have task4 ready so we can submit the assignment?',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 6,
+        data: 'No you do it, I dont like working on this assignment',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 1,
+        data: 'That\s unsportsmanlike man!',
+        date: '2012-04-23T18:25:43.511Z'
+      },
+      {
+        from: 6,
+        data: 'IDC ! I got better things to worry about!',
+        date: '2012-04-23T18:25:43.511Z'
+      }
+    ]
+  },
+  {
+    id: 6,
     type: 'channel', 
     from: 1, 
     messages: [ 
@@ -159,51 +394,7 @@ let activeChats = [
       }
     ]
   }
-  ,
-  {
-    id: getId(),
-    type: 'message', 
-    from: 5, 
-    messages: [ 
-      {
-        from: 1,
-        data: 'Yo do you have the extracts ready for submission?',
-        date: '2012-04-23T18:25:43.511Z'
-      },
-      {
-        from: 5,
-        data: 'No you do it, I dont like working on this assignment',
-        date: '2012-04-23T18:25:43.511Z'
-      },
-      {
-        from: 1,
-        data: 'That\s unsportsmanlike man!',
-        date: '2012-04-23T18:25:43.511Z'
-      },
-      {
-        from: 5,
-        data: 'IDC ! I got better things to worry about!',
-        date: '2012-04-23T18:25:43.511Z'
-      }
-    ]
-  }
 ]
-id = 0;
-let channels = [
-  {
-    id: getId(),
-    channelName: 'General',
-    chatId: 3
-  },
-  {
-    id: getId(),
-    channelName: 'Development',
-  },
-  {
-    id: getId(),
-    channelName: 'Design'
-  }
-];
 
 export class WebAPI {
   isRequesting = false;
@@ -215,6 +406,7 @@ export class WebAPI {
           let results = contacts.map(x => {
               return {
                   id: x.id,
+                  chatId: x.chatId,
                   firstName: x.firstName,
                   lastName: x.lastName,
                   email: x.email,
@@ -252,6 +444,7 @@ export class WebAPI {
           let results = channels.map(x => {
               return {
                   id: x.id,
+                  chatId: x.chatId,
                   channelName: x.channelName,
                   users: ['User1', 'User2', 'User3']
                 };
@@ -262,15 +455,15 @@ export class WebAPI {
     });
   }
   getContactDetails(id) {
-    let found = contacts.filter(x => x.id == id)[0];
+    let found = contacts.filter(x => x.id === id)[0];
     return found;
   }
   getChannelDetails(id) {
-    let found = channels.filter(x => x.id == id)[0];
+    let found = channels.filter(x => x.id === id)[0];
     return found;
   }
   getMessageDetails(id) {
-    let found = activeChats.filter(x => x.id == id)[0];
+    let found = activeChats.filter(x => x.id === id)[0];
     return found;
   }
   getProfile() {
