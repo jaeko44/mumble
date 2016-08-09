@@ -744,6 +744,11 @@ a {
     background: linear-gradient(#334556, #2C4257), #2A3F54;
     box-shadow: rgba(0, 0, 0, 0.25) 0 1px 0, inset rgba(255, 255, 255, 0.16) 0 1px 0;
   }
+  &.side-menu li > a:hover, &.side-menu li > a.active {
+    text-shadow: rgba(0, 0, 0, 0.25) 0 -1px 0;
+    background: linear-gradient(#334556, #2C4257), #2A3F54;
+    box-shadow: rgba(0, 0, 0, 0.25) 0 1px 0, inset rgba(255, 255, 255, 0.16) 0 1px 0;
+  }
 }
 
 .navbar-brand, .navbar-nav li > a {
@@ -1572,6 +1577,15 @@ ul.msg_list li {
   &:last-child {
     margin-bottom: 6px;
     padding: 10px;
+  }
+  &.message_highlighted {
+    outline: 1px solid red;
+	background: rgba(255, 0, 0, 0.05);
+	&.cooldown {
+		transition: 7s all ease;
+		outline: 1px solid white;
+		background: rgb(247, 247, 247);
+	}
   }
   a {
 	width: 100%;

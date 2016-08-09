@@ -1,9 +1,10 @@
 <template>
-    <div repeat.for="chat of chats" class="animate-chat" class.bind="chatStyles[chat.id - 1].closed == 'true'  ? 'col-xs-2 col-md-1' :
+    <require from="./limit-to"></require>
+    <div repeat.for="chat of chats | limitTo:maximumChats" class="animate-chat" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'col-xs-2 col-md-1' :
                                                                      chatsOpen == 3  ? ' col-lg-4 col-md-6 col-sm-12' :
                                                                      chatsOpen == 2  ? ' col-lg-5 col-md-6 col-sm-12' :
                                                                      chatsOpen == 1  ? 'col-lg-9 col-md-9 col-sm-12' : ''">
-        <div css="height: ${chatStyles[chat.id - 1].styles.height};" class="x_panel" class.bind="chatStyles[chat.id - 1].closed == 'true'  ? 'closedchat' : '' " id="chat-${chat.id}">
+        <div css="height: ${chatsActive[chat.tmpId - 1].styles.height};" class="x_panel" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'closedchat' : '' " id="chat-${chat.tmpId}">
             <div class="x_title">
                 <div class="col-md-12 pad-left">
                     <h2 if.bind="chat.type == 'channel'">
@@ -23,21 +24,21 @@
                         "button"><i class="fa fa-chevron-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="#"><i class="fa fa-youtube"></i>
-                                Link a video</a>
+                                <a click.trigger="displayChat(5)" href="#"><i class="fa fa-meh-o"></i>
+                                WORKING FUNCTION</a>
                             </li>
                             <li>
                                 <a href="#"><i class="fa fa-paperclip"></i>
-                                Attach a file 2</a>
+                                Attach a file</a>
                             </li>
                         </ul>
                     </li>
-                    <li show.bind="chatStyles[chat.id - 1].closed == 'true'">
-                        <a click.trigger="open(chat.id)" class="open-link"><i class=
+                    <li show.bind="chatsActive[chat.tmpId - 1].closed == 'true'">
+                        <a click.trigger="open(chat.tmpId)" class="open-link"><i class=
                         "fa fa-plus-square"></i></a>
                     </li>
-                    <li show.bind="chatStyles[chat.id - 1].closed == 'false'">
-                        <a click.trigger="close(chat.id)" class="close-link"><i class=
+                    <li show.bind="chatsActive[chat.tmpId - 1].closed == 'false'">
+                        <a click.trigger="close(chat.tmpId)" class="close-link"><i class=
                         "fa fa-minus-square"></i></a>
                     </li>
                 </ul>
@@ -46,10 +47,11 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <div id="chat-content-${chat.id}" class="dashboard-widget-content">
+                <div id="chat-content-${chat.tmpId}" class="dashboard-widget-content">
                     <div class="col-md-12">
                         <ul class="list-unstyled msg_list">
-                            <li repeat.for="message of chat.messages" class.bind="message.from == 1  ? 'message_dark' : ''">
+                            <li class="animate-chat ${chatsActive[chat.tmpId - 1].cooldown == true ? 'cooldown' : ''}" 
+                            repeat.for="message of chat.messages" class.bind="message.from == 1 ? 'message_dark' : chat.messages.length - $index <= chatsActive[chat.tmpId - 1].unreadMsgs ? 'message_highlighted' : ''">
                                 <a>
                                     <span class="image">
                                         <img alt="img" src="images/${userDetails(message.from).icon}">
@@ -81,15 +83,15 @@
             <form>
                 <div class="form-group">
                     <div class="col-lg-9 col-md-12">
-                        <input id="chat-input-${chat.id}"" value.bind="tempMessage[chat.id]" class="form-control tall-input"
-                        placeholder="Message..." type="text">
+                        <input id="chat-input-${chat.tmpId}"" value.bind="tempMessage[chat.tmpId]" class="form-control tall-input"
+                        placeholder="Message..." tabindex="${chat.tmpId}" type="text">
                     </div>
                     <div class="col-lg-3 col-md-12">
                         <label class="full control-label" style="float:right"><a class=
-                        "btn btn-app" click.trigger="sendMessage(chat.id)"><i class="fa fa-envelope-o"></i>
+                        "btn btn-app" click.trigger="sendMessage(chat.tmpId)"><i class="fa fa-envelope-o"></i>
                         send</a></label>
                     </div>
-                    <input type="submit" style="display: none" click.trigger="sendMessage(chat.id)" value="Submit">
+                    <input type="submit" style="display: none" click.trigger="sendMessage(chat.tmpId)" value="Submit">
                 </div>
             </form>
         </div>

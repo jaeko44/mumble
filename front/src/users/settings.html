@@ -1,0 +1,24 @@
+<template>
+  <div class.bind="navigation == 1 ? 'nav-sm' : 'nav-md'">
+    <div class="main-wrapper body">
+      <div class="main_container">
+        <div slot="leftView">
+          <compose view="../components/leftView-settings.html"></compose>
+          ${navigation}
+        </div>
+        <div slot="topNav">
+          <require from="../components/top-nav"></require>
+          <top-nav></top-nav>
+        </div>
+        <div slot="rightView">
+          <div class="right_col" role="main"> test
+            <require from="../components/settings-main"></require>
+            <settings-main show.bind="page == 'profile'" ></settings-main>
+            <compose show.bind="page == 'security'" view="./settings-security.html"></compose>
+            <compose show.bind="page == 'appearance'" view="./settings-appearance.html"></compose>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

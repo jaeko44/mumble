@@ -1,54 +1,77 @@
 import {WebAPI} from '../data/web-api';
 import {Profile} from '../app/profile';
+import {EventAggregator} from 'aurelia-event-aggregator';
 import {inject} from 'aurelia-framework';
 import $ from 'jquery';
+import {ChatsUpdated, ChatOpened, ChatClosed} from './chat-events';
 
-@inject(WebAPI, Profile)
+
+@inject(WebAPI, Profile, EventAggregator)
 export class chatTile {
 
-    constructor(api, profile) {
+    constructor(api, profile, ea) {
         this.profile = profile;
         this.api = api;
+        this.ea = ea;
         this.account = profile.getProfile();
         this.chats = [];
         this.tempMessage = [];
-        this.chatsOpen = 3;
-        this.chatStyles = [
+        this.maximumChats = 3;
+        this.chatsActive = [
             {
                 id: 1,
+                chatId: 1,
+                unreadMsgs: 0,
+                cooldown: false,
                 closed: 'false',
-                height: 'auto',
                 styles: {
-                    width: '100%',
                     height: '100%',
-                    'background-color': 'red'
                 },
             },
             {
                 id: 2,
+                chatId: 6,
+                unreadMsgs: 0,
+                cooldown: false,
                 closed: 'false',
-                height: 'auto',
                 styles: {
-                    width: '100%',
                     height: '100%',
-                    'background-color': 'blue'
                 },
             },
             {
                 id: 3,
+                chatId: 3,
+                unreadMsgs: 0,
+                cooldown: false,
                 closed: 'false',
-                height: 'auto',
                 styles: {
-                    width: '100%',
-                    height: '100%',
-                    'background-color': 'yellow'
+                    height: '100%'
                 }
             }
         ]
-    }
+        //CAN BE REMOVED WHEN DYNAMIC DATA IS USED. FOR NOW WE ENSURE THESE CHATS ARE DETECTED OPEN
+        this.ea.publish(new ChatOpened(this.userDetails(2))); //chatId + 1 (1+1)
+        this.ea.publish(new ChatOpened(this.userDetails(6))); //chatId + 1 (5+1)
+        this.ea.publish(new ChatOpened(this.userDetails(4))); //chatId + 1 (3+1) 
 
+
+        this.chatsOpen = this.chatsActive.length;
+        ea.subscribe(ChatsUpdated, contact => this.displayChat(contact));
+    }
     created() {
-       this.api.getMsgs().then(chats => this.chats = chats);
+    //    this.api.getMsgs().then(chats => this.chats = chats);
+        this.chats = this.extractData(this.chatsActive);
+    }
+    
+    extractData(array) {
+        var tempData = [];
+        for (let id = 0; id < array.length; id++) { 
+            let tempMsg = this.messageDetails(array[id].chatId);
+            tempMsg.chatId = array[id].chatId;
+            tempMsg.tmpId = id + 1;
+            tempData.push(tempMsg);
+        }
+        return tempData;
     }
 
     userDetails(userId) {
@@ -62,10 +85,8 @@ export class chatTile {
     channelDetails(channelId) {
         return this.api.getChannelDetails(channelId);
     }
-    displayChats() {
-        alert('Display chats called');
-        console.log('Folllowed by activechats array: [] ');
-        console.log(this.chats);
+    messageDetails(messageId) {
+        return this.api.getMessageDetails(messageId);
     }
     myHeight(id) {
         this.element = "chat-" + id;
@@ -74,24 +95,73 @@ export class chatTile {
     }
     close(id) {
         this.height = this.myHeight(id);
-        this.chatStyles[id - 1].styles.height = this.height + 'px';
-        this.chatStyles[id - 1].closed = 'true';
+        this.chatsActive[id - 1].styles.height = this.height + 'px';
+        this.chatsActive[id - 1].closed = 'true';
         this.chatsOpen--;
     }
     open(id) {
-        this.chatStyles[id - 1].styles.height = '100%';
-        this.chatStyles[id - 1].closed = 'false';
+        this.chatsActive[id - 1].styles.height = '100%';
+        this.chatsActive[id - 1].closed = 'false';
         this.chatsOpen++;
     }
-    sendMessage(id) {
-        this.youtubeCom = this.tempMessage[id].indexOf('youtube.com/watch?v=');
-        this.youtubeBe = this.tempMessage[id].indexOf('youtu.be/');
-        this.youtubeId = '';
-        if (this.tempMessage[id] == '') {
-
+    displayChat(ChatsUpdated) {
+        var chatId = ChatsUpdated.contact.chatId;
+        var unreadMsgs = ChatsUpdated.contact.unreadMsgs;
+        var purgedChat = this.chatsActive;
+        let found = purgedChat.filter(x => x.chatId === chatId)[0];
+        if (typeof found !== "undefined") {
+            return;
         }
-        else if (this.youtubeCom >= 1) {
-            this.youtubeId = this.tempMessage[id].substring(this.youtubeCom + 31, this.youtubeCom + 20); //youtube.com/watch?v= is 20 characters, and the ID is another 11.
+        var chatActive = {
+            id: 1,
+            chatId: chatId,
+            unreadMsgs: unreadMsgs,
+            cooldown: 'false',
+            closed: 'false',
+            styles : {
+                height: '100%'
+            }
+        }
+        for (let id = 0; id < purgedChat.length; id++) {
+            purgedChat[id].id++;
+        }
+        if (this.maximumChats <= purgedChat.length) {
+            this.ea.publish(new ChatClosed(this.userDetails(purgedChat.length + 2)));
+            purgedChat.pop(); 
+        }
+        purgedChat.unshift(chatActive);
+        this.chatsActive = purgedChat;
+        this.chats = this.extractData(purgedChat);
+        this.ea.publish(new ChatOpened(ChatsUpdated.contact));
+        setTimeout(function (){
+            let contentId = "chat-content-" + 1;
+            let contentEl = document.getElementById(contentId);
+            $('#' + contentId ).animate({ scrollTop: contentEl.scrollHeight }, 50);
+            //contentEl.scrollTop = contentEl.scrollHeight;
+        }, 30);
+        setTimeout(function () {
+            if (unreadMsgs >= 1) {
+                purgedChat[0].cooldown = true;            
+            }
+        }, 1000);
+        this.chatsActive = purgedChat;
+        setTimeout(function () {
+            if (unreadMsgs >= 1) {
+                purgedChat[0].unreadMsgs = 0;
+                purgedChat[0].cooldown = false;            
+            }
+        }, 7000);
+        this.chatsActive = purgedChat;
+    }
+    sendMessage(id) {
+        if (this.tempMessage[id] == '') {
+            return;
+        }
+        let youtubeCom = this.tempMessage[id].indexOf('youtube.com/watch?v=');
+        let youtubeBe = this.tempMessage[id].indexOf('youtu.be/');
+        let youtubeId = '';
+        if (youtubeCom >= 1) {
+            youtubeId = this.tempMessage[id].substring(youtubeCom + 31, youtubeCom + 20); //youtube.com/watch?v= is 20 characters, and the ID is another 11.
             this.message = {
                 data: this.tempMessage[id],
                 from: 1,
@@ -99,21 +169,22 @@ export class chatTile {
                 attachments: [
                     {
                         type: 'video',
-                        id: this.youtubeId
+                        id: youtubeId
                     }
                 ],
             }
         }
         else if (this.youtubeBe >= 1) {
-            this.youtubeId = this.tempMessage[id].substring(this.youtubeBe + 20, this.youtubeBe + 9); //youtu.be/ is 9 characters, and the ID is another 11.
+            youtubeId = this.tempMessage[id].substring(this.youtubeBe + 20, this.youtubeBe + 9); //youtu.be/ is 9 characters, and the ID is another 11.
             this.message = {
                 data: this.tempMessage[id],
                 from: 1,
                 date: 'now',
+                cooldown: false,
                 attachments: [
                     {
                         type: 'video',
-                        id: this.youtubeId
+                        id: youtubeId
                     }
                 ],
             }
@@ -125,16 +196,14 @@ export class chatTile {
                 date: 'now',
             }
         }
-
         this.chats[id - 1].messages.push(this.message);
         this.tempMessage[id] = '';
-        this.inputId = "chat-input-" + id;
-        this.inputEl = document.getElementById(this.inputId).value = '';
-        this.message = {};
+        let inputId = "chat-input-" + id;
+        let inputEl = document.getElementById(inputId).value = '';
         setTimeout(function (){
-            this.contentId = "chat-content-" + id;
-            this.contentEl = document.getElementById(this.contentId);
-            $('#' + this.contentId ).animate({ scrollTop: this.contentEl.scrollHeight }, 300);
+            let contentId = "chat-content-" + id;
+            let contentEl = document.getElementById(contentId);
+            $('#' + contentId ).animate({ scrollTop: contentEl.scrollHeight }, 300);
         }, 30);
     }
 }

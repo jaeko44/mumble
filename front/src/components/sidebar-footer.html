@@ -2,16 +2,16 @@
   <require from="./bootstrap-tooltip"></require>
     <!-- /menu footer buttons -->
     <div class="sidebar-footer hidden-small">
-        <a bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="Profile" click.trigger="displayProfile()">
+        <a bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="Profile" route-href="route: settings; params.bind: { page: 'profile' }">
            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
         </a>
-        <a bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="Settings">
+        <a bootstrap-tooltip data-toggle="tooltip" style="cursor: pointer;" data-placement="top" title="Settings" route-href="route: settings; params.bind: { page: 'security' }">
           <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
         </a>
         <a bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="Appear Offline" click.trigger="appearOffline()">
           <span class="glyphicon glyphicon-eye-close" aria-hidden="true"></span>
         </a>
-        <a bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="Logout" click.trigger="logout()">
+        <a bootstrap-tooltip data-toggle="tooltip" data-placement="top" title="Logout" route-href="route: logout;">
            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
         </a>
     </div>
