@@ -9,6 +9,7 @@ let myAccount = {
     firstName: 'Jonathan',
     lastName: 'Philipos',
     email: 'jonathan@det.io',
+    password: 'unencrypted',
     phoneNumber: '867-5309',
     isOnline: 'online',
     icon: 'face5.ico'

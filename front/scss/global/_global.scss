@@ -198,3 +198,13 @@ label.btn-file:hover > input.upload-icon {
 .float-right {
   float: right;
 }
+span.error {
+  color: #E74C3C;
+  font-size: 16px;
+  &.hiddenerror {
+    visibility: hidden;
+  }
+}
+.login-section {
+  margin-top: 10px;
+}

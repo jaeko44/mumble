@@ -1,0 +1,49 @@
+<template>
+    <div class="login_wrapper">
+      <div class="animate form login_form">
+        <section class="login_content">
+          <form>
+            <h1>Login Form</h1>
+            <span class="error" class.bind="response == 'none' ? 'hiddenerror' : ''">${response}</span>
+            <div class="login-section">
+              <div>
+                <input value.bind="email" type="text" class="form-control" placeholder="Enter your email." required="" />
+              </div>
+              <div>
+                <input value.bind="password" type="password" class="form-control" placeholder="Password" required="" />
+              </div>
+              <div>
+                <div class="col-lg-5">
+                    <label class="full control-label" style="float:right">
+                    <a class="btn btn-app au-target" click.trigger="forgot()" au-target-id="58">
+                    <i class="fa fa-question"></i>
+                    lost your password</a></label>
+                </div>
+                <div class="col-md-7">
+                    <label class="full control-label" style="float:right">
+                    <a class="btn btn-app btn-save au-target" click.trigger="login()" au-target-id="58">
+                    <i class="fa" class.bind="showSpin == false  ? 'fa-sign-in' :
+                                              showSpin == true ? 'fa-circle-o-notch fa-spin' : ''"></i>
+                    login</a></label>
+                    <input type="submit" style="display: none" click.trigger="login()" value="Submit">
+                </div>
+              </div>
+              <div class="clearfix"></div>
+              <div class="separator">
+                <p class="change_link">New to site ?
+                    <a route-href="route: account; params.bind: { page: 'register' }"" href="#" id="signup">Create Account </a>
+                </p>
+                <div class="clearfix"></div>
+                <br />
+
+                <div>
+                  <h1><i class="fa fa-ellipsis-h"></i> mumble</h1>
+                  <p>©2016 All Rights Reserved. <i class="fa fa-ellipsis-h"></i> mumble</p>
+                </div>
+              </div>
+            </div>
+          </form>
+        </section>
+      </div>
+    </div>
+</template>
