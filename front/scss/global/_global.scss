@@ -174,7 +174,8 @@ label.btn-file:hover > input.upload-icon {
   text-align:center;
 }
 .btn {
-  transition: 0.6s all ease;
+  transition: 0.6s ease;
+  transition-property: background-color, color, border;
   &.btn-save {
     border-color: #1cbb9c;
     background-color: rgba(28,187,156,0.5);

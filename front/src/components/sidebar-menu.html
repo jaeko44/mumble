@@ -9,11 +9,11 @@
             padding-top: 100px;
             font-size: 15px;
         ">${page}</h3>
-            <ul if.bind="menu == 'home'" class="nav side-menu">
+            <ul show.bind="menu == 'home'" class="nav side-menu">
                 <channel-list><!-- Channels menu --></channel-list>
                 <contact-list><!-- Messages menu --></contact-list>
             </ul>
-            <ul if.bind="menu == 'settings'" class="nav side-menu">
+            <ul show.bind="menu == 'settings'" class="nav side-menu">
                 <li class="">
                     <a route-href="route: home;" href="#">
                         <i class="fa fa-home"></i> Home <span class="onhover fa fa-chevron-right"></span>
