@@ -33,6 +33,9 @@
             background: $blue-dark;
         }
     }
+    li.message_dark {
+        background: $blue-message-dark;
+    }
 }
 
 .Green-theme {
@@ -75,5 +78,8 @@
             color: $green-text;
             background: $green-dark;
         }
+    }
+    li.message_dark {
+        background: $green-message-dark;
     }
 }
