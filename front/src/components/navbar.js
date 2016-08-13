@@ -15,6 +15,7 @@ export class navbar {
     this.element.removeEventListener('click', () =>  this.open());
   }
   open() {
+    console.log(this.parent);
     if ($(this.parent).is('.active')) {
       $(this.parent).removeClass('active active-sm');
       $('ul:first', this.parent).slideUp();

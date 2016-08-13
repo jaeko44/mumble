@@ -14,8 +14,7 @@ export class App {
       { route: ['', 'home'], name: 'home', moduleId: 'views/mainView', title: 'home' },
       { route: 'contacts/:id',  moduleId: 'contact-detail', name: 'contacts' },
       { route: 'settings/:page', name: 'settings', moduleId: 'views/mainView', title: 'Settings :page' },
-      { route: 'account/login', name: 'login',  moduleId: 'users/login'},
-      { route: 'account/register', name: 'register',  moduleId: 'users/register'}
+      { route: 'account/:page', name: 'account',  moduleId: 'views/loginView', title: 'Account Mumble' }
     ]);
   }
 }

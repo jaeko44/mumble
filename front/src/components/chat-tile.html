@@ -13,6 +13,8 @@
                         <small>${chat.type}</small>
                     </h2>
                     <h2 if.bind="chat.type == 'message'">
+                        <i class="fa" class.bind="userDetails(chat.from).status == 'online' ? 'fa-circle online' :
+                                                  userDetails(chat.from).status == 'away' ? 'fa-circle away' : ''"></i> 
                         <i class="fa fa-user"></i> 
                         ${userDetails(chat.from).firstName}
                         <small>${chat.type}</small>
@@ -77,10 +79,9 @@
                             </li>
                         </ul>
                     </div>
-
                 </div>
             </div>
-            <form>
+            <form autocomplete="off">
                 <div class="form-group">
                     <div class="col-lg-9 col-md-12">
                         <input id="chat-input-${chat.tmpId}"" value.bind="tempMessage[chat.tmpId]" class="form-control tall-input"

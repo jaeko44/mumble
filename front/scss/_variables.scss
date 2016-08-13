@@ -6,7 +6,6 @@ For example:
 $body-font-size: 1rem;
 $p-margin: 0 0;
 
-
 */
 
 $body-font-family: "Verdana", sans-serif;
@@ -17,3 +16,37 @@ $structure-background-color: #dddddd;
 $loading-background-image: "../images/ajax-loader.gif";
 
 $out-chat-background-color: #ffffff;
+
+/*
+Format of theme variables:
+$[themeName]-[property] 
+
+For example:
+$blue-main: blue;
+
+*/
+$blue-main: #41678a;
+$blue-dark: #2A3F54;
+$blue-success: #1ABB9C;
+$blue-red: #e74c3c;
+$blue-background: #f7f7f7;
+$blue-font: 'Roboto', sans-serif;
+$blue-text: #f7f7f7;
+$blue-dark-text: #23527c;
+
+$green-main: #16a085;
+$green-dark: #0e6b59;
+$green-success: #1ABB9C;
+$green-red: #e74c3c;
+$green-background: #f7f7f7;
+$green-font: 'Roboto', sans-serif;
+$green-text: white;
+$green-dark-text: #094035;
+
+$blue-main: #41678a;
+$blue-dark: #2A3F54;
+$blue-success: #1ABB9C;
+$blue-red: #e74c3c;
+$blue-background: #f7f7f7;
+$blue-font: 'Roboto', sans-serif;
+

@@ -25,6 +25,6 @@ export class leftView {
   }
   toSettings() {
     console.log('redirecting to settings: ');
-    new Redirect('settings');
+    this.router.navigateToRoute('settings', { page: 'profile' });
   }
 }

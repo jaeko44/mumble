@@ -1,32 +1,8 @@
 /*Include any styling specific to the chat page here*/
 
-#content{
-    padding: 1rem;
-    box-sizing: border-box;
+i.fa.online {
+    color: #1abb9c;
 }
-
-#out_chat{
-    width: 100%;
-    height: 20rem;
-    padding: 1rem;
-    border: 1px solid black;
-    
-    box-sizing: border-box;
-}
-#in_message{
-    display: inline-block;
-    width: 80%;
-    height: 5rem;
-    margin-right: 1rem;
-}
-#in_post{
-    display: inline-block;
-    height: 2rem;
-    width: 20%;
-}
-.x_title .pad-left {
-    padding-left: 20px;
-}
-label.btn > img.icon {
-    width: 60px;
+i.fa.away {
+    color: #facf00;
 }
