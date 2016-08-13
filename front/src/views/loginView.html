@@ -1,0 +1,15 @@
+<template>
+<div class="main-wrapper body">
+    <div class="main_container">
+    <div slot="leftView">
+        
+    </div>
+    <div slot="topNav">
+    </div>
+    <div slot="rightView">
+        <compose show.bind="page == 'login'" view-model="../users/signin"></compose>
+        <compose show.bind="page == 'register'" view="../users/signup.html"></compose>
+    </div>
+    </div>
+</div>
+</template>

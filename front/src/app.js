@@ -1,4 +1,5 @@
 import {Router} from 'aurelia-router';
+import {$} from 'jquery';
 
 export class App {
   static inject() { return [Router]; }
@@ -10,10 +11,10 @@ export class App {
   configureRoutes(cfg) {
     cfg.title = '... mumble';
     cfg.map([
-      { route: ['', 'home'], moduleId: 'components/chat', title: 'home' },
+      { route: ['', 'home'], name: 'home', moduleId: 'views/mainView', title: 'home' },
       { route: 'contacts/:id',  moduleId: 'contact-detail', name: 'contacts' },
-      { route: 'account/login', name: 'login',  moduleId: 'users/login'},
-      { route: 'account/register', name: 'register',  moduleId: 'users/register'}
+      { route: 'settings/:page', name: 'settings', moduleId: 'views/mainView', title: 'Settings :page' },
+      { route: 'account/:page', name: 'account',  moduleId: 'views/loginView', title: 'Account Mumble' }
     ]);
   }
 }

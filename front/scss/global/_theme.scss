@@ -1,0 +1,85 @@
+.Blue-theme {
+    a {
+        color: $blue-dark-text;
+    }
+    .left_col {
+        background: $blue-main;
+    }
+    .nav_title {
+        background: $blue-dark;
+    }
+    .nav {
+        &.side-menu li > a {
+            color: $blue-text;
+        }
+        &.child_menu {
+            li > a {
+            color: $blue-text;
+            }
+        }
+        &.side-menu li {
+            &.active > a, &.online > a {
+            border-right: 5px solid $blue-success;
+            }
+        }
+        &.side-menu li.active > a, &.side-menu li.selected > a, &.side-menu li > a:hover, &.side-menu li > a.active {
+            background: $blue-dark;
+        }
+    }
+    .sidebar-footer {
+        background: $blue-dark;
+        a {
+            color: $blue-text;
+            background: $blue-dark;
+        }
+    }
+    li.message_dark {
+        background: $blue-message-dark;
+    }
+}
+
+.Green-theme {
+    .profile_info span {
+        color: $green-text;
+    }
+    .img-circle.profile_img {
+        background: $green-dark;
+    }
+    a {
+        color: $green-dark-text;
+    }
+    .left_col {
+        background: $green-main;
+    }
+    .nav_title {
+        background: $green-dark;
+    }
+    .nav {
+        &.side-menu li > a {
+            color: $green-text;
+        }
+        &.child_menu {
+            li > a {
+            color: $green-text;
+            }
+        }
+        &.side-menu li {
+            &.active > a, &.online > a {
+            border-right: 5px solid $green-success;
+            }
+        }
+        &.side-menu li.active > a, &.side-menu li.selected > a, &.side-menu li > a:hover, &.side-menu li > a.active {
+            background: $green-dark;
+        }
+    }
+    .sidebar-footer {
+        background: $green-dark;
+        a {
+            color: $green-text;
+            background: $green-dark;
+        }
+    }
+    li.message_dark {
+        background: $green-message-dark;
+    }
+}

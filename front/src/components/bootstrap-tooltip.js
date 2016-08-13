@@ -1,5 +1,5 @@
 import {customAttribute, inject} from 'aurelia-framework';
-import $ from "bootstrap";
+import "bootstrap";
 
 @customAttribute('bootstrap-tooltip')
 @inject(Element)

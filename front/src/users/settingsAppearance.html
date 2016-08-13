@@ -1,0 +1,44 @@
+<template>
+    <require from="../components/bootstrap-tooltip"></require>
+    <div class="row">
+        <div class="container" style="width: 600px;">
+          <h1 class="text-center" style="margin-bottom: 35px;" >Appearance: </h1>
+          <div id="mobilePhone" class="form-group">
+              <div class="row">
+                <div class="col-lg-3">
+                  <label for="message-text" class="control-label">Theme:</label>
+                </div>
+                <div class="col-lg-7 float-right">
+                  <a href="#" click.trigger="displayChangeTheme()" bootstrap-tooltip data-toggle="tooltip" data-placement="left" 
+                  title="Change the colors of the UI & It's Font'">
+                    <icon class="fa fa-eyedropper" aria-hidden="true"></icon>
+                    <span>Change your current theme.</span>
+                  </a>
+                </div>
+              </div>
+              <div show.bind="changingTheme == true" id="changeTheme">
+                <form>
+                  <div class="form-group">
+                      <div class="col-sm-12">
+                        <select value.bind="selectedTheme" click.trigger="updateTheme()" id="theme" class="big-drop">
+                          <option repeat.for="theme of themes" value.bind="theme">${theme}</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-12">
+                       <div class="centered-50">
+                            <label class="control-label col-md-6" style="margin-top: 10px;"><a class=
+                            "btn btn-default btn-cancel" style="width: 100%" click.trigger="cancel('theme')"><i class="fa fa-cancel"></i>
+                            cancel</a></label>
+                            <label class="control-label col-md-6" style="float:right; margin-top: 10px;"><a class=
+                            "btn btn-default btn-save" style="width: 100%" click.trigger="saveTheme(selectedTheme)"><i class="fa fa-lock"></i>
+                            save</a></label>
+                        </div>
+                      </div>
+                      <input type="submit" style="display: none" click.trigger="saveTheme(selectedTheme)" value="Submit">
+                  </div>
+                </form>
+              </div>
+            </div>
+        </div>
+    </div>
+</template>

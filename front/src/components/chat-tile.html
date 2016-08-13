@@ -1,10 +1,24 @@
 <template>
-    <div repeat.for="chat of activeChats" class="col-lg-4 col-md-6 col-sm-12">
-        <div class="x_panel">
+    <require from="./limit-to"></require>
+    <div repeat.for="chat of chats | limitTo:maximumChats" class="animate-chat" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'col-xs-2 col-md-1' :
+                                                                     chatsOpen == 3  ? ' col-lg-4 col-md-6 col-sm-12' :
+                                                                     chatsOpen == 2  ? ' col-lg-5 col-md-6 col-sm-12' :
+                                                                     chatsOpen == 1  ? 'col-lg-9 col-md-9 col-sm-12' : ''">
+        <div css="height: ${chatsActive[chat.tmpId - 1].styles.height};" class="x_panel" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'closedchat' : '' " id="chat-${chat.tmpId}">
             <div class="x_title">
                 <div class="col-md-12 pad-left">
-                    <h2><i class="fa" class.bind="chat.type == 'channel' ? 'fa-hashtag' : chat.type == 'message' ? 'fa-user' : 'fa-question'"></i> ${chat.title}
-                    <small>${chat.type}</small></h2>
+                    <h2 if.bind="chat.type == 'channel'">
+                        <i class="fa fa-hashtag"></i> 
+                        ${channelDetails(chat.from).channelName}
+                        <small>${chat.type}</small>
+                    </h2>
+                    <h2 if.bind="chat.type == 'message'">
+                        <i class="fa" class.bind="userDetails(chat.from).status == 'online' ? 'fa-circle online' :
+                                                  userDetails(chat.from).status == 'away' ? 'fa-circle away' : ''"></i> 
+                        <i class="fa fa-user"></i> 
+                        ${userDetails(chat.from).firstName}
+                        <small>${chat.type}</small>
+                    </h2>
                     <ul class="nav navbar-right panel_toolbox">
                     <li class="dropdown">
                         <a aria-expanded="false" class="dropdown-toggle"
@@ -12,18 +26,22 @@
                         "button"><i class="fa fa-chevron-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a href="#"><i class="fa fa-youtube"></i>
-                                Link a video</a>
+                                <a click.trigger="displayChat(5)" href="#"><i class="fa fa-meh-o"></i>
+                                WORKING FUNCTION</a>
                             </li>
                             <li>
                                 <a href="#"><i class="fa fa-paperclip"></i>
-                                Attach a file 2</a>
+                                Attach a file</a>
                             </li>
                         </ul>
                     </li>
-                    <li>
-                        <a class="close-link"><i class=
-                        "fa fa-close"></i></a>
+                    <li show.bind="chatsActive[chat.tmpId - 1].closed == 'true'">
+                        <a click.trigger="open(chat.tmpId)" class="open-link"><i class=
+                        "fa fa-plus-square"></i></a>
+                    </li>
+                    <li show.bind="chatsActive[chat.tmpId - 1].closed == 'false'">
+                        <a click.trigger="close(chat.tmpId)" class="close-link"><i class=
+                        "fa fa-minus-square"></i></a>
                     </li>
                 </ul>
                 </div>
@@ -31,24 +49,25 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <div class="dashboard-widget-content">
+                <div id="chat-content-${chat.tmpId}" class="dashboard-widget-content">
                     <div class="col-md-12">
                         <ul class="list-unstyled msg_list">
-                            <li repeat.for="message of chat.messages">
+                            <li class="animate-chat ${chatsActive[chat.tmpId - 1].cooldown == true ? 'cooldown' : ''}" 
+                            repeat.for="message of chat.messages" class.bind="message.from == 1 ? 'message_dark' : chat.messages.length - $index <= chatsActive[chat.tmpId - 1].unreadMsgs ? 'message_highlighted' : ''">
                                 <a>
                                     <span class="image">
                                         <img alt="img" src="images/${userDetails(message.from).icon}">
                                     </span>
                                     <span>
-                                        <span>${userDetails(message.from).firstName}</span>
+                                        <span>${userDetails(message.from).firstName} ${userDetails(message.from).lastName}</span>
                                         <span class="time">3 mins ago</span>
                                     </span>
                                     <span class="message">
                                         ${message.data}
                                         <div if.bind="message.attachments" id="attachments">
                                             <div repeat.for="attachment of message.attachments" id="attachment">
-                                                <div id="youtube" if.bind="attachment.type == 'video'">
-                                                    <iframe src="http://www.youtube.com/embed/${attachment.id}" width="427" height="240" frameborder="0" allowfullscreen=""></iframe>
+                                                <div id="youtube" class="video" if.bind="attachment.type == 'video'">
+                                                    <iframe src="http://www.youtube.com/embed/${attachment.id}" width="90%" height="auto" frameborder="0" allowfullscreen=""></iframe>
                                                 </div>
                                                 <span class="image" if.bind="attachment.type == 'image'">
                                                     <img alt="img" src="images/${attachment.id}">
@@ -60,19 +79,22 @@
                             </li>
                         </ul>
                     </div>
-                    <div class="form-group">
-                        <div class="col-lg-9 col-md-12">
-                            <input class="form-control tall-input"
-                            placeholder="Message..." type="text">
-                        </div>
-                        <div class="col-lg-3 col-md-12">
-                            <label class="full control-label" style="float:right"><a class=
-                            "btn btn-app" click.trigger="displayChats()"><i class="fa fa-envelope-o"></i>
-                            send</a></label>
-                        </div>
-                    </div>
                 </div>
             </div>
+            <form autocomplete="off">
+                <div class="form-group">
+                    <div class="col-lg-9 col-md-12">
+                        <input id="chat-input-${chat.tmpId}"" value.bind="tempMessage[chat.tmpId]" class="form-control tall-input"
+                        placeholder="Message..." tabindex="${chat.tmpId}" type="text">
+                    </div>
+                    <div class="col-lg-3 col-md-12">
+                        <label class="full control-label" style="float:right"><a class=
+                        "btn btn-app" click.trigger="sendMessage(chat.tmpId)"><i class="fa fa-envelope-o"></i>
+                        send</a></label>
+                    </div>
+                    <input type="submit" style="display: none" click.trigger="sendMessage(chat.tmpId)" value="Submit">
+                </div>
+            </form>
         </div>
     </div>
 </template>
