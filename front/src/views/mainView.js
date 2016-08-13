@@ -1,14 +1,23 @@
 import {Profile} from '../app/profile';
 import {inject} from 'aurelia-framework';
+import { EventAggregator } from 'aurelia-event-aggregator';
 
-@inject(Profile)
+
+@inject(Profile, EventAggregator)
 export class mainView {
 
-  constructor(profile){
+  constructor(profile, ea){
+    this.ea = ea;
+    ea.subscribe('saveTheme', theme => this.updateTheme(theme));
+    ea.subscribe('updateTheme', theme => this.updateTheme(theme));
     this.profile = profile;
     this.account = profile.getProfile();
     this.settings = profile.getSettings();
     this.appName = this.settings.appName;
+    this.theme = this.settings.theme;
+  }
+  updateTheme(theme) {
+    this.theme = theme;
   }
   activate(params, navigationInstruction) {
       this.route = navigationInstruction;

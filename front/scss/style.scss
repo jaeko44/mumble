@@ -3,10 +3,13 @@
 @import "bootstrap";
 @import "font-awesome";
 
+// Import variables
+@import "variables";
+
 // Import global css rules
 @import "global/base";
 @import "global/global";
-
+@import "global/theme";
 
 // Import chat page css rules
 @import "chat/chat";

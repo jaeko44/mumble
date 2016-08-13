@@ -1,3 +1,6 @@
+import {EventAggregator} from 'aurelia-event-aggregator';
+import {inject} from 'aurelia-framework';
+
 let latency = 200; //To mimic a real connection
 let id = 0;
 
@@ -11,7 +14,7 @@ let myAccount = {
     email: 'jonathan@det.io',
     password: 'unencrypted',
     phoneNumber: '867-5309',
-    isOnline: 'online',
+    status: 'online',
     icon: 'face5.ico'
 }
 let contacts = [
@@ -23,7 +26,7 @@ let contacts = [
     lastName: 'Tolkien',
     email: 'tolkien@inklings.com',
     phoneNumber: '867-5309',
-    isOnline: 'online',
+    status: 'online',
     unreadMsgs: 0,
     icon: 'face2.ico'
   },
@@ -35,7 +38,7 @@ let contacts = [
     lastName: '',
     email: 'borat@inklings.com',
     phoneNumber: '867-5309',
-    isOnline: 'online',
+    status: 'online',
     unreadMsgs: 4,
     icon: 'face.ico'
   },
@@ -47,7 +50,7 @@ let contacts = [
     lastName: 'Barfield',
     email: 'barfield@inklings.com',
     phoneNumber: '867-5309',
-    isOnline: 'offline',
+    status: 'offline',
     unreadMsgs: 0,
     icon: 'face3.ico'
   },
@@ -59,7 +62,7 @@ let contacts = [
     lastName: 'Williams',
     email: 'williams@inklings.com',
     phoneNumber: '867-5309',
-    isOnline: 'away',
+    status: 'away',
     unreadMsgs: 0,
     icon: 'face4.ico'
   },
@@ -71,7 +74,7 @@ let contacts = [
     lastName: 'Green',
     email: 'green@inklings.com',
     phoneNumber: '867-5309',
-    isOnline: 'offline',
+    status: 'offline',
     unreadMsgs: 1,
     icon: 'face5.ico'
   }
@@ -486,11 +489,20 @@ let mySettings = {
     maxChats: 3,
     navigation: 1,
     appName: 'mumble',
+    theme: 'Blue',
     mnumber: 0
 }
+
+@inject(EventAggregator)
 export class WebAPI {
   isRequesting = false;
 
+  constructor(ea) {
+    ea.subscribe('saveTheme', theme => this.updateTheme(theme));
+  }
+  updateTheme(theme) {
+    mySettings.theme = theme;
+  }
   getContactList() {
     this.isRequesting = true;
     return new Promise(resolve => {
@@ -503,7 +515,7 @@ export class WebAPI {
                   isOpen: x.isOpen,
                   lastName: x.lastName,
                   email: x.email,
-                  isOnline: x.isOnline,
+                  status: x.status,
                   alert: 1,
                   unreadMsgs: x.unreadMsgs
                 };

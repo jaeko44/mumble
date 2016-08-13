@@ -1,6 +1,6 @@
 <template>
   <div class.bind="navigation == 1 ? 'nav-sm' : 'nav-md'">
-    <div class="main-wrapper body">
+    <div class="main-wrapper body ${theme}-theme">
       <div class="main_container">
         <div slot="leftView">
           <compose view-model="./leftView" model.bind="page"></compose>
@@ -10,10 +10,10 @@
         </div>
         <div slot="rightView">
           <div class="right_col" role="main">
-            <compose if.bind="page == 'profile'" view-model="../users/settingsProfile"></compose>
-            <compose if.bind="page == 'security'" view="../users/settings-security.html"></compose>
-            <compose if.bind="page == 'appearance'" view="../users/settings-appearance.html"></compose>
-            <compose if.bind="page == 'home'" view="../components/chat-main.html"></compose>
+            <compose show.bind="page == 'home'" view="../app/chatMain.html"></compose>
+            <compose show.bind="page == 'profile'" view-model="../users/settingsProfile"></compose>
+            <compose show.bind="page == 'security'" view="../users/settingsSecurity.html"></compose>
+            <compose show.bind="page == 'appearance'" view-model="../users/settingsAppearance"></compose>
           </div>
         </div>
       </div>

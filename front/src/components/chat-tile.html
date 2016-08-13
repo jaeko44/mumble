@@ -13,6 +13,8 @@
                         <small>${chat.type}</small>
                     </h2>
                     <h2 if.bind="chat.type == 'message'">
+                        <i class="fa" class.bind="userDetails(chat.from).status == 'online' ? 'fa-circle online' :
+                                                  userDetails(chat.from).status == 'away' ? 'fa-circle away' : ''"></i> 
                         <i class="fa fa-user"></i> 
                         ${userDetails(chat.from).firstName}
                         <small>${chat.type}</small>

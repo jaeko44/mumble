@@ -11,7 +11,6 @@ export class settingsProfile {
     this.account = profile.getProfile();
     this.settings = profile.getSettings();
     this.appName = this.settings.appName;
-    this.navigation = this.settings.navigation;
     this.number = this.settings.mnumber;
     this.saveNumber;
     this.showAddPhone = true;
