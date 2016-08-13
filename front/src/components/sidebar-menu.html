@@ -1,7 +1,6 @@
 <template>
     <require from="./navbar"></require>
     <require from="./contact-list"></require>
-    <require from="./channel-list"></require>
 
     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
         <div class="menu_section active">
@@ -10,7 +9,6 @@
             font-size: 15px;
         ">${page}</h3>
             <ul show.bind="menu == 'home'" class="nav side-menu">
-                <channel-list><!-- Channels menu --></channel-list>
                 <contact-list><!-- Messages menu --></contact-list>
             </ul>
             <ul show.bind="menu == 'settings'" class="nav side-menu">

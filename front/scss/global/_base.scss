@@ -651,14 +651,10 @@ a {
   &.child_menu {
     display: none;
     li {
+      padding-left: 36px;
       &:hover, &.active {
         background-color: rgba(255, 255, 255, 0.06);
       }
-      padding-left: 36px;
-      padding-right: 5px;
-    }
-    li.online, li.away {
-      padding-right: 0px;
     }
   }
 }
@@ -739,12 +735,7 @@ a {
       }
     }
   }
-  &.side-menu li.active > a {
-    text-shadow: rgba(0, 0, 0, 0.25) 0 -1px 0;
-    background: linear-gradient(#334556, #2C4257), #2A3F54;
-    box-shadow: rgba(0, 0, 0, 0.25) 0 1px 0, inset rgba(255, 255, 255, 0.16) 0 1px 0;
-  }
-  &.side-menu li > a:hover, &.side-menu li > a.active {
+  &.side-menu li.active > a, &.side-menu li.selected > a, &.side-menu li > a:hover, &.side-menu li > a.active {
     text-shadow: rgba(0, 0, 0, 0.25) 0 -1px 0;
     background: linear-gradient(#334556, #2C4257), #2A3F54;
     box-shadow: rgba(0, 0, 0, 0.25) 0 1px 0, inset rgba(255, 255, 255, 0.16) 0 1px 0;

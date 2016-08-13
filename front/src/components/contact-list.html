@@ -1,12 +1,25 @@
 <template>
     <require from="./navbar"></require>
-    <li class="">
+    <li id="channel-list">
+        <a navbar>
+            <i class="fa fa-hashtag"></i> Channels <span class="fa fa-chevron-down"></span>
+        </a>
+        <ul class="nav child_menu" style="display: none;">
+            <li class="current-page"><a href="#">New Channel <span class="fa fa-plus"></span></a></li>
+            <li click.trigger="open(channel)" repeat.for="channel of channels"  class.bind="channel.isOpen == true ? 'selected' : ''"><a href="#">${channel.channelName}</a></li>
+        </ul>
+    </li>
+    <li class="contact-list">
         <a navbar>
             <i class="fa fa-envelope"></i> Messages <span class="fa fa-chevron-down"></span>
         </a>
         <ul class="nav child_menu" style="display: none;">
             <li class="current-page"><a href="#">New Message <span class="fa fa-plus"></span></a></li>
-            <li click.trigger="open(contact)" repeat.for="contact of contacts" class.bind="contact.isOnline == 'online' ? 'online' : contact.isOnline == 'away' ? 'away' : ''">
+            <li click.trigger="open(contact)" repeat.for="contact of contacts" class.bind="contact.isOnline == 'online' && contact.isOpen == true ? 'online selected' :
+                                                                                            contact.isOnline == 'away' && contact.isOpen == true ? 'away selected' :
+                                                                                            contact.isOnline == 'away' ? 'away' :
+                                                                                            contact.isOnline == 'online' ? 'online' :
+                                                                                            contact.isOpen == true ? 'selected' : ''">
                 <a>${contact.firstName} ${contact.lastName}
                 <span show.bind="contact.unreadMsgs >= 1" class.bind="contact.alert == 1  ? 'bg-red' : contact.alert == 2  ? 'bg-red cooldown' : 'bg-red'" class="badge pull-right">${contact.unreadMsgs}</span></a></li>
         </ul>

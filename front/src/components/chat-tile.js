@@ -21,6 +21,8 @@ export class chatTile {
             {
                 id: 1,
                 chatId: 1,
+                chatType: 'message',
+                isOpen: true,
                 unreadMsgs: 0,
                 cooldown: false,
                 closed: 'false',
@@ -31,6 +33,8 @@ export class chatTile {
             {
                 id: 2,
                 chatId: 6,
+                chatType: 'channel',
+                isOpen: true,
                 unreadMsgs: 0,
                 cooldown: false,
                 closed: 'false',
@@ -41,6 +45,8 @@ export class chatTile {
             {
                 id: 3,
                 chatId: 3,
+                chatType: 'message',
+                isOpen: true,
                 unreadMsgs: 0,
                 cooldown: false,
                 closed: 'false',
@@ -49,24 +55,39 @@ export class chatTile {
                 }
             }
         ]
-        //CAN BE REMOVED WHEN DYNAMIC DATA IS USED. FOR NOW WE ENSURE THESE CHATS ARE DETECTED OPEN
-        this.ea.publish(new ChatOpened(this.userDetails(2))); //chatId + 1 (1+1)
-        this.ea.publish(new ChatOpened(this.userDetails(6))); //chatId + 1 (5+1)
-        this.ea.publish(new ChatOpened(this.userDetails(4))); //chatId + 1 (3+1) 
-
 
         this.chatsOpen = this.chatsActive.length;
         ea.subscribe(ChatsUpdated, contact => this.displayChat(contact));
+        console.log('sending this chatsActive', this.chatsActive);
     }
     created() {
-    //    this.api.getMsgs().then(chats => this.chats = chats);
+        //this.api.getMsgs().then(chats => this.chats = chats);
         this.chats = this.extractData(this.chatsActive);
+        //CAN BE REMOVED WHEN DYNAMIC DATA IS USED. FOR NOW WE ENSURE THESE CHATS ARE DETECTED OPEN
+        let tempOpenChat = this.userDetails(2);
+        this.updateNavbar();
     }
-    
+    updateNavbar() {
+        console.log('Update all navbar in 2.5 second.')
+        setTimeout(() => {
+            for (var id = 0; id < this.chatsActive.length; id++) {
+                var chatActive = this.chatsActive[id];
+                var chatProfile = this.profile.findChatId(chatActive.chatId);
+                if (chatActive.isOpen == true) {
+                    console.log('ChatOpened called from updateNavBar');
+                    this.ea.publish(new ChatOpened(chatProfile));
+                }
+                else {
+                    console.log('ChatClosed called from updateNavBar');
+                    this.ea.publish(new ChatClosed(chatProfile));
+                }
+            }
+        }, 2500);
+    }
     extractData(array) {
         var tempData = [];
         for (let id = 0; id < array.length; id++) { 
-            let tempMsg = this.messageDetails(array[id].chatId);
+            var tempMsg = this.messageDetailschatId(array[id].chatId);
             tempMsg.chatId = array[id].chatId;
             tempMsg.tmpId = id + 1;
             tempData.push(tempMsg);
@@ -88,6 +109,9 @@ export class chatTile {
     messageDetails(messageId) {
         return this.api.getMessageDetails(messageId);
     }
+    messageDetailschatId(chatId) {
+        return this.api.getChatIdDetails(chatId);
+    }
     myHeight(id) {
         this.element = "chat-" + id;
         this.h = document.getElementById(this.element).offsetHeight;
@@ -105,12 +129,19 @@ export class chatTile {
         this.chatsOpen++;
     }
     displayChat(ChatsUpdated) {
+        var last = this.chatsActive[this.chatsActive.length - 1]
         var chatId = ChatsUpdated.contact.chatId;
         var unreadMsgs = ChatsUpdated.contact.unreadMsgs;
         var purgedChat = this.chatsActive;
+        if (this.maximumChats <= purgedChat.length) {
+            var chatClosing = purgedChat.pop(); 
+            console.log('last & chatClosing', last, chatClosing);
+            console.log('ChatClosed called from updateNavBar');
+            this.ea.publish(new ChatClosed(last));
+        }
         let found = purgedChat.filter(x => x.chatId === chatId)[0];
         if (typeof found !== "undefined") {
-            return;
+            return found;
         }
         var chatActive = {
             id: 1,
@@ -125,13 +156,10 @@ export class chatTile {
         for (let id = 0; id < purgedChat.length; id++) {
             purgedChat[id].id++;
         }
-        if (this.maximumChats <= purgedChat.length) {
-            this.ea.publish(new ChatClosed(this.userDetails(purgedChat.length + 2)));
-            purgedChat.pop(); 
-        }
         purgedChat.unshift(chatActive);
         this.chatsActive = purgedChat;
         this.chats = this.extractData(purgedChat);
+        console.log('ChatOpened called from displaychat');
         this.ea.publish(new ChatOpened(ChatsUpdated.contact));
         setTimeout(function (){
             let contentId = "chat-content-" + 1;
