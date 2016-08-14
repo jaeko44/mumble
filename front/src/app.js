@@ -1,13 +1,27 @@
 import {Router} from 'aurelia-router';
 import {$} from 'jquery';
+import {inject} from 'aurelia-framework';
+import { EventAggregator } from 'aurelia-event-aggregator';
+import toastr from 'toastr';
 
+@inject(Router, EventAggregator)
 export class App {
-  static inject() { return [Router]; }
-
-  constructor(router) {
+  constructor(router, ea) {
+    this.ea = ea;
+    ea.subscribe('loggedSuccesfully', account => this.loggedSuccesfully(account));
     this.router = router;
     this.router.configure(this.configureRoutes);
   }
+
+  loggedSuccesfully(account) {
+    toastr.options.progressBar = true;
+    toastr.options.closeButton = true;
+    toastr.options.closeMethod = 'slideUp';
+    toastr.options.hideMethod = 'slideUp';
+    toastr.options.showMethod = 'slideDown';
+    toastr.success('Welcome ' + account.firstName, 'You are now connected.');
+  }
+
   configureRoutes(cfg) {
     cfg.title = '... mumble';
     cfg.map([

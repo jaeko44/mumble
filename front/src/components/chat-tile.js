@@ -4,7 +4,8 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {inject} from 'aurelia-framework';
 import $ from 'jquery';
 import {ChatsUpdated, ChatOpened, ChatClosed} from './chat-events';
-
+import toastr from "toastr";
+import Dropzone from 'dropzone';
 
 @inject(WebAPI, Profile, EventAggregator)
 export class chatTile {
@@ -14,9 +15,10 @@ export class chatTile {
         this.api = api;
         this.ea = ea;
         this.account = profile.getProfile();
+        this.settings = profile.getSettings();
         this.chats = [];
         this.tempMessage = [];
-        this.maximumChats = 3;
+        this.layout = this.settings.layout;
         this.chatsActive = [
             {
                 id: 1,
@@ -58,6 +60,7 @@ export class chatTile {
 
         this.chatsOpen = this.chatsActive.length;
         ea.subscribe(ChatsUpdated, contact => this.displayChat(contact));
+        ea.subscribe('saveLayout', layout => this.updateLayout(layout));
         console.log('sending this chatsActive', this.chatsActive);
     }
     created() {
@@ -67,22 +70,54 @@ export class chatTile {
         let tempOpenChat = this.userDetails(2);
         this.updateNavbar();
     }
+    attached() {
+        for (var id = 1; id <= this.chatsActive.length; id++) {
+            var dropZoneEl = "myDropZone-" + id;
+            var dropzoneUpload = document.getElementById("myDropZone-" + id);
+            var myDropzone = new Dropzone(dropzoneUpload, { url: "/file/post" });
+        }
+    }
     updateNavbar() {
-        console.log('Update all navbar in 2.5 second.')
         setTimeout(() => {
+            this.chatsOpen = 0;
             for (var id = 0; id < this.chatsActive.length; id++) {
                 var chatActive = this.chatsActive[id];
                 var chatProfile = this.profile.findChatId(chatActive.chatId);
                 if (chatActive.isOpen == true) {
-                    console.log('ChatOpened called from updateNavBar');
+                    this.chatsOpen++;
                     this.ea.publish(new ChatOpened(chatProfile));
                 }
                 else {
-                    console.log('ChatClosed called from updateNavBar');
                     this.ea.publish(new ChatClosed(chatProfile));
                 }
             }
-        }, 2500);
+        }, 1000);
+    }
+    compareTime(time) {
+        var d = new Date();
+        var currTime = d.getTime();
+        var timeDifference = currTime - time;
+        var minutes = 1000 * 60;
+        var hours = 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var minutesDifference = Math.round(timeDifference / minutes);
+        if (minutesDifference <= 1) {
+            return 'now';
+        }
+        else if (minutesDifference >= 1 && minutesDifference <= hours) {
+            return minutesDifference + ' minutes ago';
+        }
+        else if (minutesDifference >= hours && minutesDifference / hours > 12) {
+            let hoursAgo = Math.floor(minutesDifference/hours);
+            let remainder = minutesDifference % hours;
+            return hoursAgo + ' hours & ' + remainder + ' minutes ago';
+        }
+        else if (minutesDifference / 60 > 24 && minutesDifference / 60 / 24 >= 1) {
+            let daysAgo = Math.floor(minutesDifference/days);
+            let remainder = minutesDifference % days;
+            return daysAgo + ' days & ' + remainder + ' hours ago';
+        }
     }
     extractData(array) {
         var tempData = [];
@@ -128,21 +163,28 @@ export class chatTile {
         this.chatsActive[id - 1].closed = 'false';
         this.chatsOpen++;
     }
+    updateLayout(layout) {
+        this.layout = layout;
+        var purgedChat = this.chatsActive;
+        //We need to update the navbar to reflect the open chats.
+        while (this.layout.maximumChats < purgedChat.length) {
+            var chatClosing = purgedChat.pop(); 
+            this.ea.publish(new ChatClosed(chatClosing));
+        }
+    }
     displayChat(ChatsUpdated) {
+        if (typeof found !== "undefined") {
+            return found;
+        }
         var last = this.chatsActive[this.chatsActive.length - 1]
         var chatId = ChatsUpdated.contact.chatId;
         var unreadMsgs = ChatsUpdated.contact.unreadMsgs;
         var purgedChat = this.chatsActive;
-        if (this.maximumChats <= purgedChat.length) {
+        if (this.layout.maximumChats <= purgedChat.length) {
             var chatClosing = purgedChat.pop(); 
-            console.log('last & chatClosing', last, chatClosing);
-            console.log('ChatClosed called from updateNavBar');
             this.ea.publish(new ChatClosed(last));
         }
         let found = purgedChat.filter(x => x.chatId === chatId)[0];
-        if (typeof found !== "undefined") {
-            return found;
-        }
         var chatActive = {
             id: 1,
             chatId: chatId,
@@ -185,6 +227,8 @@ export class chatTile {
         if (this.tempMessage[id] == '') {
             return;
         }
+        var d = new Date();
+        var timeNow = d.getTime();
         let youtubeCom = this.tempMessage[id].indexOf('youtube.com/watch?v=');
         let youtubeBe = this.tempMessage[id].indexOf('youtu.be/');
         let youtubeId = '';
@@ -221,7 +265,7 @@ export class chatTile {
             this.message = {
                 data: this.tempMessage[id],
                 from: 1,
-                date: 'now',
+                date: timeNow,
             }
         }
         this.chats[id - 1].messages.push(this.message);

@@ -1,12 +1,14 @@
 import {inject} from 'aurelia-framework';
 import {Profile} from '../app/profile';
 import {Router} from 'aurelia-router';
+import {EventAggregator} from 'aurelia-event-aggregator';
 import $ from 'jquery';
 
-@inject(Profile, Router)
+@inject(Profile, Router, EventAggregator)
 export class login {
 
-  constructor(profile, router) {
+  constructor(profile, router, ea) {
+    this.ea = ea;
     this.router = router;
     console.log('the router ', router);
     this.profile = profile;
@@ -23,7 +25,8 @@ export class login {
         if (this.email == this.account.email) {
             this.response = "Account found";
             if (this.password == this.account.password) {
-                    location.assign('#/home');
+                this.ea.publish('loggedSuccesfully', this.account);
+                location.assign('#/home');
             }
             else {
                 this.showSpin = false;
