@@ -25,37 +25,43 @@ export class settingsAppearance {
         id: 1,
         name: 'Full Height, 1 Chats per row, 1 row',
         rows: 1,
-        maximumChats: 1
+        maximumChats: 1,
+        chatsPerRow: 1
       },
       {
         id: 2,
         name: 'Full Height, 2 Chats per row, 1 row',
         rows: 1,
-        maximumChats: 2
+        maximumChats: 2,
+        chatsPerRow: 2
       },
       {
         id: 3,
         name: 'Full Height, 3 Chats per row, 1 row',
         rows: 1,
-        maximumChats: 3
+        maximumChats: 3,
+        chatsPerRow: 3
       },
       {
         id: 4,
-        name: 'Half Height, 3 Chats per row, 2 rows',
+        name: 'Half Height, 1 chat per row, 2 rows',
         rows: 2,
-        maximumChats: 6
+        maximumChats: 2,
+        chatsPerRow: 1
       },
       {
         id: 5,
         name: 'Half Height, 2 Chats per row, 2 rows',
         rows: 2,
-        maximumChats: 4
+        maximumChats: 4,
+        chatsPerRow: 2
       },
       {
         id: 6,
-        name: 'Half Height, 1 chat per row, 2 rows',
+        name: 'Half Height, 3 chat per row, 2 rows',
         rows: 2,
-        maximumChats: 2
+        maximumChats: 6,
+        chatsPerRow: 3
       }];
   }
   

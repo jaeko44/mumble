@@ -491,7 +491,8 @@ let mySettings = {
       id: 3,
       name: 'Full Height, 3 Chats per row, 1 row',
       rows: 1, 
-      maximumChats: 3
+      maximumChats: 3,
+      chatsPerRow: 3
     },
     navigation: 1,
     appName: 'mumble',

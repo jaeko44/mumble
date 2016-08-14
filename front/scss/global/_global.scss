@@ -221,3 +221,41 @@ span.error {
     padding-top: 5px;
     padding-bottom: 0px;
 }
+.layout-1, .layout-2, .layout-3 {
+  .dashboard-widget-content {
+    overflow-y: auto;
+    max-height: 66.75vh;
+    height: 66.75vh;
+    padding-top: 9px;
+  }
+}
+.layout-4, .layout-5, .layout-6 {
+  .dashboard-widget-content {
+    overflow-y: auto;
+    max-height: 27.5vh;
+    height: 27.5vh;
+    padding-top: 9px;
+  }
+}
+.chats-row-1 {
+  display: inline;
+  width: 100%;
+}
+.chats-row-2 {
+  display: inline-block;
+  width: 50%;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+.chats-row-3 {
+  display: inline-block;
+  width: 33%;
+  padding-left: 0.75%;
+  padding-right: 0.75%;
+}
+.chats-row-closed {
+  display: inline-block;
+  width: 7.5%;
+  padding-left: 0.75%;
+  padding-right: 0.75%;
+}

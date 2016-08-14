@@ -22,6 +22,7 @@ export class chatTile {
         this.chatsActive = [
             {
                 id: 1,
+                row: 1,
                 chatId: 1,
                 chatType: 'message',
                 isOpen: true,
@@ -34,6 +35,7 @@ export class chatTile {
             },
             {
                 id: 2,
+                row: 1,
                 chatId: 6,
                 chatType: 'channel',
                 isOpen: true,
@@ -46,6 +48,7 @@ export class chatTile {
             },
             {
                 id: 3,
+                row: 1,
                 chatId: 3,
                 chatType: 'message',
                 isOpen: true,
@@ -165,6 +168,7 @@ export class chatTile {
     }
     updateLayout(layout) {
         this.layout = layout;
+        console.log('this layout: ', layout);
         var purgedChat = this.chatsActive;
         //We need to update the navbar to reflect the open chats.
         while (this.layout.maximumChats < purgedChat.length) {
@@ -185,6 +189,7 @@ export class chatTile {
             this.ea.publish(new ChatClosed(last));
         }
         let found = purgedChat.filter(x => x.chatId === chatId)[0];
+        var chatHeight = "100%";
         var chatActive = {
             id: 1,
             chatId: chatId,

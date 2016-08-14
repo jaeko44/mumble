@@ -1,9 +1,6 @@
 <template>
     <require from="./limit-to"></require>
-    <div repeat.for="chat of chats | limitTo:maximumChats" class="animate-chat" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'col-xs-2 col-md-1' :
-                                                                                            chatsOpen == 3  ? ' col-lg-4 col-md-6 col-sm-12' :
-                                                                                            chatsOpen == 2  ? ' col-lg-5 col-md-6 col-sm-12' :
-                                                                                            chatsOpen == 1  ? 'col-lg-9 col-md-9 col-sm-12' : ''">
+    <div repeat.for="chat of chats | limitTo:layout.maximumChats" class="animate-chat layout-${layout.id} chats-row-${layout.chatsPerRow}" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'chats-row-closed' : ''">
         <div css="height: ${chatsActive[chat.tmpId - 1].styles.height};" class="x_panel" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'closedchat' : '' " id="chat-${chat.tmpId}">
             <div class="x_title">
                 <div class="col-md-12 pad-left">
@@ -83,7 +80,7 @@
             </div>
             <form autocomplete="off">
                 <div class="form-group">
-                    <div class="col-lg-9 col-md-12 dropzone" id="myDropZone-${chat.tmpId}">
+                    <div class="col-lg-9 col-md-12" id="myDropZone-${chat.tmpId}">
                         <input id="chat-input-${chat.tmpId}"" value.bind="tempMessage[chat.tmpId]" class="form-control tall-input"
                         placeholder="Message..." tabindex="${chat.tmpId}" type="text">
                     </div>
