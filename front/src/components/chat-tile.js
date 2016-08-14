@@ -76,21 +76,46 @@ export class chatTile {
         }
     }
     updateNavbar() {
-        console.log('Update all navbar in 2.5 second.')
+        this.chatsOpen = 0;
         setTimeout(() => {
             for (var id = 0; id < this.chatsActive.length; id++) {
                 var chatActive = this.chatsActive[id];
                 var chatProfile = this.profile.findChatId(chatActive.chatId);
                 if (chatActive.isOpen == true) {
-                    console.log('ChatOpened called from updateNavBar');
+                    this.chatsOpen++;
                     this.ea.publish(new ChatOpened(chatProfile));
                 }
                 else {
-                    console.log('ChatClosed called from updateNavBar');
                     this.ea.publish(new ChatClosed(chatProfile));
                 }
             }
-        }, 2500);
+        }, 1000);
+    }
+    compareTime(time) {
+        var d = new Date();
+        var currTime = d.getTime();
+        var timeDifference = currTime - time;
+        var minutes = 1000 * 60;
+        var hours = 60;
+        var days = hours * 24;
+        var years = days * 365;
+        var minutesDifference = Math.round(timeDifference / minutes);
+        if (minutesDifference <= 1) {
+            return 'now';
+        }
+        else if (minutesDifference >= 1 && minutesDifference <= hours) {
+            return minutesDifference + ' minutes ago';
+        }
+        else if (minutesDifference >= hours && minutesDifference / hours > 12) {
+            let hoursAgo = Math.floor(minutesDifference/hours);
+            let remainder = minutesDifference % hours;
+            return hoursAgo + ' hours & ' + remainder + ' minutes ago';
+        }
+        else if (minutesDifference / 60 > 24 && minutesDifference / 60 / 24 >= 1) {
+            let daysAgo = Math.floor(minutesDifference/days);
+            let remainder = minutesDifference % days;
+            return daysAgo + ' days & ' + remainder + ' hours ago';
+        }
     }
     extractData(array) {
         var tempData = [];
@@ -194,6 +219,8 @@ export class chatTile {
         if (this.tempMessage[id] == '') {
             return;
         }
+        var d = new Date();
+        var timeNow = d.getTime();
         let youtubeCom = this.tempMessage[id].indexOf('youtube.com/watch?v=');
         let youtubeBe = this.tempMessage[id].indexOf('youtu.be/');
         let youtubeId = '';
@@ -230,7 +257,7 @@ export class chatTile {
             this.message = {
                 data: this.tempMessage[id],
                 from: 1,
-                date: 'now',
+                date: timeNow,
             }
         }
         this.chats[id - 1].messages.push(this.message);

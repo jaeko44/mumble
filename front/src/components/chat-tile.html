@@ -1,9 +1,9 @@
 <template>
     <require from="./limit-to"></require>
     <div repeat.for="chat of chats | limitTo:maximumChats" class="animate-chat" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'col-xs-2 col-md-1' :
-                                                                     chatsOpen == 3  ? ' col-lg-4 col-md-6 col-sm-12' :
-                                                                     chatsOpen == 2  ? ' col-lg-5 col-md-6 col-sm-12' :
-                                                                     chatsOpen == 1  ? 'col-lg-9 col-md-9 col-sm-12' : ''">
+                                                                                            chatsOpen == 3  ? ' col-lg-4 col-md-6 col-sm-12' :
+                                                                                            chatsOpen == 2  ? ' col-lg-5 col-md-6 col-sm-12' :
+                                                                                            chatsOpen == 1  ? 'col-lg-9 col-md-9 col-sm-12' : ''">
         <div css="height: ${chatsActive[chat.tmpId - 1].styles.height};" class="x_panel" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'closedchat' : '' " id="chat-${chat.tmpId}">
             <div class="x_title">
                 <div class="col-md-12 pad-left">
@@ -60,7 +60,7 @@
                                     </span>
                                     <span>
                                         <span>${userDetails(message.from).firstName} ${userDetails(message.from).lastName}</span>
-                                        <span class="time">3 mins ago</span>
+                                        <span class="time">${compareTime(message.date)}</span>
                                     </span>
                                     <span class="message">
                                         ${message.data}
