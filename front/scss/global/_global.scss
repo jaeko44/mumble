@@ -209,3 +209,15 @@ span.error {
   height: 40px;
   padding-left: 20px;
 }
+.dropzone .dz-message {
+    text-align: center;
+    margin-top: 5px;
+    margin-bottom: 0px;
+}
+.dropzone {
+    min-height: 100px;
+    border: 2px solid rgba(0, 0, 0, 0.3);
+    background: rgb(247, 247, 247);
+    padding-top: 5px;
+    padding-bottom: 0px;
+}

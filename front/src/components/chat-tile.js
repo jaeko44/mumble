@@ -4,7 +4,8 @@ import {EventAggregator} from 'aurelia-event-aggregator';
 import {inject} from 'aurelia-framework';
 import $ from 'jquery';
 import {ChatsUpdated, ChatOpened, ChatClosed} from './chat-events';
-
+import toastr from "toastr";
+import Dropzone from 'dropzone';
 
 @inject(WebAPI, Profile, EventAggregator)
 export class chatTile {
@@ -66,6 +67,13 @@ export class chatTile {
         //CAN BE REMOVED WHEN DYNAMIC DATA IS USED. FOR NOW WE ENSURE THESE CHATS ARE DETECTED OPEN
         let tempOpenChat = this.userDetails(2);
         this.updateNavbar();
+    }
+    attached() {
+        for (var id = 1; id <= this.chatsActive.length; id++) {
+            var dropZoneEl = "myDropZone-" + id;
+            var dropzoneUpload = document.getElementById("myDropZone-" + id);
+            var myDropzone = new Dropzone(dropzoneUpload, { url: "/file/post" });
+        }
     }
     updateNavbar() {
         console.log('Update all navbar in 2.5 second.')
@@ -129,6 +137,7 @@ export class chatTile {
         this.chatsOpen++;
     }
     displayChat(ChatsUpdated) {
+        toastr.success('We do have the Kapua suite available.', 'Turtle Bay Resort', {timeOut: 5000});
         var last = this.chatsActive[this.chatsActive.length - 1]
         var chatId = ChatsUpdated.contact.chatId;
         var unreadMsgs = ChatsUpdated.contact.unreadMsgs;

@@ -105,6 +105,8 @@
               "css/bootstrap.css"
              ]
           },
+          "dropzone",
+          "toastr", 
           "aurelia-binding",
           "aurelia-bootstrapper",
           "aurelia-dependency-injection",
