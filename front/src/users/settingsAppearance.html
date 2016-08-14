@@ -3,7 +3,7 @@
     <div class="row">
         <div class="container" style="width: 600px;">
           <h1 class="text-center" style="margin-bottom: 35px;" >Appearance: </h1>
-          <div id="mobilePhone" class="form-group">
+          <div id="theme" class="form-group">
               <div class="row">
                 <div class="col-lg-3">
                   <label for="message-text" class="control-label">Theme:</label>
@@ -35,6 +35,42 @@
                         </div>
                       </div>
                       <input type="submit" style="display: none" click.trigger="saveTheme(selectedTheme)" value="Submit">
+                  </div>
+                </form>
+              </div>
+            </div>
+            <div id="layout" class="form-group">
+              <div class="row">
+                <div class="col-lg-3">
+                  <label for="message-text" class="control-label">Layout:</label>
+                </div>
+                <div class="col-lg-7 float-right">
+                  <a href="#" click.trigger="displayChangeLayout()" bootstrap-tooltip data-toggle="tooltip" data-placement="left" 
+                  title="Change the layout of how messages load'">
+                    <icon class="fa fa-braille" aria-hidden="true"></icon>
+                    <span>Change your current layout.</span>
+                  </a>
+                </div>
+              </div>
+              <div show.bind="changingLayout == true" id="changeLayout">
+                <form>
+                  <div class="form-group">
+                      <div class="col-sm-12">
+                        <select value.bind="selectedLayout" class="big-drop">
+                          <option repeat.for="layout of layouts" value.bind="layout.id">${layout.name}</option>
+                        </select>
+                      </div>
+                      <div class="col-sm-12">
+                       <div class="centered-50">
+                            <label class="control-label col-md-6" style="margin-top: 10px;"><a class=
+                            "btn btn-default btn-cancel" style="width: 100%" click.trigger="cancel('layout')"><i class="fa fa-cancel"></i>
+                            cancel</a></label>
+                            <label class="control-label col-md-6" style="float:right; margin-top: 10px;"><a class=
+                            "btn btn-default btn-save" style="width: 100%" click.trigger="saveLayout(selectedLayout)"><i class="fa fa-lock"></i>
+                            save</a></label>
+                        </div>
+                      </div>
+                      <input type="submit" style="display: none" click.trigger="saveLayout(selectedLayout)" value="Submit">
                   </div>
                 </form>
               </div>

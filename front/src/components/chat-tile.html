@@ -1,6 +1,7 @@
 <template>
     <require from="./limit-to"></require>
-    <div repeat.for="chat of chats | limitTo:maximumChats" class="animate-chat" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'col-xs-2 col-md-1' :
+    ${layout.maximumChats} - MaximumChats
+    <div repeat.for="chat of chats | limitTo:layout.maximumChats" class="animate-chat" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'col-xs-2 col-md-1' :
                                                                      chatsOpen == 3  ? ' col-lg-4 col-md-6 col-sm-12' :
                                                                      chatsOpen == 2  ? ' col-lg-5 col-md-6 col-sm-12' :
                                                                      chatsOpen == 1  ? 'col-lg-9 col-md-9 col-sm-12' : ''">
