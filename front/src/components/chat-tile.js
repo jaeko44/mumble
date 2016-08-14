@@ -15,9 +15,10 @@ export class chatTile {
         this.api = api;
         this.ea = ea;
         this.account = profile.getProfile();
+        this.settings = profile.getSettings();
         this.chats = [];
         this.tempMessage = [];
-        this.maximumChats = 3;
+        this.layout = this.settings.layout;
         this.chatsActive = [
             {
                 id: 1,
@@ -59,6 +60,7 @@ export class chatTile {
 
         this.chatsOpen = this.chatsActive.length;
         ea.subscribe(ChatsUpdated, contact => this.displayChat(contact));
+        ea.subscribe('saveLayout', layout => this.updateLayout(layout));
         console.log('sending this chatsActive', this.chatsActive);
     }
     created() {
@@ -76,8 +78,8 @@ export class chatTile {
         }
     }
     updateNavbar() {
-        this.chatsOpen = 0;
         setTimeout(() => {
+            this.chatsOpen = 0;
             for (var id = 0; id < this.chatsActive.length; id++) {
                 var chatActive = this.chatsActive[id];
                 var chatProfile = this.profile.findChatId(chatActive.chatId);
@@ -161,22 +163,28 @@ export class chatTile {
         this.chatsActive[id - 1].closed = 'false';
         this.chatsOpen++;
     }
+    updateLayout(layout) {
+        this.layout = layout;
+        var purgedChat = this.chatsActive;
+        //We need to update the navbar to reflect the open chats.
+        while (this.layout.maximumChats < purgedChat.length) {
+            var chatClosing = purgedChat.pop(); 
+            this.ea.publish(new ChatClosed(chatClosing));
+        }
+    }
     displayChat(ChatsUpdated) {
-        toastr.success('We do have the Kapua suite available.', 'Turtle Bay Resort', {timeOut: 5000});
+        if (typeof found !== "undefined") {
+            return found;
+        }
         var last = this.chatsActive[this.chatsActive.length - 1]
         var chatId = ChatsUpdated.contact.chatId;
         var unreadMsgs = ChatsUpdated.contact.unreadMsgs;
         var purgedChat = this.chatsActive;
-        if (this.maximumChats <= purgedChat.length) {
+        if (this.layout.maximumChats <= purgedChat.length) {
             var chatClosing = purgedChat.pop(); 
-            console.log('last & chatClosing', last, chatClosing);
-            console.log('ChatClosed called from updateNavBar');
             this.ea.publish(new ChatClosed(last));
         }
         let found = purgedChat.filter(x => x.chatId === chatId)[0];
-        if (typeof found !== "undefined") {
-            return found;
-        }
         var chatActive = {
             id: 1,
             chatId: chatId,

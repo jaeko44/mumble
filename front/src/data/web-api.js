@@ -487,7 +487,12 @@ let activeChats = [
 
 let mySettings = {
     id: 1,
-    maxChats: 3,
+    layout: { 
+      id: 3,
+      name: 'Full Height, 3 Chats per row, 1 row',
+      rows: 1, 
+      maximumChats: 3
+    },
     navigation: 1,
     appName: 'mumble',
     theme: 'Blue',
@@ -500,9 +505,13 @@ export class WebAPI {
 
   constructor(ea) {
     ea.subscribe('saveTheme', theme => this.updateTheme(theme));
+    ea.subscribe('saveLayout', layout => this.updateLayout(layout));
   }
   updateTheme(theme) {
     mySettings.theme = theme;
+  }
+  updateLayout(layout) {
+    mySettings.layout = layout;
   }
   getContactList() {
     this.isRequesting = true;
