@@ -28,6 +28,14 @@
                     class.bind="page == 'appearance'  ? 'active' : ''"  href="#">
                         <i class="fa fa-eye"></i> Appearance <span class="onhover fa fa-chevron-right"></span>
                     </a>
+                    <a route-href="route: settings; params.bind: { page: 'channels' }"
+                    class.bind="page == 'channels'  ? 'active' : ''"  href="#">
+                        <i class="fa fa-hashtag"></i> Channels <span class="onhover fa fa-chevron-right"></span>
+                    </a>
+                    <a route-href="route: settings; params.bind: { page: 'contacts' }"
+                    class.bind="page == 'contacts'  ? 'active' : ''"  href="#">
+                        <i class="fa fa-envelope"></i> Contacts <span class="onhover fa fa-chevron-right"></span>
+                    </a>
                 </li>
             </ul>
         </div>

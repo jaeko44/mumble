@@ -84,7 +84,7 @@ input {
 body {
   background: #f7f7f7;
   color: #304456;
-  font-size: 16px;
+  font-size: 12px;
   font-family: BlinkMacSystemFont,-apple-system,"Helvetica Neue",Arial,sans-serif;
   font-weight: 300;
   overflow-x: hidden;
@@ -258,4 +258,15 @@ span.error {
   width: 7.5%;
   padding-left: 0.75%;
   padding-right: 0.75%;
+}
+.message-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+.fa-spin-hover:hover, button:hover > .fa-spin-hover {
+    -webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
+}
+.profile_details p {
+  font-size: 12px;
 }

@@ -13,7 +13,7 @@ let myAccount = {
     lastName: 'Philipos',
     email: 'jonathan@det.io',
     password: 'unencrypted',
-    phoneNumber: '867-5309',
+    phone: '867-5309',
     status: 'online',
     icon: 'face5.ico'
 }
@@ -22,10 +22,12 @@ let contacts = [
     id: getId(),
     chatId: 1,
     isOpen: false,
+    title: 'Back-End Engineer',
+    about: 'Been really busy lately!',
     firstName: 'John',
     lastName: 'Tolkien',
-    email: 'tolkien@inklings.com',
-    phoneNumber: '867-5309',
+    email: 'tolkien@mumble.com',
+    phone: '04-dont-call-me',
     status: 'online',
     unreadMsgs: 0,
     icon: 'face2.ico'
@@ -34,10 +36,12 @@ let contacts = [
     id: getId(),
     chatId: 2,
     isOpen: false,
+    title: 'Front-End Developer',
+    about: 'Progress, progress, we gotta finish this thing!',
     firstName: 'Borat',
     lastName: '',
-    email: 'borat@inklings.com',
-    phoneNumber: '867-5309',
+    email: 'borat@mumble.com',
+    phone: '0420-420-420',
     status: 'online',
     unreadMsgs: 4,
     icon: 'face.ico'
@@ -47,9 +51,11 @@ let contacts = [
     chatId: 3,
     isOpen: false,
     firstName: 'Owen',
+    title: 'Graphics Designer',
+    about: 'Why do you guys pay me anyways?',
     lastName: 'Barfield',
-    email: 'barfield@inklings.com',
-    phoneNumber: '867-5309',
+    email: 'barfield@mumble.com',
+    phone: '0410-410-410',
     status: 'offline',
     unreadMsgs: 0,
     icon: 'face3.ico'
@@ -58,10 +64,12 @@ let contacts = [
     id: getId(),
     chatId: 4,
     isOpen: false,
+    title: 'Sales Mgr.',
+    about: 'Every bug makes my job harder!',
     firstName: 'Charles',
     lastName: 'Williams',
-    email: 'williams@inklings.com',
-    phoneNumber: '867-5309',
+    email: 'williams@mumble.com',
+    phone: '0400-400-400',
     status: 'away',
     unreadMsgs: 0,
     icon: 'face4.ico'
@@ -70,10 +78,12 @@ let contacts = [
     id: getId(),
     chatId: 5,
     isOpen: false,
+    title: 'C.E.O',
+    about: 'I want mulla..',
     firstName: 'Roger',
     lastName: 'Green',
-    email: 'green@inklings.com',
-    phoneNumber: '867-5309',
+    email: 'green@mumble.com',
+    phone: '1800-MULLA',
     status: 'offline',
     unreadMsgs: 1,
     icon: 'face5.ico'
@@ -522,11 +532,15 @@ export class WebAPI {
               return {
                   id: x.id,
                   chatId: x.chatId,
+                  title: x.title,
                   firstName: x.firstName,
                   isOpen: x.isOpen,
                   lastName: x.lastName,
                   email: x.email,
                   status: x.status,
+                  phone: x.phone,
+                  about: x.about,
+                  icon: x.icon,
                   alert: 1,
                   unreadMsgs: x.unreadMsgs
                 };
@@ -572,6 +586,9 @@ export class WebAPI {
           this.isRequesting = false;
         }, latency);
     });
+  }
+  getChannels() {
+    return channels;
   }
    getMessageDetails(id) {
      let found = activeChats.filter(x => x.id === id)[0];

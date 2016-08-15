@@ -7,6 +7,7 @@ export class Profile {
         this.api = api;
         this.contacts = [];
         this.user = '';
+        this.channels = [];
     }
 
     getUser(userId) {
@@ -27,5 +28,9 @@ export class Profile {
     }
     setNavigationTo(navId) {
         this.api.saveNavigationState(navId);
+    }
+    getChannels() {
+        this.api.getChannelList().then(channels => this.channels = channels);
+        return this.channels;
     }
 }
