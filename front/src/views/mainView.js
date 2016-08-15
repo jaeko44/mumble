@@ -1,7 +1,7 @@
 import {Profile} from '../app/profile';
 import {inject} from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
-
+import * as toastr from "toastr";
 
 @inject(Profile, EventAggregator)
 export class mainView {

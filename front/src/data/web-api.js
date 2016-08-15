@@ -116,16 +116,17 @@ let activeChats = [
       {
         from: 2, //user who sent this message
         data: 'Hey bro, I really need your help on some stuff..', //message contents
-        date: '2012-04-23T18:25:43.511Z' //the date & time this was sent on
+        date: '1471129731354' //the timestamp utilizes JS Date.getTime() method which returns the number of milliseconds since 1970
       },
       {
         from: 1,
         data: 'What do you need?',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471125331354'
       },
       {
         from: 2,
         data: 'Im stuck on this issue, and cannot debug it.. Can you help?',
+        date: '1471129323354',
         attachments: [
           {
             type: 'image',
@@ -136,7 +137,7 @@ let activeChats = [
       {
         from: 1,
         data: 'That means that you are breaking the syntax rules, you need to check the documentation and follow their parameters.',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129723354'
       }
     ]
   },
@@ -148,42 +149,42 @@ let activeChats = [
       {
         from: 1,
         data: 'Haha dude, have you seen the project we had to review?', //message contents
-        date: '2012-04-23T18:25:43.511Z' //the date & time this was sent on
+        date: '1471121731354' //the date & time this was sent on
       },
       {
         from: 3,
         data: 'What about it??',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471122731354'
       },
       {
         from: 1,
         data: 'It\'s horrible! Ours is like 5 times better and is a real usecase!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471123731354'
       },
       {
         from: 3,
         data: 'Good! I hope our marks reflect that...',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129321354'
       },
       {
         from: 3,
         data: 'oi man i need help...',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129421354'
       },
       {
         from: 3,
         data: 'r u there???',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129521354'
       },
       {
         from: 3,
         data: 'seriously!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129611354'
       },
       {
         from: 3,
         data: 'hellloooo',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129811354'
       }
     ]
   },
@@ -195,42 +196,42 @@ let activeChats = [
       {
         from: 4,
         data: 'The weather is crazy! Can you pick me up!', //message contents
-        date: '2012-04-23T18:25:43.511Z' //the date & time this was sent on
+        date: '1471129731354' //the date & time this was sent on
       },
       {
         from: 1,
         data: 'My cars in the repair shop man, Im sorry. Maybe angela can pick you up.',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 4,
         data: 'She\'s stuck up! I doubt it',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'I can tell her for you if you want??.',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 4,
         data: 'Please do asap im waiting in the rain... this is horrible',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'ok one sec brb',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 4,
         data: 'what did sshe say???',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'shes on her way now, see not so bad.',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       }
     ]
   },
@@ -242,112 +243,112 @@ let activeChats = [
       {
         from: 5,
         data: 'lololol so bored wanna play league of legends??', //message contents
-        date: '2012-04-23T18:25:43.511Z' //the date & time this was sent on
+        date: '1471129731354' //the date & time this was sent on
       },
       {
         from: 1,
         data: 'yee lets go ranked!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 5,
         data: 'pls carry me ye?',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'im the man for that job :D',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'yee lets go ranked!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 5,
         data: 'pls carry me ye?',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'im the man for that job :D',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'yee lets go ranked!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 5,
         data: 'Im bored, lets do something?',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: '',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'yee lets go ranked!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 5,
         data: 'Im bored, lets do something?',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'ummmm....',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'How about a game of league??',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 5,
         data: 'Why the hell not?',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'Sounds like a plan, ranked or normals?',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'I wanna rank tbh',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 5,
         data: 'pls carry me ye?',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'im the man for that job :D',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'yee lets go ranked!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 5,
         data: 'now that\'s what im talking about!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'cool stuff',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       }
     ]
   },
@@ -359,22 +360,22 @@ let activeChats = [
       {
         from: 1,
         data: 'Oi do you have task4 ready so we can submit the assignment?',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 6,
         data: 'No you do it, I dont like working on this assignment',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'That\s unsportsmanlike man!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 6,
         data: 'IDC ! I got better things to worry about!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       }
     ]
   },
@@ -386,12 +387,12 @@ let activeChats = [
       {
         from: 5,
         data: 'Can someone give me the docs of the framework Aurelia we are using?!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'Here you go!',
-        date: '2012-04-23T18:25:43.511Z',
+        date: '1471129731354',
         attachments: [
           {
             type: 'web',
@@ -402,17 +403,17 @@ let activeChats = [
       {
         from: 4,
         data: 'I\'s im learning it quickly! :)',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 2,
         data: 'Yeah, and its simple and effective.',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 3,
         data: 'Dont forget the backend',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       }
     ]
   },
@@ -424,12 +425,12 @@ let activeChats = [
       {
         from: 5,
         data: 'Can someone link me with a good Ember tutorial?',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: '',
-        date: '2012-04-23T18:25:43.511Z',
+        date: '1471129731354',
         attachments: [
           {
             type: 'video',
@@ -440,12 +441,12 @@ let activeChats = [
       {
         from: 4,
         data: 'Very informative.',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 3,
         data: 'Who can link me with a borat movie!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       }
     ]
   },
@@ -457,12 +458,12 @@ let activeChats = [
       {
         from: 5,
         data: 'What does the current logo look like?',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 1,
         data: 'This is the temporary logo, just waiting on Morgan to get the logo done.',
-        date: '2012-04-23T18:25:43.511Z',
+        date: '1471129731354',
         attachments: [
           {
             type: 'image',
@@ -473,12 +474,12 @@ let activeChats = [
       {
         from: 3,
         data: 'I think we should just keep this tbh.',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       },
       {
         from: 2,
         data: 'Looks good enough, but any imrpovement is acceptable!',
-        date: '2012-04-23T18:25:43.511Z'
+        date: '1471129731354'
       }
     ]
   }
@@ -486,7 +487,12 @@ let activeChats = [
 
 let mySettings = {
     id: 1,
-    maxChats: 3,
+    layout: { 
+      id: 3,
+      name: 'Full Height, 3 Chats per row, 1 row',
+      rows: 1, 
+      maximumChats: 3
+    },
     navigation: 1,
     appName: 'mumble',
     theme: 'Blue',
@@ -499,9 +505,13 @@ export class WebAPI {
 
   constructor(ea) {
     ea.subscribe('saveTheme', theme => this.updateTheme(theme));
+    ea.subscribe('saveLayout', layout => this.updateLayout(layout));
   }
   updateTheme(theme) {
     mySettings.theme = theme;
+  }
+  updateLayout(layout) {
+    mySettings.layout = layout;
   }
   getContactList() {
     this.isRequesting = true;
