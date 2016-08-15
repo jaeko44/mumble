@@ -7,16 +7,46 @@ let id = 0;
 function getId() {
   return ++id;
 }
-let myAccount = {
-    id: getId(),
+let myAccount = { };
+
+let Accounts = [
+  {
+    id: 1,
     firstName: 'Jonathan',
     lastName: 'Philipos',
     email: 'jonathan@det.io',
     password: 'unencrypted',
     phone: '867-5309',
-    status: 'online',
-    icon: 'face5.ico'
-}
+    status: 'offline',
+    icon: 'face5.ico',
+    title: 'Front-End Engineer', 
+    about: 'Been overworking on this stuipid thing lately'
+  },
+  {
+    id: 2,
+    firstName: 'John',
+    lastName: 'Tolkien',
+    email: 'tolkien@mumble.com',
+    password: 'unencrypted',
+    phone: '867-5309',
+    status: 'offline',
+    icon: 'face2.ico',
+    title: 'Back-End Engineer',
+    about: 'Been really busy lately!'
+  },
+  {
+    id: 3,
+    firstName: 'Borat',
+    lastName: '',
+    email: 'borat@mumble.com',
+    password: 'unencrypted',
+    phone: '0420-420-420',
+    status: 'offline',
+    icon: 'face.ico',
+    title: 'Front-End Developer',
+    about: 'Progress, progress, we gotta finish this thing!'
+  },
+]
 let contacts = [
   {
     id: getId(),
@@ -625,6 +655,35 @@ export class WebAPI {
   }
   getProfile() {
     return myAccount;
+  }
+  getAccounts() {
+    return Accounts;
+  }
+  authenticate(email, password) {
+    let accountMatch = false;
+    let passwordMatch = false;
+    Accounts.forEach(function(Accounts) {
+      if (account.email == email) {
+        accountMatch = true;
+        if (account.password == password) {
+          passwordMatch = true;
+          this.ea.publish('loggedSuccesfully', account);
+          myAccount = account;
+        }
+      }
+    }, this);
+
+    if (accountMatch == true) {
+      if (passwordMatch == true) {
+        return 1;
+      }
+      else {
+        return 2;
+      }
+    }
+    else {
+      return 3;
+    }
   }
   saveContact(contact) {
     this.isRequesting = true;
