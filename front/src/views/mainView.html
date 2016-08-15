@@ -1,6 +1,6 @@
 <template>
   <div class.bind="navigation == 1 ? 'nav-sm' : 'nav-md'">
-    <div class="main-wrapper body ${theme}-theme">
+    <div class="main-wrapper body ${theme}-theme" class.bind="isPhone == true ? 'isPhone' : ''">
       <div class="main_container">
         <div slot="leftView">
           <compose view-model="./leftView" model.bind="page"></compose>

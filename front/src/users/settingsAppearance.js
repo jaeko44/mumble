@@ -19,6 +19,8 @@ export class settingsAppearance {
     this.selectedTheme = this.settings.theme;
     this.selectedLayout = this.settings.layout;
     console.log('Original Selected layout : ', this.selectedLayout);
+    this.isMobile = this.detectmob();
+    console.log('This device is a mobile:  ', this.isMobile);
     this.themes = ['Light', 'Dark', 'Golden', 'Bronze', 'Silver', 'Red', 'Green', 'Blue'];
     this.layouts = [
       {
@@ -64,7 +66,33 @@ export class settingsAppearance {
         chatsPerRow: 3
       }];
   }
-  
+
+  attached() {
+    if (this.isMobile == true) {
+      this.saveLayout(1);
+      this.showChangeLayout = false;
+      this.ea.publish('isPhone', true);
+    }
+  }
+
+ detectmob() { 
+  if( navigator.userAgent.match(/Android/i)
+  || navigator.userAgent.match(/webOS/i)
+  || navigator.userAgent.match(/iPhone/i)
+  || navigator.userAgent.match(/iPad/i)
+  || navigator.userAgent.match(/iPod/i)
+  || navigator.userAgent.match(/BlackBerry/i)
+  || navigator.userAgent.match(/Windows Phone/i)
+  ){
+      return true;
+    }
+  else if (window.innerWidth <= 800 && window.innerHeight <= 600) {
+    return true;
+  }
+  else {
+      return false;
+    }
+  }
   displayChangeTheme() {
     this.cancel('layout');
     this.showChangeTheme = false;

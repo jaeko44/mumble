@@ -111,15 +111,15 @@ export class chatTile {
         else if (minutesDifference >= 1 && minutesDifference <= hours) {
             return minutesDifference + ' minutes ago';
         }
-        else if (minutesDifference >= hours && minutesDifference / hours > 12) {
+        else if (minutesDifference >= hours && minutesDifference / hours > 12 && minutesDifference / hours < 24) {
             let hoursAgo = Math.floor(minutesDifference/hours);
             let remainder = minutesDifference % hours;
-            return hoursAgo + ' hours & ' + remainder + ' minutes ago';
+            return hoursAgo + ' hours ago';
         }
-        else if (minutesDifference / 60 > 24 && minutesDifference / 60 / 24 >= 1) {
+        else if (minutesDifference / hours > 24) {
             let daysAgo = Math.floor(minutesDifference/days);
             let remainder = minutesDifference % days;
-            return daysAgo + ' days & ' + remainder + ' hours ago';
+            return daysAgo + ' days ago';
         }
     }
     extractData(array) {

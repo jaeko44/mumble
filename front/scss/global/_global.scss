@@ -224,9 +224,27 @@ span.error {
 .layout-1, .layout-2, .layout-3 {
   .dashboard-widget-content {
     overflow-y: auto;
-    max-height: 66.75vh;
-    height: 66.75vh;
+    max-height: 67.5vh;
+    height: 67.5vh;
     padding-top: 9px;
+  }
+}
+.isPhone {
+  .nav_menu {
+    margin-bottom: 0px;
+  }
+  .right_col {
+    padding-top: 0px !important;
+  }
+  .layout-1 {
+    .dashboard-widget-content {
+      max-height: 64vh;
+      height: 64vh;
+      padding-top: 5px;
+    }
+  }
+  .x_panel {
+    padding-top: 5px;
   }
 }
 .layout-4, .layout-5, .layout-6 {
