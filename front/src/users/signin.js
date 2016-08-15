@@ -12,7 +12,6 @@ export class login {
     this.api = api;
     this.ea = ea;
     this.router = router;
-    console.log('the router ', router);
     this.profile = profile;
     this.showSpin = false;
     this.account = profile.getProfile();
@@ -25,6 +24,7 @@ export class login {
       this.showSpin = true;
       setTimeout(() => {
           var response = this.api.authenticate(this.email, this.password);
+          console.log('Response is : ', response);
           if (response == 1) {
               this.response = 'Authentication Successfull';
               location.assign('#/home');

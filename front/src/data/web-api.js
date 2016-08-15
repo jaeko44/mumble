@@ -545,6 +545,7 @@ export class WebAPI {
   isRequesting = false;
 
   constructor(ea) {
+    this.ea = ea;
     ea.subscribe('saveTheme', theme => this.updateTheme(theme));
     ea.subscribe('saveLayout', layout => this.updateLayout(layout));
   }
@@ -662,7 +663,7 @@ export class WebAPI {
   authenticate(email, password) {
     let accountMatch = false;
     let passwordMatch = false;
-    Accounts.forEach(function(Accounts) {
+    Accounts.forEach(function(account) {
       if (account.email == email) {
         accountMatch = true;
         if (account.password == password) {

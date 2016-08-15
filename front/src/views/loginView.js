@@ -1,8 +1,17 @@
 export class loginView {
     constructor() {
-        this.page = 'wtf';
+        this.page = '';
     }
-    activate(params) {
-        this.page = params.page;
+    activate(params, navigationInstruction) {
+        console.log('params: , navigationInstruction', params, navigationInstruction);
+        if (params.page) {
+            this.page = params.page;
+        }
+        else if (navigationInstruction.settings.page) {
+            this.page = navigationInstruction.settings.page;
+        }
+        if (!this.page) {
+            this.page = 'login';
+        }
     }
 }
