@@ -1,5 +1,6 @@
 <template>
     <require from="./limit-to"></require>
+    <require from="./bootstrap-tooltip"></require>
     <div repeat.for="chat of chats | limitTo:layout.maximumChats" class="animate-chat layout-${layout.id} chats-row-${layout.chatsPerRow}" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'chats-row-closed' : ''">
         <div css="height: ${chatsActive[chat.tmpId - 1].styles.height};" class="x_panel" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'closedchat' : '' " id="chat-${chat.tmpId}">
             <div class="x_title">
@@ -57,7 +58,8 @@
                                     </span>
                                     <span>
                                         <span class="message-title">${userDetails(message.from).firstName} ${userDetails(message.from).lastName}</span>
-                                        <span class="time">${compareTime(message.date)}</span>
+                                        ${dateStamps[chat.tmpId - 1][$index]}
+                                        <bootstrap-tooltip id="chat-${chat.tmpId}-message-${$index}" data-toggle="tooltip" data-placement="top" title="" class="time">${timeStamps[chat.tmpId - 1][$index]}</bootstrap-tooltip>
                                     </span>
                                     <span class="message">
                                         ${message.data}

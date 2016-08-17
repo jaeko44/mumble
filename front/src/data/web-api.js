@@ -7,7 +7,7 @@ let id = 0;
 function getId() {
   return ++id;
 }
-let myAccount = { };
+let myAccount = {};
 
 let Accounts = [
   {
@@ -19,7 +19,7 @@ let Accounts = [
     phone: '867-5309',
     status: 'offline',
     icon: 'face5.ico',
-    title: 'Front-End Engineer', 
+    title: 'Front-End Engineer',
     about: 'Been overworking on this stuipid thing lately'
   },
   {
@@ -125,7 +125,7 @@ let channels = [
     chatId: 6,
     unreadMsgs: 15,
     channelName: 'General',
-    users: [ 1, 2, 3, 4, 5 ],
+    users: [1, 2, 3, 4, 5],
     isOpen: false
   },
   {
@@ -133,7 +133,7 @@ let channels = [
     chatId: 7,
     unreadMsgs: 0,
     channelName: 'Development',
-    users: [ 1, 3, 4 ],
+    users: [1, 3, 4],
     isOpen: false,
   },
   {
@@ -141,7 +141,7 @@ let channels = [
     chatId: 8,
     unreadMsgs: 0,
     channelName: 'Design',
-    users: [ 1, 2, 5 ],
+    users: [1, 2, 5],
     isOpen: false,
   }
 ];
@@ -156,17 +156,17 @@ let activeChats = [
       {
         from: 2, //user who sent this message
         data: 'Hey bro, I really need your help on some stuff..', //message contents
-        date: '1471129731354' //the timestamp utilizes JS Date.getTime() method which returns the number of milliseconds since 1970
+        date: '', time: '1471129731354' //the timestamp utilizes JS Date.getTime() method which returns the number of milliseconds since 1970
       },
       {
         from: 1,
         data: 'What do you need?',
-        date: '1471125331354'
+        date: '', time: '1471125331354'
       },
       {
         from: 2,
         data: 'Im stuck on this issue, and cannot debug it.. Can you help?',
-        date: '1471129323354',
+        date: '', time: '1471129323354',
         attachments: [
           {
             type: 'image',
@@ -177,7 +177,7 @@ let activeChats = [
       {
         from: 1,
         data: 'That means that you are breaking the syntax rules, you need to check the documentation and follow their parameters.',
-        date: '1471129723354'
+        date: '', time: '1471129723354'
       }
     ]
   },
@@ -189,42 +189,42 @@ let activeChats = [
       {
         from: 1,
         data: 'Haha dude, have you seen the project we had to review?', //message contents
-        date: '1471121731354' //the date & time this was sent on
+        date: '', time: '1471121731354' //the date & time this was sent on
       },
       {
         from: 3,
         data: 'What about it??',
-        date: '1471122731354'
+        date: '', time: '1471122731354'
       },
       {
         from: 1,
         data: 'It\'s horrible! Ours is like 5 times better and is a real usecase!',
-        date: '1471123731354'
+        date: '', time: '1471123731354'
       },
       {
         from: 3,
         data: 'Good! I hope our marks reflect that...',
-        date: '1471129321354'
+        date: '', time: '1471129321354'
       },
       {
         from: 3,
         data: 'oi man i need help...',
-        date: '1471129421354'
+        date: '', time: '1471129421354'
       },
       {
         from: 3,
         data: 'r u there???',
-        date: '1471129521354'
+        date: '', time: '1471129521354'
       },
       {
         from: 3,
         data: 'seriously!',
-        date: '1471129611354'
+        date: '', time: '1471129611354'
       },
       {
         from: 3,
         data: 'hellloooo',
-        date: '1471129811354'
+        date: '', time: '1471129811354'
       }
     ]
   },
@@ -236,42 +236,42 @@ let activeChats = [
       {
         from: 4,
         data: 'The weather is crazy! Can you pick me up!', //message contents
-        date: '1471129731354' //the date & time this was sent on
+        date: '', time: '1471129731354' //the date & time this was sent on
       },
       {
         from: 1,
         data: 'My cars in the repair shop man, Im sorry. Maybe angela can pick you up.',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 4,
         data: 'She\'s stuck up! I doubt it',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'I can tell her for you if you want??.',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 4,
         data: 'Please do asap im waiting in the rain... this is horrible',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'ok one sec brb',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 4,
         data: 'what did sshe say???',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'shes on her way now, see not so bad.',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       }
     ]
   },
@@ -283,156 +283,156 @@ let activeChats = [
       {
         from: 5,
         data: 'lololol so bored wanna play league of legends??', //message contents
-        date: '1471129731354' //the date & time this was sent on
+        date: '', time: '1471129731354' //the date & time this was sent on
       },
       {
         from: 1,
         data: 'yee lets go ranked!',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 5,
         data: 'pls carry me ye?',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'im the man for that job :D',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'yee lets go ranked!',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 5,
         data: 'pls carry me ye?',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'im the man for that job :D',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'yee lets go ranked!',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 5,
         data: 'Im bored, lets do something?',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: '',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'yee lets go ranked!',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 5,
         data: 'Im bored, lets do something?',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'ummmm....',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'How about a game of league??',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 5,
         data: 'Why the hell not?',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'Sounds like a plan, ranked or normals?',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'I wanna rank tbh',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 5,
         data: 'pls carry me ye?',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'im the man for that job :D',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'yee lets go ranked!',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 5,
         data: 'now that\'s what im talking about!',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'cool stuff',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       }
     ]
   },
   {
     id: 5,
-    type: 'message', 
-    from: 6, 
-    messages: [ 
+    type: 'message',
+    from: 6,
+    messages: [
       {
         from: 1,
         data: 'Oi do you have task4 ready so we can submit the assignment?',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 6,
         data: 'No you do it, I dont like working on this assignment',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'That\s unsportsmanlike man!',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 6,
         data: 'IDC ! I got better things to worry about!',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       }
     ]
   },
   {
     id: 6,
-    type: 'channel', 
-    from: 1, 
-    messages: [ 
+    type: 'channel',
+    from: 1,
+    messages: [
       {
         from: 5,
         data: 'Can someone give me the docs of the framework Aurelia we are using?!',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'Here you go!',
-        date: '1471129731354',
+        date: '', time: '1471129731354',
         attachments: [
           {
             type: 'web',
@@ -443,34 +443,34 @@ let activeChats = [
       {
         from: 4,
         data: 'I\'s im learning it quickly! :)',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 2,
         data: 'Yeah, and its simple and effective.',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 3,
         data: 'Dont forget the backend',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       }
     ]
   },
-    {
+  {
     id: 7,
-    type: 'channel', 
-    from: 2, 
-    messages: [ 
+    type: 'channel',
+    from: 2,
+    messages: [
       {
         from: 5,
         data: 'Can someone link me with a good Ember tutorial?',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: '',
-        date: '1471129731354',
+        date: '', time: '1471129731354',
         attachments: [
           {
             type: 'video',
@@ -481,29 +481,29 @@ let activeChats = [
       {
         from: 4,
         data: 'Very informative.',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 3,
         data: 'Who can link me with a borat movie!',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       }
     ]
   },
-    {
+  {
     id: 8,
-    type: 'channel', 
-    from: 3, 
-    messages: [ 
+    type: 'channel',
+    from: 3,
+    messages: [
       {
         from: 5,
         data: 'What does the current logo look like?',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 1,
         data: 'This is the temporary logo, just waiting on Morgan to get the logo done.',
-        date: '1471129731354',
+        date: '', time: '1471129731354',
         attachments: [
           {
             type: 'image',
@@ -514,30 +514,30 @@ let activeChats = [
       {
         from: 3,
         data: 'I think we should just keep this tbh.',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       },
       {
         from: 2,
         data: 'Looks good enough, but any imrpovement is acceptable!',
-        date: '1471129731354'
+        date: '', time: '1471129731354'
       }
     ]
   }
 ]
 
 let mySettings = {
-    id: 1,
-    layout: { 
-      id: 3,
-      name: 'Full Height, 3 Chats per row, 1 row',
-      rows: 1, 
-      maximumChats: 3,
-      chatsPerRow: 3
-    },
-    navigation: 1,
-    appName: 'mumble',
-    theme: 'Blue',
-    mnumber: 0
+  id: 1,
+  layout: {
+    id: 3,
+    name: 'Full Height, 3 Chats per row, 1 row',
+    rows: 1,
+    maximumChats: 3,
+    chatsPerRow: 3
+  },
+  navigation: 1,
+  appName: 'mumble',
+  theme: 'Blue',
+  mnumber: 0
 }
 
 @inject(EventAggregator)
@@ -559,72 +559,72 @@ export class WebAPI {
     this.isRequesting = true;
     return new Promise(resolve => {
       setTimeout(() => {
-          let results = contacts.map(x => {
-              return {
-                  id: x.id,
-                  chatId: x.chatId,
-                  title: x.title,
-                  firstName: x.firstName,
-                  isOpen: x.isOpen,
-                  lastName: x.lastName,
-                  email: x.email,
-                  status: x.status,
-                  phone: x.phone,
-                  about: x.about,
-                  icon: x.icon,
-                  alert: 1,
-                  unreadMsgs: x.unreadMsgs
-                };
-            });
-          resolve(results);
-          this.isRequesting = false;
-        }, latency);
+        let results = contacts.map(x => {
+          return {
+            id: x.id,
+            chatId: x.chatId,
+            title: x.title,
+            firstName: x.firstName,
+            isOpen: x.isOpen,
+            lastName: x.lastName,
+            email: x.email,
+            status: x.status,
+            phone: x.phone,
+            about: x.about,
+            icon: x.icon,
+            alert: 1,
+            unreadMsgs: x.unreadMsgs
+          };
+        });
+        resolve(results);
+        this.isRequesting = false;
+      }, latency);
     });
   }
   getMsgs() {
     this.isRequesting = true;
     return new Promise(resolve => {
       setTimeout(() => {
-          let results = activeChats.map(x => {
-              return {
-                  id: x.id,
-                  chatId: x.chatId,
-                  type: x.type,
-                  from: x.from,
-                  messages: x.messages
-                };
-            });
-          resolve(results);
-          this.isRequesting = false;
-        }, latency);
+        let results = activeChats.map(x => {
+          return {
+            id: x.id,
+            chatId: x.chatId,
+            type: x.type,
+            from: x.from,
+            messages: x.messages
+          };
+        });
+        resolve(results);
+        this.isRequesting = false;
+      }, latency);
     });
   }
   getChannelList() {
     this.isRequesting = true;
     return new Promise(resolve => {
       setTimeout(() => {
-          let results = channels.map(x => {
-              return {
-                  id: x.id,
-                  chatId: x.chatId,
-                  isOpen: x.isOpen,
-                  unreadMsgs: x.unreadMsgs,
-                  channelName: x.channelName,
-                  users: x.users
-                };
-            });
-          resolve(results);
-          this.isRequesting = false;
-        }, latency);
+        let results = channels.map(x => {
+          return {
+            id: x.id,
+            chatId: x.chatId,
+            isOpen: x.isOpen,
+            unreadMsgs: x.unreadMsgs,
+            channelName: x.channelName,
+            users: x.users
+          };
+        });
+        resolve(results);
+        this.isRequesting = false;
+      }, latency);
     });
   }
   getChannels() {
     return channels;
   }
-   getMessageDetails(id) {
-     let found = activeChats.filter(x => x.id === id)[0];
-     return found;
-   }
+  getMessageDetails(id) {
+    let found = activeChats.filter(x => x.id === id)[0];
+    return found;
+  }
   getContactDetails(id) {
     let found = contacts.filter(x => x.id === id)[0];
     return found;
@@ -663,7 +663,7 @@ export class WebAPI {
   authenticate(email, password) {
     let accountMatch = false;
     let passwordMatch = false;
-    Accounts.forEach(function(account) {
+    Accounts.forEach(function (account) {
       if (account.email == email) {
         accountMatch = true;
         if (account.password == password) {
@@ -689,24 +689,24 @@ export class WebAPI {
   saveContact(contact) {
     this.isRequesting = true;
     return new Promise(resolve => {
-        setTimeout(() => {
-            let instance = JSON.parse(JSON.stringify(contact));
-            let found = contacts.filter(x => x.id == contact.id)[0];
+      setTimeout(() => {
+        let instance = JSON.parse(JSON.stringify(contact));
+        let found = contacts.filter(x => x.id == contact.id)[0];
 
-            if (found) {
-                let index = contacts.indexOf(found);
-                contacts[index] = instance;
-              } else {
-                instance.id = getId();
-                contacts.push(instance);
-              }
+        if (found) {
+          let index = contacts.indexOf(found);
+          contacts[index] = instance;
+        } else {
+          instance.id = getId();
+          contacts.push(instance);
+        }
 
-            this.isRequesting = false;
-            resolve(instance);
-          }, latency);
-      });
+        this.isRequesting = false;
+        resolve(instance);
+      }, latency);
+    });
   }
-  
+
   getSettings() {
     return mySettings;
   }
@@ -714,19 +714,19 @@ export class WebAPI {
   saveSettings(settings) {
     this.isRequesting = true;
     return new Promise(resolve => {
-        setTimeout(() => {
-            let instance = JSON.parse(JSON.stringify(settings));
-            mySettings = instance;
-            this.isRequesting = false;
-            resolve(instance);
-          }, latency);
-      });
+      setTimeout(() => {
+        let instance = JSON.parse(JSON.stringify(settings));
+        mySettings = instance;
+        this.isRequesting = false;
+        resolve(instance);
+      }, latency);
+    });
   }
 
   getNavigationState() {
-      return mySettings.navigation;
+    return mySettings.navigation;
   }
   saveNavigationState(navId) {
-      mySettings.navigation = navId;
+    mySettings.navigation = navId;
   }
 }

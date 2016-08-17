@@ -18,6 +18,8 @@ export class chatTile {
         this.settings = profile.getSettings();
         this.chats = [];
         this.tempMessage = [];
+        this.timeStamps = [[], [], [], [], [], []];
+        this.dateStamps = [[], [], [], [], [], []];
         this.layout = this.settings.layout;
         this.chatsActive = [
             {
@@ -74,6 +76,8 @@ export class chatTile {
         this.updateNavbar();
     }
     attached() {
+        this.updateTimeStamps();
+        this.timeStampsLoop();
         for (var id = 1; id <= this.chatsActive.length; id++) {
             var dropZoneEl = "myDropZone-" + id;
             var dropzoneUpload = document.getElementById("myDropZone-" + id);
@@ -96,40 +100,101 @@ export class chatTile {
             }
         }, 1000);
     }
-    compareTime(time) {
+    // compareTime(time) {
+    //     var d = new Date();
+    //     var currTime = d.getTime();
+    //     var timeDifference = currTime - time;
+    //     var minutes = 1000 * 60;
+    //     var hours = 60;
+    //     var days = hours * 24;
+    //     var years = days * 365;
+    //     var minutesDifference = Math.round(timeDifference / minutes);
+    //     if (minutesDifference <= 1) {
+    //         return 'now';
+    //     }
+    //     else if (minutesDifference >= 1 && minutesDifference <= hours) {
+    //         return minutesDifference + ' minutes ago';
+    //     }
+    //     else if (minutesDifference >= hours && minutesDifference / hours > 12 && minutesDifference / hours < 24) {
+    //         let hoursAgo = Math.floor(minutesDifference/hours);
+    //         let remainder = minutesDifference % hours;
+    //         return hoursAgo + ' hours ago';
+    //     }
+    //     else if (minutesDifference / hours > 24) {
+    //         let daysAgo = Math.floor(minutesDifference/days);
+    //         let remainder = minutesDifference % days;
+    //         return daysAgo + ' days ago';
+    //     }
+    // }
+    timeStampsLoop() { //Create a 60 second loop to update all timestamps.
+        console.log('Started update timestamps');
+        setInterval(() => {
+            this.chats.forEach(function(chat) {
+                for (var index = 0; index < chat.messages.length; index++) {
+                    this.updateTimeStamp(chat.tmpId - 1, index);
+                }
+            }, this);
+        }, 60000);
+    }
+    updateTimeStamps() { //One time update (when the page loads)
+        this.chats.forEach(function(chat) {
+            for (var index = 0; index < chat.messages.length; index++) {
+                this.updateTimeStamp(chat.tmpId - 1, index);
+            }
+        }, this);
+    }
+    updateTimeStamp(chatId, messageId) {
+        var chat = this.chats[chatId];
+        var message = chat.messages[messageId];
         var d = new Date();
         var currTime = d.getTime();
-        var timeDifference = currTime - time;
+        var compTime = new Date(+message.time);
+        var date = compTime.toLocaleString();
+        var seconds = compTime.getSeconds();
+        var timeDifference = currTime - message.time;
         var minutes = 1000 * 60;
         var hours = 60;
         var days = hours * 24;
         var years = days * 365;
         var minutesDifference = Math.round(timeDifference / minutes);
         if (minutesDifference <= 1) {
-            return 'now';
+            this.timeStamps[chat.tmpId - 1][messageId] = 'now';
         }
         else if (minutesDifference >= 1 && minutesDifference <= hours) {
-            return minutesDifference + ' minutes ago';
+            this.timeStamps[chat.tmpId - 1][messageId] = minutesDifference + ' minutes ago';
         }
         else if (minutesDifference >= hours && minutesDifference / hours > 12 && minutesDifference / hours < 24) {
-            let hoursAgo = Math.floor(minutesDifference/hours);
+            let hoursAgo = Math.floor(minutesDifference / hours);
             let remainder = minutesDifference % hours;
-            return hoursAgo + ' hours ago';
+            this.timeStamps[chat.tmpId - 1][messageId] = hoursAgo + ' hours ago';
         }
         else if (minutesDifference / hours > 24) {
-            let daysAgo = Math.floor(minutesDifference/days);
+            let daysAgo = Math.floor(minutesDifference / days);
             let remainder = minutesDifference % days;
-            return daysAgo + ' days ago';
+            this.timeStamps[chat.tmpId - 1][messageId] = daysAgo + ' days ago';
         }
+        var timeSent = this.timeStamps[chat.tmpId - 1][messageId];
+        if (timeSent == 'undefined') {
+            console.log('Undefined timestamp: ', message);
+        }
+        this.dateStamps[chat.tmpId - 1][messageId] = date;
+        let timeStampId = "chat-" + chat.tmpId + "-message-" + messageId;
+        let timeStampEl = document.getElementById(timeStampId);
+        timeStampEl.innerHTML = timeSent;
+        timeStampEl.setAttribute('title', date);
+        $(timeStampEl).tooltip('show').tooltip('hide');
+        console.log(this.chats);
+        console.log(this.timeStamps);
     }
     extractData(array) {
         var tempData = [];
-        for (let id = 0; id < array.length; id++) { 
+        for (let id = 0; id < array.length; id++) {
             var tempMsg = this.messageDetailschatId(array[id].chatId);
             tempMsg.chatId = array[id].chatId;
             tempMsg.tmpId = id + 1;
             tempData.push(tempMsg);
         }
+        console.log('This chats = ', tempData);
         return tempData;
     }
 
@@ -172,7 +237,7 @@ export class chatTile {
         var purgedChat = this.chatsActive;
         //We need to update the navbar to reflect the open chats.
         while (this.layout.maximumChats < purgedChat.length) {
-            var chatClosing = purgedChat.pop(); 
+            var chatClosing = purgedChat.pop();
             this.ea.publish(new ChatClosed(chatClosing));
         }
     }
@@ -185,7 +250,7 @@ export class chatTile {
         var unreadMsgs = ChatsUpdated.contact.unreadMsgs;
         var purgedChat = this.chatsActive;
         if (this.layout.maximumChats <= purgedChat.length) {
-            var chatClosing = purgedChat.pop(); 
+            var chatClosing = purgedChat.pop();
             this.ea.publish(new ChatClosed(last));
         }
         let found = purgedChat.filter(x => x.chatId === chatId)[0];
@@ -196,7 +261,7 @@ export class chatTile {
             unreadMsgs: unreadMsgs,
             cooldown: 'false',
             closed: 'false',
-            styles : {
+            styles: {
                 height: '100%'
             }
         }
@@ -208,22 +273,22 @@ export class chatTile {
         this.chats = this.extractData(purgedChat);
         console.log('ChatOpened called from displaychat');
         this.ea.publish(new ChatOpened(ChatsUpdated.contact));
-        setTimeout(function (){
-            let contentId = "chat-content-" + 1;
+        setTimeout(function () {
+            let contentId = "#chat-content-" + 1;
             let contentEl = document.getElementById(contentId);
-            $('#' + contentId ).animate({ scrollTop: contentEl.scrollHeight }, 50);
+            $(contentId).animate({ scrollTop: contentEl.scrollHeight }, 50);
             //contentEl.scrollTop = contentEl.scrollHeight;
         }, 30);
         setTimeout(function () {
             if (unreadMsgs >= 1) {
-                purgedChat[0].cooldown = true;            
+                purgedChat[0].cooldown = true;
             }
         }, 1000);
         this.chatsActive = purgedChat;
         setTimeout(function () {
             if (unreadMsgs >= 1) {
                 purgedChat[0].unreadMsgs = 0;
-                purgedChat[0].cooldown = false;            
+                purgedChat[0].cooldown = false;
             }
         }, 7000);
         this.chatsActive = purgedChat;
@@ -270,17 +335,21 @@ export class chatTile {
             this.message = {
                 data: this.tempMessage[id],
                 from: 1,
-                date: timeNow,
+                date: '',
+                time: timeNow
             }
         }
+        let msgId = this.chats[id - 1].messages.length;
         this.chats[id - 1].messages.push(this.message);
         this.tempMessage[id] = '';
         let inputId = "chat-input-" + id;
         let inputEl = document.getElementById(inputId).value = '';
-        setTimeout(function (){
+        var _this = this;
+        setTimeout(function () {
             let contentId = "chat-content-" + id;
             let contentEl = document.getElementById(contentId);
-            $('#' + contentId ).animate({ scrollTop: contentEl.scrollHeight }, 300);
+            $('#' + contentId).animate({ scrollTop: contentEl.scrollHeight }, 300);
+            _this.updateTimeStamp(id - 1, msgId);
         }, 30);
     }
 }
