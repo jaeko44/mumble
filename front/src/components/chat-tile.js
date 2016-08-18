@@ -28,7 +28,7 @@ export class chatTile {
                 chatId: 1,
                 chatType: 'message',
                 isOpen: true,
-                contentId: 0,
+                unreadMsgs: 0,
                 cooldown: false,
                 closed: 'false',
                 styles: {
@@ -112,10 +112,13 @@ export class chatTile {
                         let messageElementId = "chat-" + chat.tmpId + "-message-" + index;
                         let msgEl = document.getElementById(messageElementId);
                         var msgInView = this.isMsginView(msgEl);
-                        console.log('Message in view: ', msgInView);
                         if (msgInView === true) {
+                            if (_this.chatsActive[chatId].unreadMsgs > 0) {
                                 _this.chatsActive[chatId].unreadMsgs--;
-                                _this.chatsActive[chatId].cooldown = true;
+                            }
+                            console.log('-1 Unread Message is now: ', _this.chatsActive[chatId].unreadMsgs);
+                            _this.chatsActive[chatId].cooldown = true;
+                            _this.chats[chatId].messages[index].unread = 'cooling';
                             setTimeout(function () { 
                                 return function() { //return function() allows us to run this timeout for multiple messages. SINCE we are looping.
                                     _this.chats[chatId].messages[index].unread = false;
@@ -133,13 +136,7 @@ export class chatTile {
         setInterval(() => {
             this.chats.forEach(function (chat) {
                 for (var index = 0; index < chat.messages.length; index++) {
-                    let messageElementId = "chat-" + chat.tmpId + "-message-" + index;
-                    let msgEl = document.getElementById(messageElementId);
-                    var msgInView = this.isMsginView(msgEl);
-                    console.log('Message in view: ', msgInView);
-                    if (msgInView === true) {
-                        this.chatsActive[chatTempId - 1].unreadMsgs--;
-                    }
+                    this.updateTimeStamp(chat.tmpId - 1, index);
                 }
             }, this);
         }, 60000);
@@ -238,6 +235,12 @@ export class chatTile {
         this.chatsActive[id - 1].styles.height = '100%';
         this.chatsActive[id - 1].closed = 'false';
         this.chatsOpen++;
+    }
+    scroll(id) {
+        let contentId = "chat-content-" + id; //The chatbox ID.
+        let contentEl = document.getElementById(contentId);
+        this.chatsActive[id - 1].unreadMsgs = 0;
+        $('#' + contentId).animate({ scrollTop: contentEl.scrollHeight }, 300); //We scroll to the bottom whenever we send a message.
     }
     updateLayout(layout) {
         this.layout = layout;
@@ -346,25 +349,11 @@ export class chatTile {
             $('#' + contentId).animate({ scrollTop: contentEl.scrollHeight }, 300); //We scroll to the bottom whenever we send a message.
         }, 30);
     }
-    scrollDown(chatId) {
-        let contentId = "chat-content-" + id; //The chatbox ID.
-        let contentEl = document.getElementById(contentId);
-        $('#' + contentId).animate({ scrollTop: contentEl.scrollHeight }, 300); //We scroll to the bottom whenever we send a message.
-        setTimeout(function () {
-            if (this.chatsActive[id - 1].unreadMsgs >= 1) {
-                purgedChat[0].unreadMsgs = 0;
-                purgedChat[0].cooldown = false;
-            }
-        }, 7000);
-    }
     appendMessage(messageData, messageFrom, chatId) {
         if (this.messageData == '') {
             return;
         }
         var chatTempId = this.chats[chatId - 1].tmpId;
-        if (messageFrom > 1) { //Means that the message is coming from an external user.
-            // this.chatsActive[chatTempId].unreadMsgs++;
-        }
         var message = {};
         var d = new Date();
 
@@ -420,10 +409,16 @@ export class chatTile {
             let messageElementId = "chat-" + chatTempId + "-message-" + msgId;
             let msgEl = document.getElementById(messageElementId);
             var msgInView = _this.isMsginView(msgEl);
-            console.log('Message in view: ', msgInView);
+            if (msgInView === true) {
+                _this.scroll(chatTempId);
+            }
             if (msgInView === false) {
                 _this.chatsActive[chatTempId - 1].unreadMsgs++;
+                console.log("Message not in view - ", _this.chatsActive[chatTempId - 1].unreadMsgs)
+                console.log(_this.chatsActive);
                 _this.chats[chatTempId - 1].messages[msgId].unread = true;
+                toastr.options.preventDuplicates = true;
+                toastr.info('Received message from  ' + _this.userDetails(messageFrom).firstName);
             }
         }, 30);
     }
