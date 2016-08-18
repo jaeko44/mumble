@@ -17,6 +17,7 @@
                         ${userDetails(chat.from).firstName}
                         <small>${chat.type}</small>
                     </h2>
+                    <span class="badge bg-red unread-msgs">5 messages unread</span>
                     <ul class="nav navbar-right panel_toolbox">
                     <li class="dropdown">
                         <a aria-expanded="false" class="dropdown-toggle"
@@ -24,8 +25,8 @@
                         "button"><i class="fa fa-chevron-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a click.trigger="displayChat(5)" href="#"><i class="fa fa-meh-o"></i>
-                                WORKING FUNCTION</a>
+                                <a click.trigger="appendMessage('received message', 2, chat.tmpId)" href="#"><i class="fa fa-meh-o"></i>
+                                EXAMPLE MESSAGE BACK</a>
                             </li>
                             <li>
                                 <a href="#"><i class="fa fa-paperclip"></i>

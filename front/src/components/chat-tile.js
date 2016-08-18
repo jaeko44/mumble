@@ -144,7 +144,7 @@ export class chatTile {
         }, this);
     }
     updateTimeStamp(chatId, messageId) {
-        var chat = this.chats[chatId];
+        var chat = this.chats[chatId];  
         var message = chat.messages[messageId];
         var d = new Date();
         var currTime = d.getTime();
@@ -297,17 +297,46 @@ export class chatTile {
         if (this.tempMessage[id] == '') {
             return;
         }
+        this.appendMessage(this.tempMessage[id], 1, id);
+        this.tempMessage[id] = '';
+        let inputId = "chat-input-" + id;
+        let inputEl = document.getElementById(inputId).value = '';
+        setTimeout(function () {
+            let contentId = "chat-content-" + id; //The chatbox ID.
+            let contentEl = document.getElementById(contentId);
+            $('#' + contentId).animate({ scrollTop: contentEl.scrollHeight }, 300); //We scroll to the bottom whenever we send a message.
+        }, 30);
+    }
+    scrollDown(chatId) {
+        let contentId = "chat-content-" + id; //The chatbox ID.
+        let contentEl = document.getElementById(contentId);
+        $('#' + contentId).animate({ scrollTop: contentEl.scrollHeight }, 300); //We scroll to the bottom whenever we send a message.
+        setTimeout(function () {
+            if (this.chatsActive[id - 1].unreadMsgs >= 1) {
+                purgedChat[0].unreadMsgs = 0;
+                purgedChat[0].cooldown = false;
+            }
+        }, 7000);
+    }
+    appendMessage(messageData, messageFrom, chatId) {
+        if (this.messageData == '') {
+            return;
+        }
+        if (messageFrom > 1) { //Means that the message is coming from an external user.
+            this.chatsActive[this.chats[chatId - 1].tmpId - 1].unreadMsgs++;
+        }
+        var message = {};
         var d = new Date();
         var timeNow = d.getTime();
-        let youtubeCom = this.tempMessage[id].indexOf('youtube.com/watch?v=');
-        let youtubeBe = this.tempMessage[id].indexOf('youtu.be/');
+        let youtubeCom = messageData.indexOf('youtube.com/watch?v=');
+        let youtubeBe = messageData.indexOf('youtu.be/');
         let youtubeId = '';
         if (youtubeCom >= 1) {
-            youtubeId = this.tempMessage[id].substring(youtubeCom + 31, youtubeCom + 20); //youtube.com/watch?v= is 20 characters, and the ID is another 11.
-            this.message = {
-                data: this.tempMessage[id],
-                from: 1,
-                date: 'now',
+            youtubeId = messageData.substring(youtubeCom + 31, youtubeCom + 20); //youtube.com/watch?v= is 20 characters, and the ID is another 11.
+            message = {
+                data: messageData,
+                from: messageFrom,
+                time: timeNow,
                 attachments: [
                     {
                         type: 'video',
@@ -317,12 +346,11 @@ export class chatTile {
             }
         }
         else if (this.youtubeBe >= 1) {
-            youtubeId = this.tempMessage[id].substring(this.youtubeBe + 20, this.youtubeBe + 9); //youtu.be/ is 9 characters, and the ID is another 11.
-            this.message = {
-                data: this.tempMessage[id],
-                from: 1,
-                date: 'now',
-                cooldown: false,
+            youtubeId = messageData.substring(this.youtubeBe + 20, this.youtubeBe + 9); //youtu.be/ is 9 characters, and the ID is another 11.
+            message = {
+                data: messageData,
+                from: messageFrom,
+                time: timeNow,
                 attachments: [
                     {
                         type: 'video',
@@ -332,24 +360,19 @@ export class chatTile {
             }
         }
         else {
-            this.message = {
-                data: this.tempMessage[id],
-                from: 1,
+            message = {
+                data: messageData,
+                from: messageFrom,
                 date: '',
                 time: timeNow
             }
         }
-        let msgId = this.chats[id - 1].messages.length;
-        this.chats[id - 1].messages.push(this.message);
-        this.tempMessage[id] = '';
-        let inputId = "chat-input-" + id;
-        let inputEl = document.getElementById(inputId).value = '';
+        let msgId = this.chats[chatId - 1].messages.length;
+        this.open(this.chats[chatId - 1].tmpId);
+        this.chats[chatId - 1].messages.push(message);
         var _this = this;
         setTimeout(function () {
-            let contentId = "chat-content-" + id;
-            let contentEl = document.getElementById(contentId);
-            $('#' + contentId).animate({ scrollTop: contentEl.scrollHeight }, 300);
-            _this.updateTimeStamp(id - 1, msgId);
+            _this.updateTimeStamp(chatId - 1, msgId);
         }, 30);
     }
 }
