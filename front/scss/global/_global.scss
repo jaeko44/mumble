@@ -84,7 +84,7 @@ input {
 body {
   background: #f7f7f7;
   color: #304456;
-  font-size: 16px;
+  font-size: 12px;
   font-family: BlinkMacSystemFont,-apple-system,"Helvetica Neue",Arial,sans-serif;
   font-weight: 300;
   overflow-x: hidden;
@@ -220,4 +220,80 @@ span.error {
     background: rgb(247, 247, 247);
     padding-top: 5px;
     padding-bottom: 0px;
+}
+.layout-1, .layout-2, .layout-3 {
+  .dashboard-widget-content {
+    overflow-y: auto;
+    max-height: 67.5vh;
+    height: 67.5vh;
+    padding-top: 9px;
+  }
+}
+.isPhone {
+  .nav_menu {
+    margin-bottom: 0px;
+  }
+  .right_col {
+    padding-top: 0px !important;
+  }
+  .layout-1 {
+    .dashboard-widget-content {
+      max-height: 64vh;
+      height: 64vh;
+      padding-top: 5px;
+    }
+  }
+  .x_panel {
+    padding-top: 5px;
+  }
+}
+.layout-4, .layout-5, .layout-6 {
+  .dashboard-widget-content {
+    overflow-y: auto;
+    max-height: 27.5vh;
+    height: 27.5vh;
+    padding-top: 9px;
+  }
+}
+.chats-row-1 {
+  display: inline;
+  width: 100%;
+}
+.chats-row-2 {
+  display: inline-block;
+  width: 50%;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+.chats-row-3 {
+  display: inline-block;
+  width: 33%;
+  padding-left: 0.75%;
+  padding-right: 0.75%;
+}
+.chats-row-closed {
+  display: inline-block;
+  width: 7.5%;
+  padding-left: 0.75%;
+  padding-right: 0.75%;
+}
+.message-title {
+  font-size: 12px;
+  font-weight: 600;
+}
+.fa-spin-hover:hover, button:hover > .fa-spin-hover {
+    -webkit-animation: fa-spin 2s infinite linear;
+    animation: fa-spin 2s infinite linear;
+}
+.profile_details p {
+  font-size: 12px;
+}
+.unread-msgs {
+    margin-left: 10%;
+    line-height: 19px;
+    color: white !important;
+}
+a.badge:hover.unread-msgs, a.badge:focus.unread-msgs {
+    transition: 1s all ease;
+    background-color: #e8887e !important;
 }

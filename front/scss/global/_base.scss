@@ -23,8 +23,8 @@
     visibility: hidden;
   }
   .main-wrapper.body .right_col {
-    padding: 10px 20px;
-	height: 90vh;
+    padding: 0px 20px;
+    height: 100vh;
     overflow: auto;
     margin-left: 70px;
     z-index: 2;
@@ -1597,9 +1597,9 @@ ul.msg_list li {
     }
     .message {
       margin-left: 50px;
-	  width: 90%;
+      width: 87.5%;
       display: block !important;
-      font-size: 11px;
+      font-size: 13px;
     }
   }
 }

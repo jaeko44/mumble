@@ -10,7 +10,9 @@ export class mainView {
     this.ea = ea;
     ea.subscribe('saveTheme', theme => this.updateTheme(theme));
     ea.subscribe('updateTheme', theme => this.updateTheme(theme));
+    ea.subscribe('isPhone', isPhone => this.updatePhoneClass(isPhone));
     this.profile = profile;
+    this.isPhone = false;
     this.account = profile.getProfile();
     this.settings = profile.getSettings();
     this.appName = this.settings.appName;
@@ -18,6 +20,9 @@ export class mainView {
   }
   updateTheme(theme) {
     this.theme = theme;
+  }
+  updatePhoneClass(isPhone) {
+    this.isPhone = isPhone;
   }
   activate(params, navigationInstruction) {
       this.route = navigationInstruction;

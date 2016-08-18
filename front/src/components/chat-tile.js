@@ -18,10 +18,13 @@ export class chatTile {
         this.settings = profile.getSettings();
         this.chats = [];
         this.tempMessage = [];
+        this.timeStamps = [[], [], [], [], [], []];
+        this.dateStamps = [[], [], [], [], [], []];
         this.layout = this.settings.layout;
         this.chatsActive = [
             {
                 id: 1,
+                row: 1,
                 chatId: 1,
                 chatType: 'message',
                 isOpen: true,
@@ -34,6 +37,7 @@ export class chatTile {
             },
             {
                 id: 2,
+                row: 1,
                 chatId: 6,
                 chatType: 'channel',
                 isOpen: true,
@@ -46,6 +50,7 @@ export class chatTile {
             },
             {
                 id: 3,
+                row: 1,
                 chatId: 3,
                 chatType: 'message',
                 isOpen: true,
@@ -71,6 +76,9 @@ export class chatTile {
         this.updateNavbar();
     }
     attached() {
+        this.updateTimeStamps();
+        this.timeStampsLoop(); //Updates timestamps every so often (60 seconds)
+        this.inViewMessagesLoop(); //Checks if messages are in view every so often (2 seconds).
         for (var id = 1; id <= this.chatsActive.length; id++) {
             var dropZoneEl = "myDropZone-" + id;
             var dropzoneUpload = document.getElementById("myDropZone-" + id);
@@ -93,40 +101,105 @@ export class chatTile {
             }
         }, 1000);
     }
-    compareTime(time) {
+    inViewMessagesLoop() {
+        console.log('Started update unread messages');
+        setInterval(() => {
+            this.chats.forEach(function (chat) {
+                for (var index = 0; index < chat.messages.length; index++) {
+                    var chatId = chat.tmpId - 1;
+                    if (chat.messages[index].unread == true) {
+                        var _this = this;
+                        let messageElementId = "chat-" + chat.tmpId + "-message-" + index;
+                        let msgEl = document.getElementById(messageElementId);
+                        var msgInView = this.isMsginView(msgEl);
+                        if (msgInView === true) {
+                            if (_this.chatsActive[chatId].unreadMsgs > 0) {
+                                _this.chatsActive[chatId].unreadMsgs--;
+                            }
+                            console.log('-1 Unread Message is now: ', _this.chatsActive[chatId].unreadMsgs);
+                            _this.chatsActive[chatId].cooldown = true;
+                            _this.chats[chatId].messages[index].unread = 'cooling';
+                            setTimeout(function () { 
+                                return function() { //return function() allows us to run this timeout for multiple messages. SINCE we are looping.
+                                    _this.chats[chatId].messages[index].unread = false;
+                                    _this.chatsActive[chatId].cooldown = false;
+                                }
+                            }, 5000);
+                        }
+                    }
+                }
+            }, this);
+        }, 1000);
+    }
+    timeStampsLoop() { //Create a 60 second loop to update all timestamps.
+        console.log('Started update timestamps');
+        setInterval(() => {
+            this.chats.forEach(function (chat) {
+                for (var index = 0; index < chat.messages.length; index++) {
+                    this.updateTimeStamp(chat.tmpId - 1, index);
+                }
+            }, this);
+        }, 60000);
+    }
+    updateTimeStamps() { //One time update (when the page loads)
+        this.chats.forEach(function (chat) {
+            for (var index = 0; index < chat.messages.length; index++) {
+                this.updateTimeStamp(chat.tmpId - 1, index);
+            }
+        }, this);
+    }
+    updateTimeStamp(chatId, messageId) {
+        var chat = this.chats[chatId];
+        var message = chat.messages[messageId];
         var d = new Date();
         var currTime = d.getTime();
-        var timeDifference = currTime - time;
+        var compTime = new Date(+message.time);
+        var date = compTime.toLocaleString();
+        var seconds = compTime.getSeconds();
+        var timeDifference = currTime - message.time;
         var minutes = 1000 * 60;
         var hours = 60;
         var days = hours * 24;
         var years = days * 365;
         var minutesDifference = Math.round(timeDifference / minutes);
         if (minutesDifference <= 1) {
-            return 'now';
+            this.timeStamps[chat.tmpId - 1][messageId] = 'now';
         }
         else if (minutesDifference >= 1 && minutesDifference <= hours) {
-            return minutesDifference + ' minutes ago';
+            this.timeStamps[chat.tmpId - 1][messageId] = minutesDifference + ' minutes ago';
         }
-        else if (minutesDifference >= hours && minutesDifference / hours > 12) {
-            let hoursAgo = Math.floor(minutesDifference/hours);
+        else if (minutesDifference >= hours && minutesDifference / hours > 12 && minutesDifference / hours < 24) {
+            let hoursAgo = Math.floor(minutesDifference / hours);
             let remainder = minutesDifference % hours;
-            return hoursAgo + ' hours & ' + remainder + ' minutes ago';
+            this.timeStamps[chat.tmpId - 1][messageId] = hoursAgo + ' hours ago';
         }
-        else if (minutesDifference / 60 > 24 && minutesDifference / 60 / 24 >= 1) {
-            let daysAgo = Math.floor(minutesDifference/days);
+        else if (minutesDifference / hours > 24) {
+            let daysAgo = Math.floor(minutesDifference / days);
             let remainder = minutesDifference % days;
-            return daysAgo + ' days & ' + remainder + ' hours ago';
+            this.timeStamps[chat.tmpId - 1][messageId] = daysAgo + ' days ago';
         }
+        var timeSent = this.timeStamps[chat.tmpId - 1][messageId];
+        if (timeSent == 'undefined') {
+            console.log('Undefined timestamp: ', message);
+        }
+        this.dateStamps[chat.tmpId - 1][messageId] = date;
+        let timeStampId = "chat-" + chat.tmpId + "-timestamp-" + messageId;
+        let timeStampEl = document.getElementById(timeStampId);
+        timeStampEl.innerHTML = timeSent;
+        timeStampEl.setAttribute('title', date);
+        $(timeStampEl).tooltip('show').tooltip('hide');
+        console.log(this.chats);
+        console.log(this.timeStamps);
     }
     extractData(array) {
         var tempData = [];
-        for (let id = 0; id < array.length; id++) { 
+        for (let id = 0; id < array.length; id++) {
             var tempMsg = this.messageDetailschatId(array[id].chatId);
             tempMsg.chatId = array[id].chatId;
             tempMsg.tmpId = id + 1;
             tempData.push(tempMsg);
         }
+        console.log('This chats = ', tempData);
         return tempData;
     }
 
@@ -163,35 +236,44 @@ export class chatTile {
         this.chatsActive[id - 1].closed = 'false';
         this.chatsOpen++;
     }
+    scroll(id) {
+        let contentId = "chat-content-" + id; //The chatbox ID.
+        let contentEl = document.getElementById(contentId);
+        this.chatsActive[id - 1].unreadMsgs = 0;
+        $('#' + contentId).animate({ scrollTop: contentEl.scrollHeight }, 300); //We scroll to the bottom whenever we send a message.
+    }
     updateLayout(layout) {
         this.layout = layout;
+        console.log('this layout: ', layout);
         var purgedChat = this.chatsActive;
         //We need to update the navbar to reflect the open chats.
         while (this.layout.maximumChats < purgedChat.length) {
-            var chatClosing = purgedChat.pop(); 
+            var chatClosing = purgedChat.pop();
             this.ea.publish(new ChatClosed(chatClosing));
         }
     }
     displayChat(ChatsUpdated) {
+        var _this = this;
+        var purgedChat = this.chatsActive;
+        let found = purgedChat.filter(x => x.chatId === chatId)[0];
         if (typeof found !== "undefined") {
             return found;
         }
         var last = this.chatsActive[this.chatsActive.length - 1]
         var chatId = ChatsUpdated.contact.chatId;
         var unreadMsgs = ChatsUpdated.contact.unreadMsgs;
-        var purgedChat = this.chatsActive;
         if (this.layout.maximumChats <= purgedChat.length) {
-            var chatClosing = purgedChat.pop(); 
+            var chatClosing = purgedChat.pop();
             this.ea.publish(new ChatClosed(last));
         }
-        let found = purgedChat.filter(x => x.chatId === chatId)[0];
+        var chatHeight = "100%";
         var chatActive = {
             id: 1,
             chatId: chatId,
             unreadMsgs: unreadMsgs,
             cooldown: 'false',
             closed: 'false',
-            styles : {
+            styles: {
                 height: '100%'
             }
         }
@@ -203,41 +285,89 @@ export class chatTile {
         this.chats = this.extractData(purgedChat);
         console.log('ChatOpened called from displaychat');
         this.ea.publish(new ChatOpened(ChatsUpdated.contact));
-        setTimeout(function (){
-            let contentId = "chat-content-" + 1;
+        setTimeout(function () {
+            let contentId = "chat-content-" + 1; //The chatbox ID.
             let contentEl = document.getElementById(contentId);
-            $('#' + contentId ).animate({ scrollTop: contentEl.scrollHeight }, 50);
+            $('#' + contentId).animate({ scrollTop: contentEl.scrollHeight }, 300); //We scroll to the bottom whenever we send a message.
+            _this.updateTimeStamps();
             //contentEl.scrollTop = contentEl.scrollHeight;
         }, 30);
         setTimeout(function () {
-            if (unreadMsgs >= 1) {
-                purgedChat[0].cooldown = true;            
+            return function() {
+                if (unreadMsgs >= 1) {
+                    purgedChat[0].cooldown = true;
+                }
+                if (purgedChat[1].unreadMsgs > 0) {
+                    purgedChat[1].unreadMsgs = 0;
+                    purgedChat[1].cooldown = false;
+                }
+                _this.chatsActive = purgedChat;
+                _this.chats = _this.extractData(purgedChat);
             }
         }, 1000);
-        this.chatsActive = purgedChat;
         setTimeout(function () {
-            if (unreadMsgs >= 1) {
-                purgedChat[0].unreadMsgs = 0;
-                purgedChat[0].cooldown = false;            
+            return function() {
+                if (unreadMsgs >= 1) {
+                    var messages = _this.chats[0].messages;
+                    for (var index = messages.length - unreadMsgs; index < messages.length; index++) {
+                        _this.chats[0].messages[index].unread = false; //we set all the unread messages to false.
+                    }
+                    purgedChat[0].unreadMsgs = 0;
+                    purgedChat[0].cooldown = false;
+                }
+                _this.chatsActive = purgedChat;
+                _this.chats = _this.extractData(purgedChat);
             }
-        }, 7000);
-        this.chatsActive = purgedChat;
+        }, 5000);
+    }
+    isMsginView(el) {
+        //special bonus for those using jQuery
+        if (typeof jQuery === "function" && el instanceof jQuery) {
+            el = el[0];
+        }
+
+        var rect = el.getBoundingClientRect();
+
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+        );
     }
     sendMessage(id) {
         if (this.tempMessage[id] == '') {
             return;
         }
+        this.appendMessage(this.tempMessage[id], 1, id);
+        this.tempMessage[id] = '';
+        let inputId = "chat-input-" + id;
+        let inputEl = document.getElementById(inputId).value = '';
+        setTimeout(function () {
+            let contentId = "chat-content-" + id; //The chatbox ID.
+            let contentEl = document.getElementById(contentId);
+            $('#' + contentId).animate({ scrollTop: contentEl.scrollHeight }, 300); //We scroll to the bottom whenever we send a message.
+        }, 30);
+    }
+    appendMessage(messageData, messageFrom, chatId) {
+        if (this.messageData == '') {
+            return;
+        }
+        var chatTempId = this.chats[chatId - 1].tmpId;
+        var message = {};
         var d = new Date();
+
         var timeNow = d.getTime();
-        let youtubeCom = this.tempMessage[id].indexOf('youtube.com/watch?v=');
-        let youtubeBe = this.tempMessage[id].indexOf('youtu.be/');
+        let youtubeCom = messageData.indexOf('youtube.com/watch?v=');
+        let youtubeBe = messageData.indexOf('youtu.be/');
         let youtubeId = '';
         if (youtubeCom >= 1) {
-            youtubeId = this.tempMessage[id].substring(youtubeCom + 31, youtubeCom + 20); //youtube.com/watch?v= is 20 characters, and the ID is another 11.
-            this.message = {
-                data: this.tempMessage[id],
-                from: 1,
-                date: 'now',
+            youtubeId = messageData.substring(youtubeCom + 31, youtubeCom + 20); //youtube.com/watch?v= is 20 characters, and the ID is another 11.
+            message = {
+                data: messageData,
+                from: messageFrom,
+                time: timeNow,
+                unread: false,
                 attachments: [
                     {
                         type: 'video',
@@ -247,12 +377,12 @@ export class chatTile {
             }
         }
         else if (this.youtubeBe >= 1) {
-            youtubeId = this.tempMessage[id].substring(this.youtubeBe + 20, this.youtubeBe + 9); //youtu.be/ is 9 characters, and the ID is another 11.
-            this.message = {
-                data: this.tempMessage[id],
-                from: 1,
-                date: 'now',
-                cooldown: false,
+            youtubeId = messageData.substring(this.youtubeBe + 20, this.youtubeBe + 9); //youtu.be/ is 9 characters, and the ID is another 11.
+            message = {
+                data: messageData,
+                from: messageFrom,
+                time: timeNow,
+                unread: false,
                 attachments: [
                     {
                         type: 'video',
@@ -262,20 +392,34 @@ export class chatTile {
             }
         }
         else {
-            this.message = {
-                data: this.tempMessage[id],
-                from: 1,
-                date: timeNow,
+            message = {
+                data: messageData,
+                from: messageFrom,
+                date: '',
+                time: timeNow,
+                unread: false
             }
         }
-        this.chats[id - 1].messages.push(this.message);
-        this.tempMessage[id] = '';
-        let inputId = "chat-input-" + id;
-        let inputEl = document.getElementById(inputId).value = '';
-        setTimeout(function (){
-            let contentId = "chat-content-" + id;
-            let contentEl = document.getElementById(contentId);
-            $('#' + contentId ).animate({ scrollTop: contentEl.scrollHeight }, 300);
+        let msgId = this.chats[chatId - 1].messages.length;
+        this.open(this.chats[chatId - 1].tmpId);
+        this.chats[chatId - 1].messages.push(message);
+        var _this = this;
+        setTimeout(function () {
+            _this.updateTimeStamp(chatId - 1, msgId);
+            let messageElementId = "chat-" + chatTempId + "-message-" + msgId;
+            let msgEl = document.getElementById(messageElementId);
+            var msgInView = _this.isMsginView(msgEl);
+            if (msgInView === true) {
+                _this.scroll(chatTempId);
+            }
+            if (msgInView === false) {
+                _this.chatsActive[chatTempId - 1].unreadMsgs++;
+                console.log("Message not in view - ", _this.chatsActive[chatTempId - 1].unreadMsgs)
+                console.log(_this.chatsActive);
+                _this.chats[chatTempId - 1].messages[msgId].unread = true;
+                toastr.options.preventDuplicates = true;
+                toastr.info('Received message from  ' + _this.userDetails(messageFrom).firstName);
+            }
         }, 30);
     }
 }

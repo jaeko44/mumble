@@ -1,0 +1,48 @@
+<template>
+  <require from="./filter"></require>
+  <div class="row">
+    <div class="container">
+      <h1>Contacts:</h1>
+      <div class="x_content">
+        <div class="row">
+          <div class="col-xs-6 col-xs-offset-3 text-center" style="margin-bottom: 15px;">
+            <input value.bind="searchTerm" type="text" class="form-control au-target" placeholder="Search..."></div>
+          <div class="clearfix"></div>
+          <div class="col-md-4 col-sm-4 col-xs-12 profile_details" repeat.for="contact of contacts | filter:searchTerm">
+            <div class="well profile_view">
+              <div class="col-sm-12">
+                <h4 class="brief"><i>${contact.title}</i></h4>
+                <div class="left col-xs-7">
+                  <h2 style="font-size: 22px;" >${contact.firstName} ${contact.lastName}</h2>
+                  <p><strong>About: </strong> ${contact.about}</p>
+                  <ul class="list-unstyled">
+                    <li><i class="fa fa-envelope"></i> Email: ${contact.email}</li>
+                    <li><i class="fa fa-phone"></i> Phone #: ${contact.phone}</li>
+                  </ul>
+                </div>
+                <div class="right col-xs-5 text-center">
+                  <img src="images/${contact.icon}" alt="" class="img-circle img-responsive">
+                </div>
+              </div>
+              <div class="col-xs-12 bottom text-center">
+                <div class="col-xs-12 col-sm-6 emphasis">
+                  <button type="button" class="btn btn-primary btn-xs">
+                                <i class="fa fa-envelope"> </i> Message
+                              </button>
+                  <button type="button" class="btn btn-success btn-xs"> 
+                                <i class="fa fa-user">
+                                </i> <i class="fa fa-comments-o"></i> </button>
+                </div>
+                <div class="col-xs-12 col-sm-6 emphasis">
+                  <button type="button" class="btn btn-primary btn-xs btn-cancel">
+                                <i class="fa fa-times fa-spin-hover"> </i> Delete
+                              </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
