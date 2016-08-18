@@ -17,7 +17,7 @@
                         ${userDetails(chat.from).firstName}
                         <small>${chat.type}</small>
                     </h2>
-                    <span class="badge bg-red unread-msgs">5 messages unread</span>
+                    <a show.bind="chatsActive[chat.tmpId - 1].unreadMsgs >= 1" class="badge bg-red unread-msgs">${chatsActive[chat.tmpId - 1].unreadMsgs} messages unread</a>
                     <ul class="nav navbar-right panel_toolbox">
                     <li class="dropdown">
                         <a aria-expanded="false" class="dropdown-toggle"
@@ -44,7 +44,6 @@
                     </li>
                 </ul>
                 </div>
-
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
@@ -59,7 +58,6 @@
                                     </span>
                                     <span>
                                         <span class="message-title">${userDetails(message.from).firstName} ${userDetails(message.from).lastName}</span>
-                                        ${dateStamps[chat.tmpId - 1][$index]}
                                         <bootstrap-tooltip id="chat-${chat.tmpId}-message-${$index}" data-toggle="tooltip" data-placement="top" title="" class="time">${timeStamps[chat.tmpId - 1][$index]}</bootstrap-tooltip>
                                     </span>
                                     <span class="message">

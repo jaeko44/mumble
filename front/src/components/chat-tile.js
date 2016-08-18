@@ -28,7 +28,7 @@ export class chatTile {
                 chatId: 1,
                 chatType: 'message',
                 isOpen: true,
-                unreadMsgs: 0,
+                contentId: 0,
                 cooldown: false,
                 closed: 'false',
                 styles: {
@@ -242,18 +242,19 @@ export class chatTile {
         }
     }
     displayChat(ChatsUpdated) {
+        var _this = this;
+        var purgedChat = this.chatsActive;
+        let found = purgedChat.filter(x => x.chatId === chatId)[0];
         if (typeof found !== "undefined") {
             return found;
         }
         var last = this.chatsActive[this.chatsActive.length - 1]
         var chatId = ChatsUpdated.contact.chatId;
         var unreadMsgs = ChatsUpdated.contact.unreadMsgs;
-        var purgedChat = this.chatsActive;
         if (this.layout.maximumChats <= purgedChat.length) {
             var chatClosing = purgedChat.pop();
             this.ea.publish(new ChatClosed(last));
         }
-        let found = purgedChat.filter(x => x.chatId === chatId)[0];
         var chatHeight = "100%";
         var chatActive = {
             id: 1,
@@ -274,24 +275,27 @@ export class chatTile {
         console.log('ChatOpened called from displaychat');
         this.ea.publish(new ChatOpened(ChatsUpdated.contact));
         setTimeout(function () {
-            let contentId = "#chat-content-" + 1;
+            let contentId = "chat-content-" + 1; //The chatbox ID.
             let contentEl = document.getElementById(contentId);
-            $(contentId).animate({ scrollTop: contentEl.scrollHeight }, 50);
+            $('#' + contentId).animate({ scrollTop: contentEl.scrollHeight }, 300); //We scroll to the bottom whenever we send a message.
+            _this.updateTimeStamps();
             //contentEl.scrollTop = contentEl.scrollHeight;
         }, 30);
         setTimeout(function () {
             if (unreadMsgs >= 1) {
                 purgedChat[0].cooldown = true;
             }
+            _this.chatsActive = purgedChat;
+            _this.chats = _this.extractData(purgedChat);
         }, 1000);
-        this.chatsActive = purgedChat;
         setTimeout(function () {
             if (unreadMsgs >= 1) {
                 purgedChat[0].unreadMsgs = 0;
                 purgedChat[0].cooldown = false;
             }
+            _this.chatsActive = purgedChat;
+            _this.chats = _this.extractData(purgedChat);
         }, 7000);
-        this.chatsActive = purgedChat;
     }
     sendMessage(id) {
         if (this.tempMessage[id] == '') {

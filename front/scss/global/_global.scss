@@ -291,5 +291,9 @@ span.error {
 .unread-msgs {
     margin-left: 10%;
     line-height: 19px;
-    color: white;
+    color: white !important;
+}
+a.badge:hover.unread-msgs, a.badge:focus.unread-msgs {
+    transition: 1s all ease;
+    background-color: #e8887e !important;
 }

@@ -47,23 +47,27 @@ let Accounts = [
     about: 'Progress, progress, we gotta finish this thing!'
   },
 ]
-let contacts = [
+let contacts = [ //CONTACTS IS A SPECIFIC ARRAY FOR THE CURRENTLY LOGGED IN USER. THIS IS UNIQUE TO THAT USER AND LOADS THE CHATS ACCORDINGLY.
   {
-    id: getId(),
-    chatId: 1,
-    isOpen: false,
-    title: 'Back-End Engineer',
-    about: 'Been really busy lately!',
+    id: 2, //WE SAVE ID: 1 for myAccount.. 
+    chatId: 1, //This is what CHAT ID is linked to this CONTACT, each CONTACT has one UNIQUE chatId.
+               //We can design this two ways. 1. Have CHATID as a unique number in the whole DB and then when the contacts are loaded loop an array and load the chats of the customer.
+               //2. OR have it done by the back-end so that the back-end returns both contacts/chats together and has wired each chatId together. 
+               //2 - THIS WILL WORK WITH NO CODE CHANGES
+    isOpen: false, //This means the chat isOpen or Closed. If it is Open then it is loaded into the UI. However, it is also LIMITED to the layout of the user. 
+                   //Meaning if the user has a settings layout of 3, and there are 4 open chats. Then the last chat is closed automatically.
+    title: 'Back-End Engineer', //We allow each user to setup a title for their profile in settings.
+    about: 'Been really busy lately!', //& An about
     firstName: 'John',
     lastName: 'Tolkien',
     email: 'tolkien@mumble.com',
     phone: '04-dont-call-me',
     status: 'online',
-    unreadMsgs: 0,
+    unreadMsgs: 0, //These are the unread messages from this user. The back-end will increment unreadMsgs when new messages have been directed to MYACCOUNT. 
     icon: 'face2.ico'
   },
   {
-    id: getId(),
+    id: 3,
     chatId: 2,
     isOpen: false,
     title: 'Front-End Developer',
@@ -77,7 +81,7 @@ let contacts = [
     icon: 'face.ico'
   },
   {
-    id: getId(),
+    id: 4,
     chatId: 3,
     isOpen: false,
     firstName: 'Owen',
@@ -91,7 +95,7 @@ let contacts = [
     icon: 'face3.ico'
   },
   {
-    id: getId(),
+    id: 5,
     chatId: 4,
     isOpen: false,
     title: 'Sales Mgr.',
@@ -105,7 +109,7 @@ let contacts = [
     icon: 'face4.ico'
   },
   {
-    id: getId(),
+    id: 6,
     chatId: 5,
     isOpen: false,
     title: 'C.E.O',
