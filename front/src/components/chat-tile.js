@@ -285,6 +285,13 @@ export class chatTile {
             if (unreadMsgs >= 1) {
                 purgedChat[0].cooldown = true;
             }
+            if (purgedChat[1].unreadMsgs > 0) {
+                //Temporary FIX. To ensure the last chat is cleared. This happens when the 7 second delay isn't met
+                //as the user opens another chat within 7 seconds of the last. Causing the last chat 
+                //to never clear.
+                purgedChat[1].unreadMsgs = 0;
+                purgedChat[1].cooldown = false;
+            }
             _this.chatsActive = purgedChat;
             _this.chats = _this.extractData(purgedChat);
         }, 1000);
