@@ -77,7 +77,8 @@ export class chatTile {
     }
     attached() {
         this.updateTimeStamps();
-        this.timeStampsLoop();
+        this.timeStampsLoop(); //Updates timestamps every so often (60 seconds)
+        this.inViewMessagesLoop(); //Checks if messages are in view every so often (2 seconds).
         for (var id = 1; id <= this.chatsActive.length; id++) {
             var dropZoneEl = "myDropZone-" + id;
             var dropzoneUpload = document.getElementById("myDropZone-" + id);
@@ -100,51 +101,58 @@ export class chatTile {
             }
         }, 1000);
     }
-    // compareTime(time) {
-    //     var d = new Date();
-    //     var currTime = d.getTime();
-    //     var timeDifference = currTime - time;
-    //     var minutes = 1000 * 60;
-    //     var hours = 60;
-    //     var days = hours * 24;
-    //     var years = days * 365;
-    //     var minutesDifference = Math.round(timeDifference / minutes);
-    //     if (minutesDifference <= 1) {
-    //         return 'now';
-    //     }
-    //     else if (minutesDifference >= 1 && minutesDifference <= hours) {
-    //         return minutesDifference + ' minutes ago';
-    //     }
-    //     else if (minutesDifference >= hours && minutesDifference / hours > 12 && minutesDifference / hours < 24) {
-    //         let hoursAgo = Math.floor(minutesDifference/hours);
-    //         let remainder = minutesDifference % hours;
-    //         return hoursAgo + ' hours ago';
-    //     }
-    //     else if (minutesDifference / hours > 24) {
-    //         let daysAgo = Math.floor(minutesDifference/days);
-    //         let remainder = minutesDifference % days;
-    //         return daysAgo + ' days ago';
-    //     }
-    // }
+    inViewMessagesLoop() {
+        console.log('Started update unread messages');
+        setInterval(() => {
+            this.chats.forEach(function (chat) {
+                for (var index = 0; index < chat.messages.length; index++) {
+                    var chatId = chat.tmpId - 1;
+                    if (chat.messages[index].unread == true) {
+                        var _this = this;
+                        let messageElementId = "chat-" + chat.tmpId + "-message-" + index;
+                        let msgEl = document.getElementById(messageElementId);
+                        var msgInView = this.isMsginView(msgEl);
+                        console.log('Message in view: ', msgInView);
+                        if (msgInView === true) {
+                                _this.chatsActive[chatId].unreadMsgs--;
+                                _this.chatsActive[chatId].cooldown = true;
+                            setTimeout(function () { 
+                                return function() { //return function() allows us to run this timeout for multiple messages. SINCE we are looping.
+                                    _this.chats[chatId].messages[index].unread = false;
+                                    _this.chatsActive[chatId].cooldown = false;
+                                }
+                            }, 5000);
+                        }
+                    }
+                }
+            }, this);
+        }, 1000);
+    }
     timeStampsLoop() { //Create a 60 second loop to update all timestamps.
         console.log('Started update timestamps');
         setInterval(() => {
-            this.chats.forEach(function(chat) {
+            this.chats.forEach(function (chat) {
                 for (var index = 0; index < chat.messages.length; index++) {
-                    this.updateTimeStamp(chat.tmpId - 1, index);
+                    let messageElementId = "chat-" + chat.tmpId + "-message-" + index;
+                    let msgEl = document.getElementById(messageElementId);
+                    var msgInView = this.isMsginView(msgEl);
+                    console.log('Message in view: ', msgInView);
+                    if (msgInView === true) {
+                        this.chatsActive[chatTempId - 1].unreadMsgs--;
+                    }
                 }
             }, this);
         }, 60000);
     }
     updateTimeStamps() { //One time update (when the page loads)
-        this.chats.forEach(function(chat) {
+        this.chats.forEach(function (chat) {
             for (var index = 0; index < chat.messages.length; index++) {
                 this.updateTimeStamp(chat.tmpId - 1, index);
             }
         }, this);
     }
     updateTimeStamp(chatId, messageId) {
-        var chat = this.chats[chatId];  
+        var chat = this.chats[chatId];
         var message = chat.messages[messageId];
         var d = new Date();
         var currTime = d.getTime();
@@ -178,7 +186,7 @@ export class chatTile {
             console.log('Undefined timestamp: ', message);
         }
         this.dateStamps[chat.tmpId - 1][messageId] = date;
-        let timeStampId = "chat-" + chat.tmpId + "-message-" + messageId;
+        let timeStampId = "chat-" + chat.tmpId + "-timestamp-" + messageId;
         let timeStampEl = document.getElementById(timeStampId);
         timeStampEl.innerHTML = timeSent;
         timeStampEl.setAttribute('title', date);
@@ -282,27 +290,47 @@ export class chatTile {
             //contentEl.scrollTop = contentEl.scrollHeight;
         }, 30);
         setTimeout(function () {
-            if (unreadMsgs >= 1) {
-                purgedChat[0].cooldown = true;
+            return function() {
+                if (unreadMsgs >= 1) {
+                    purgedChat[0].cooldown = true;
+                }
+                if (purgedChat[1].unreadMsgs > 0) {
+                    purgedChat[1].unreadMsgs = 0;
+                    purgedChat[1].cooldown = false;
+                }
+                _this.chatsActive = purgedChat;
+                _this.chats = _this.extractData(purgedChat);
             }
-            if (purgedChat[1].unreadMsgs > 0) {
-                //Temporary FIX. To ensure the last chat is cleared. This happens when the 7 second delay isn't met
-                //as the user opens another chat within 7 seconds of the last. Causing the last chat 
-                //to never clear.
-                purgedChat[1].unreadMsgs = 0;
-                purgedChat[1].cooldown = false;
-            }
-            _this.chatsActive = purgedChat;
-            _this.chats = _this.extractData(purgedChat);
         }, 1000);
         setTimeout(function () {
-            if (unreadMsgs >= 1) {
-                purgedChat[0].unreadMsgs = 0;
-                purgedChat[0].cooldown = false;
+            return function() {
+                if (unreadMsgs >= 1) {
+                    var messages = _this.chats[0].messages;
+                    for (var index = messages.length - unreadMsgs; index < messages.length; index++) {
+                        _this.chats[0].messages[index].unread = false; //we set all the unread messages to false.
+                    }
+                    purgedChat[0].unreadMsgs = 0;
+                    purgedChat[0].cooldown = false;
+                }
+                _this.chatsActive = purgedChat;
+                _this.chats = _this.extractData(purgedChat);
             }
-            _this.chatsActive = purgedChat;
-            _this.chats = _this.extractData(purgedChat);
-        }, 7000);
+        }, 5000);
+    }
+    isMsginView(el) {
+        //special bonus for those using jQuery
+        if (typeof jQuery === "function" && el instanceof jQuery) {
+            el = el[0];
+        }
+
+        var rect = el.getBoundingClientRect();
+
+        return (
+            rect.top >= 0 &&
+            rect.left >= 0 &&
+            rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) && /*or $(window).height() */
+            rect.right <= (window.innerWidth || document.documentElement.clientWidth) /*or $(window).width() */
+        );
     }
     sendMessage(id) {
         if (this.tempMessage[id] == '') {
@@ -333,11 +361,13 @@ export class chatTile {
         if (this.messageData == '') {
             return;
         }
+        var chatTempId = this.chats[chatId - 1].tmpId;
         if (messageFrom > 1) { //Means that the message is coming from an external user.
-            this.chatsActive[this.chats[chatId - 1].tmpId - 1].unreadMsgs++;
+            // this.chatsActive[chatTempId].unreadMsgs++;
         }
         var message = {};
         var d = new Date();
+
         var timeNow = d.getTime();
         let youtubeCom = messageData.indexOf('youtube.com/watch?v=');
         let youtubeBe = messageData.indexOf('youtu.be/');
@@ -348,6 +378,7 @@ export class chatTile {
                 data: messageData,
                 from: messageFrom,
                 time: timeNow,
+                unread: false,
                 attachments: [
                     {
                         type: 'video',
@@ -362,6 +393,7 @@ export class chatTile {
                 data: messageData,
                 from: messageFrom,
                 time: timeNow,
+                unread: false,
                 attachments: [
                     {
                         type: 'video',
@@ -375,7 +407,8 @@ export class chatTile {
                 data: messageData,
                 from: messageFrom,
                 date: '',
-                time: timeNow
+                time: timeNow,
+                unread: false
             }
         }
         let msgId = this.chats[chatId - 1].messages.length;
@@ -384,6 +417,14 @@ export class chatTile {
         var _this = this;
         setTimeout(function () {
             _this.updateTimeStamp(chatId - 1, msgId);
+            let messageElementId = "chat-" + chatTempId + "-message-" + msgId;
+            let msgEl = document.getElementById(messageElementId);
+            var msgInView = _this.isMsginView(msgEl);
+            console.log('Message in view: ', msgInView);
+            if (msgInView === false) {
+                _this.chatsActive[chatTempId - 1].unreadMsgs++;
+                _this.chats[chatTempId - 1].messages[msgId].unread = true;
+            }
         }, 30);
     }
 }

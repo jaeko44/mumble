@@ -193,42 +193,50 @@ let activeChats = [
       {
         from: 1,
         data: 'Haha dude, have you seen the project we had to review?', //message contents
-        date: '', time: '1471121731354' //the date & time this was sent on
+        date: '', time: '1471121731354', //the date & time this was sent on
+        unread: false
       },
       {
         from: 3,
         data: 'What about it??',
-        date: '', time: '1471122731354'
+        date: '', time: '1471122731354',
+        unread: false
       },
       {
         from: 1,
         data: 'It\'s horrible! Ours is like 5 times better and is a real usecase!',
-        date: '', time: '1471123731354'
+        date: '', time: '1471123731354',
+        unread: false
       },
       {
         from: 3,
         data: 'Good! I hope our marks reflect that...',
-        date: '', time: '1471129321354'
+        date: '', time: '1471129321354',
+        unread: false
       },
       {
         from: 3,
         data: 'oi man i need help...',
-        date: '', time: '1471129421354'
+        date: '', time: '1471129421354',
+        unread: true
       },
       {
         from: 3,
         data: 'r u there???',
-        date: '', time: '1471129521354'
+        date: '', time: '1471129521354',
+        unread: true
       },
       {
         from: 3,
         data: 'seriously!',
-        date: '', time: '1471129611354'
+        date: '', time: '1471129611354',
+        unread: true
       },
       {
         from: 3,
         data: 'hellloooo',
-        date: '', time: '1471129811354'
+        date: '', time: '1471129811354',
+        unread: true
       }
     ]
   },
