@@ -67,6 +67,7 @@ export class chatTile {
         ea.subscribe(ChatsUpdated, contact => this.displayChat(contact));
         ea.subscribe('saveLayout', layout => this.updateLayout(layout));
         console.log('sending this chatsActive', this.chatsActive);
+
     }
     created() {
         //this.api.getMsgs().then(chats => this.chats = chats);
@@ -83,6 +84,7 @@ export class chatTile {
             var dropzoneUpload = document.getElementById("myDropZone-" + id);
             var myDropzone = new Dropzone(dropzoneUpload, { url: "/file/post" });
         }
+        this.startFakeChat();
     }
     updateNavbar() {
         setTimeout(() => {
@@ -100,32 +102,29 @@ export class chatTile {
             }
         }, 1000);
     }
-    // compareTime(time) {
-    //     var d = new Date();
-    //     var currTime = d.getTime();
-    //     var timeDifference = currTime - time;
-    //     var minutes = 1000 * 60;
-    //     var hours = 60;
-    //     var days = hours * 24;
-    //     var years = days * 365;
-    //     var minutesDifference = Math.round(timeDifference / minutes);
-    //     if (minutesDifference <= 1) {
-    //         return 'now';
-    //     }
-    //     else if (minutesDifference >= 1 && minutesDifference <= hours) {
-    //         return minutesDifference + ' minutes ago';
-    //     }
-    //     else if (minutesDifference >= hours && minutesDifference / hours > 12 && minutesDifference / hours < 24) {
-    //         let hoursAgo = Math.floor(minutesDifference/hours);
-    //         let remainder = minutesDifference % hours;
-    //         return hoursAgo + ' hours ago';
-    //     }
-    //     else if (minutesDifference / hours > 24) {
-    //         let daysAgo = Math.floor(minutesDifference/days);
-    //         let remainder = minutesDifference % days;
-    //         return daysAgo + ' days ago';
-    //     }
-    // }
+    startFakeChat() {
+        this.fakeChat = [
+            {
+                messageData: 'HELLO FIRST MESSAGE',
+                messageFrom: 2,
+                chatId: 3,
+                timeDelay: 500
+            },
+            {
+                messageData: 'HELLO SECOND MESSAGE',
+                messageFrom: 1,
+                chatId: 3,
+                timeDelay: 10000
+            },
+        ]
+        for (var index = 0; index < this.fakeChat.length; index++) {
+            var chat = this.fakeChat[index];
+            setTimeout(() => {
+                appendMessage(chat.messageData, chat.messageFrom, chat.chatId);
+            }, chat.timeDelay);
+        }
+    }
+
     timeStampsLoop() { //Create a 60 second loop to update all timestamps.
         console.log('Started update timestamps');
         setInterval(() => {
