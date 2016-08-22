@@ -5,16 +5,16 @@ export class FilterValueConverter {
     }
     var newArray = [];
     array.forEach(function(element) {
-        if (element.firstName.includes(searchTerm)) {
+        if (element.details.firstName.includes(searchTerm)) {
             newArray.push(element);
         }
-        else if (element.lastName.includes(searchTerm)) {
+        else if (element.details.lastName.includes(searchTerm)) {
             newArray.push(element);
         }
-        else if (element.title.includes(searchTerm)) {
+        else if (element.details.title.includes(searchTerm)) {
             newArray.push(element);
         }
-        else if (element.email.includes(searchTerm)) {
+        else if (element.details.email.includes(searchTerm)) {
             newArray.push(element);
         }
     }, this);

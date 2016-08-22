@@ -1,16 +1,16 @@
 import {Profile} from '../app/profile';
 import {Redirect} from 'aurelia-router';
+import {EventAggregator} from 'aurelia-event-aggregator';
 import {inject} from 'aurelia-framework';
 
-@inject(Profile)
+@inject(Profile, EventAggregator)
 export class leftView {
 
   constructor(profile, ea) {
     this.ea = ea;
+    this.ea.subscribe('myAccount', account => this.myAccount = account);
     this.profile = profile;
     this.account = profile.getProfile();
-    this.settings = profile.getSettings();
-    this.appName = this.settings.appName;
   }
   activate(params) {
       this.page = params;

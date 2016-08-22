@@ -1,7 +1,7 @@
 <template>
     <require from="./limit-to"></require>
     <require from="./bootstrap-tooltip"></require>
-    <div repeat.for="chat of chats | limitTo:layout.maximumChats" class="animate-chat layout-${layout.id} chats-row-${layout.chatsPerRow}" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'chats-row-closed' : ''">
+    <div repeat.for="chat of extractedChats | limitTo:layout.maximumChats" class="animate-chat layout-${layout.id} chats-row-${layout.chatsPerRow}" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'chats-row-closed' : ''">
         <div css="height: ${chatsActive[chat.tmpId - 1].styles.height};" class="x_panel" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'closedchat' : '' " id="chat-${chat.tmpId}">
             <div class="x_title">
                 <div class="col-md-12 pad-left">
@@ -17,7 +17,7 @@
                         ${userDetails(chat.from).firstName}
                         <small>${chat.type}</small>
                     </h2>
-                    <a show.bind="chatsActive[chat.tmpId - 1].unreadMsgs >= 1" class="badge bg-red unread-msgs">${chatsActive[chat.tmpId - 1].unreadMsgs} messages unread</a>
+                    <a click.trigger="scroll(chat.tmpId)" show.bind="chatsActive[chat.tmpId - 1].unreadMsgs >= 1" class="badge bg-red unread-msgs">${chatsActive[chat.tmpId - 1].unreadMsgs} messages unread</a>
                     <ul class="nav navbar-right panel_toolbox">
                     <li class="dropdown">
                         <a aria-expanded="false" class="dropdown-toggle"
@@ -50,15 +50,17 @@
                 <div id="chat-content-${chat.tmpId}" class="dashboard-widget-content">
                     <div class="col-md-12">
                         <ul class="list-unstyled msg_list">
-                            <li class="animate-chat ${chatsActive[chat.tmpId - 1].cooldown == true ? 'cooldown' : ''}" 
-                            repeat.for="message of chat.messages" class.bind="message.from == 1 ? 'message_dark' : chat.messages.length - $index <= chatsActive[chat.tmpId - 1].unreadMsgs ? 'message_highlighted' : ''">
+                            <li id="chat-${chat.tmpId}-message-${$index}" class="animate-chat" 
+                            repeat.for="message of chat.messages" class.bind="message.from == 1 ? 'message_dark' : 
+                                                                              message.unread == true ? 'message_highlighted' :
+                                                                              message.unread == 'cooling' ? 'cooldown message_highlighted' : ''">
                                 <a>
                                     <span class="image">
                                         <img alt="img" src="images/${userDetails(message.from).icon}">
                                     </span>
                                     <span>
                                         <span class="message-title">${userDetails(message.from).firstName} ${userDetails(message.from).lastName}</span>
-                                        <bootstrap-tooltip id="chat-${chat.tmpId}-message-${$index}" data-toggle="tooltip" data-placement="top" title="" class="time">${timeStamps[chat.tmpId - 1][$index]}</bootstrap-tooltip>
+                                        <bootstrap-tooltip id="chat-${chat.tmpId}-timestamp-${$index}" data-toggle="tooltip" data-placement="top" title="" class="time">${timeStamps[chat.tmpId - 1][$index]}</bootstrap-tooltip>
                                     </span>
                                     <span class="message">
                                         ${message.data}

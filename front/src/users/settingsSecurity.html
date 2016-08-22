@@ -2,16 +2,40 @@
     <div class="row">
         <div class="container">
             <h1>Security:</h1>
-        <form>
-          <div class="form-group">
-            <label for="recipient-name" class="control-label">Recipient:</label>
-            <input type="text" class="form-control" id="recipient-name">
+          <div id="mailAddress" class="form-group">
+            <div class="row">
+              <div class="col-lg-3">
+                <label for="message-text" class="control-label">Email Address:</label>
+              </div>
+              <div class="col-lg-7 float-right">
+                <a href="#" click.trigger="displayAddEmail()" show.bind="showAddEmail == true" bootstrap-tooltip data-toggle="tooltip" data-placement="left" title="${account.email}">
+                  <icon class="fa fa-envelope-o" aria-hidden="true"></icon> Change your email address.
+                </a>
+              </div>
+            </div>
+              <div show.bind="addingMail == true" id="addMail">
+                <form>
+                  <div class="form-group">
+                      <div class="col-lg-12">
+                        <div class="col-lg-6">
+                           <input value.bind="currMail" placeholder="Enter your current email address: " class="form-control" id="message-text">
+                        </div>
+                        <div class="col-lg-6">
+                           <input value.bind="saveMail" placeholder="Enter your new email address: " class="form-control" id="message-text">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div style="width: 50%; margin: auto;">
+                            <label class="full control-label" style="float:right; margin-top: 10px;"><a class=
+                            "btn btn-default" style="width: 100%" click.trigger="saveMail()"><i class="fa fa-lock"></i>
+                            save</a></label>
+                        </div>
+                      </div>
+                      <input type="submit" style="display: none" click.trigger="saveMail()" value="Submit">
+                  </div>
+               </form>
+              </div>
           </div>
-          <div class="form-group">
-            <label for="message-text" class="control-label">Message:</label>
-            <textarea class="form-control" id="message-text"></textarea>
-          </div>
-        </form>
         </div>
     </div>
 </template>

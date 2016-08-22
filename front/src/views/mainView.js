@@ -11,12 +11,11 @@ export class mainView {
     ea.subscribe('saveTheme', theme => this.updateTheme(theme));
     ea.subscribe('updateTheme', theme => this.updateTheme(theme));
     ea.subscribe('isPhone', isPhone => this.updatePhoneClass(isPhone));
-    this.profile = profile;
+    ea.subscribe('myAccount', account => this.myAccount = account);
+
     this.isPhone = false;
+    this.profile = profile;
     this.account = profile.getProfile();
-    this.settings = profile.getSettings();
-    this.appName = this.settings.appName;
-    this.theme = this.settings.theme;
   }
   updateTheme(theme) {
     this.theme = theme;
@@ -35,21 +34,27 @@ export class mainView {
       else if (this.route.name == 'settings') {
           this.page = params.page;
       }
-  }
-  created() {
-    this.navigation = this.settings.navigation;
-  }
-  fullName() {
-    return `${this.account.firstName} ${this.account.lastName}`;
+      firebase.auth().onAuthStateChanged(function(user) { //MAKE SURE ACCOUNT IS LOGGED IN
+          if (!user) {
+              location.assign('/');
+          }
+      });
   }
   toggleNavigation() {
-    if (this.navigation == 2) {
-      this.navigation = 1;
+    if (this.myAccount.settings.navigation == 2) {
+      this.myAccount.settings.navigation = 1;
       this.profile.setNavigationTo(1);
     }
     else {
-      this.navigation = 2;
+      this.myAccount.settings.navigation = 2;
       this.profile.setNavigationTo(2);
     }
+  }
+  logout() {
+    firebase.auth().signOut().then(function() {
+      location.assign('/');
+    }, function(error) {
+      alert('Failed to logout :(');
+    });
   }
 }

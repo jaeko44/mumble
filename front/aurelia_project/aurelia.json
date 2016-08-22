@@ -105,6 +105,19 @@
               "css/bootstrap.css"
              ]
           },
+          {
+            "name": "firebase",
+            "path": "../node_modules/firebase",
+            "main": "firebase"
+          },
+          {
+            "name": "nprogress",
+            "path": "../node_modules/nprogress",
+            "main": "nprogress",
+            "resources": [
+              "nprogress.css"
+            ]
+          },
           "dropzone",
           "toastr", 
           "aurelia-binding",

@@ -10,17 +10,13 @@ export class settingsAppearance {
     this.ea = ea;
     this.profile = profile;
     this.account = profile.getProfile();
-    this.settings = profile.getSettings();
-    this.appName = this.settings.appName;
+    ea.subscribe('myAccount', account => this.unpackAccount(account));
+
     this.showChangeTheme = true;
     this.changingTheme = false;
     this.showChangeLayout = true;
     this.changingLayout = false;
-    this.selectedTheme = this.settings.theme;
-    this.selectedLayout = this.settings.layout;
-    console.log('Original Selected layout : ', this.selectedLayout);
-    this.isMobile = this.detectmob();
-    console.log('This device is a mobile:  ', this.isMobile);
+
     this.themes = ['Light', 'Dark', 'Golden', 'Bronze', 'Silver', 'Red', 'Green', 'Blue'];
     this.layouts = [
       {
@@ -73,8 +69,15 @@ export class settingsAppearance {
       this.showChangeLayout = false;
       this.ea.publish('isPhone', true);
     }
-  }
 
+  }
+  unpackAccount(account) {
+    this.myAccount = account;
+    this.selectedTheme = account.settings.theme;
+    this.selectedLayout = account.settings.layout;
+    this.settings = account.settings;
+    this.appName = this.settings.appName;
+  }
  detectmob() { 
   if( navigator.userAgent.match(/Android/i)
   || navigator.userAgent.match(/webOS/i)
@@ -107,7 +110,7 @@ export class settingsAppearance {
     if (setting == 'theme') {
       this.showChangeTheme = true;
       this.changingTheme = false;
-      this.selectedTheme = this.settings.theme;
+      this.selectedTheme = this.myAccount.settings.theme;
       this.ea.publish('updateTheme', this.selectedTheme);
     }
     else if (setting == 'layout') {

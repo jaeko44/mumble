@@ -19,16 +19,19 @@ export class ContactList {
     ea.subscribe(ChatOpened, contact => this.clear(contact));
     //Remove active class.
     ea.subscribe(ChatClosed, contact => this.close(contact)); 
+    ea.subscribe('contactsLoaded', contacts => this.contacts = contacts); 
+    ea.subscribe('contactLoaded', contact => this.addContact(contact)); 
+    ea.subscribe('channelsLoaded', contacts => this.contacts = contacts); 
   }
 
   created(){
-    this.getContacts();
     this.getChannels();
   }
 
-  getContacts() {
-    this.api.getContactList().then(contacts => this.contacts = contacts);
+  addContact(contact) {
+    this.contacts.push(contact);
   }
+
   getChannels() {
     this.api.getChannelList().then(channels => this.channels = channels);
   }

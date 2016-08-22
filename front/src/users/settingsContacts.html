@@ -5,23 +5,29 @@
       <h1>Contacts:</h1>
       <div class="x_content">
         <div class="row">
-          <div class="col-xs-6 col-xs-offset-3 text-center" style="margin-bottom: 15px;">
-            <input value.bind="searchTerm" type="text" class="form-control au-target" placeholder="Search..."></div>
+          <div class="col-xs-4 col-xs-offset-3 text-center" style="margin-bottom: 15px;">
+            <input value.bind="searchTerm" type="text" class="form-control au-target" placeholder="Search...">
+          </div>
+          <div class="col-xs-2">
+            <button click.trigger="displayAddContact()" type="button" class="btn btn-primary">
+              <i class="fa fa-profile"> </i> Add Contacts
+            </button>
+          </div>
           <div class="clearfix"></div>
-          <div class="col-md-4 col-sm-4 col-xs-12 profile_details" repeat.for="contact of contacts | filter:searchTerm">
+          <div show.bind="$index > 0" class="col-md-4 col-sm-4 col-xs-12 profile_details" repeat.for="contact of contacts | filter:searchTerm">
             <div class="well profile_view">
-              <div class="col-sm-12">
-                <h4 class="brief"><i>${contact.title}</i></h4>
+              <div class="col-sm-12"> ${$index}
+                <h4 class="brief"><i>${contact.details.title}</i></h4>
                 <div class="left col-xs-7">
-                  <h2 style="font-size: 22px;" >${contact.firstName} ${contact.lastName}</h2>
-                  <p><strong>About: </strong> ${contact.about}</p>
+                  <h2 style="font-size: 22px;" >${contact.details.firstName} ${contact.details.lastName}</h2>
+                  <p><strong>About: </strong> ${contact.details.about}</p>
                   <ul class="list-unstyled">
-                    <li><i class="fa fa-envelope"></i> Email: ${contact.email}</li>
-                    <li><i class="fa fa-phone"></i> Phone #: ${contact.phone}</li>
+                    <li><i class="fa fa-envelope"></i> Email: ${contact.details.email}</li>
+                    <li><i class="fa fa-phone"></i> Phone #: ${contact.details.phone}</li>
                   </ul>
                 </div>
                 <div class="right col-xs-5 text-center">
-                  <img src="images/${contact.icon}" alt="" class="img-circle img-responsive">
+                  <img src="images/${contact.details.icon}" alt="" class="img-circle img-responsive">
                 </div>
               </div>
               <div class="col-xs-12 bottom text-center">
@@ -34,14 +40,37 @@
                                 </i> <i class="fa fa-comments-o"></i> </button>
                 </div>
                 <div class="col-xs-12 col-sm-6 emphasis">
-                  <button type="button" class="btn btn-primary btn-xs btn-cancel">
+                  <button click.trigger="removeContact(contact)" type="button" class="btn btn-primary btn-xs btn-cancel">
                                 <i class="fa fa-times fa-spin-hover"> </i> Delete
                               </button>
                 </div>
               </div>
             </div>
           </div>
+          </div>
         </div>
+        <div show.bind="addingContact == true">
+            <form>
+              <div class="form-group">
+                  <div class="col-sm-12">
+                    <div class="col-lg-12">
+                        <input value.bind="contactEmail" placeholder="User Email" class="form-control" id="message-text">
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="centered-50">
+                        <label class="control-label col-md-6" style="margin-top: 10px;"><a class=
+                        "btn btn-default btn-cancel" style="width: 100%" click.trigger="cancelContact()"><i class="fa fa-cancel"></i>
+                        cancel</a></label>
+                        <label class="control-label col-md-6" style="float:right; margin-top: 10px;"><a class=
+                        "btn btn-default btn-save" style="width: 100%" click.trigger="addContact()"><i class="fa fa-lock"></i>
+                        add</a></label>
+                    </div>
+                  </div>
+                  <input type="submit" style="display: none" click.trigger="saveContact()" value="Submit">
+              </div>
+            </form>
+          </div>
       </div>
     </div>
   </div>

@@ -4,17 +4,21 @@
             <section class="login_content">
                 <form>
                     <h1>Create Account</h1>
+                        <span class="error" class.bind="response == 'none' ? 'hiddenerror' : ''">${response}</span>
                     <div>
-                        <input type="text" class="form-control" placeholder="Username" required="" />
+                        <input value.bind="firstName" type="text" class="form-control" placeholder="First name" required="" />
                     </div>
                     <div>
-                        <input type="email" class="form-control" placeholder="Email" required="" />
+                        <input value.bind="lastName" type="text" class="form-control" placeholder="Last name" required="" />
                     </div>
                     <div>
-                        <input type="password" class="form-control" placeholder="Password" required="" />
+                        <input value.bind="email" type="email" class="form-control" placeholder="Email" required="" />
                     </div>
                     <div>
-                        <a class="btn btn-default submit" href="index.html">Submit</a>
+                        <input value.bind="password" type="password" class="form-control" placeholder="Password" required="" />
+                    </div>
+                    <div>
+                        <a class="btn btn-default submit" href="#" click.trigger="register()">Submit</a>
                     </div>
                     <div class="clearfix"></div>
                     <div class="separator">

@@ -51,11 +51,11 @@ let contacts = [ //CONTACTS IS A SPECIFIC ARRAY FOR THE CURRENTLY LOGGED IN USER
   {
     id: 2, //WE SAVE ID: 1 for myAccount.. 
     chatId: 1, //This is what CHAT ID is linked to this CONTACT, each CONTACT has one UNIQUE chatId.
-               //We can design this two ways. 1. Have CHATID as a unique number in the whole DB and then when the contacts are loaded loop an array and load the chats of the customer.
-               //2. OR have it done by the back-end so that the back-end returns both contacts/chats together and has wired each chatId together. 
-               //2 - THIS WILL WORK WITH NO CODE CHANGES
+    //We can design this two ways. 1. Have CHATID as a unique number in the whole DB and then when the contacts are loaded loop an array and load the chats of the customer.
+    //2. OR have it done by the back-end so that the back-end returns both contacts/chats together and has wired each chatId together. 
+    //2 - THIS WILL WORK WITH NO CODE CHANGES
     isOpen: false, //This means the chat isOpen or Closed. If it is Open then it is loaded into the UI. However, it is also LIMITED to the layout of the user. 
-                   //Meaning if the user has a settings layout of 3, and there are 4 open chats. Then the last chat is closed automatically.
+    //Meaning if the user has a settings layout of 3, and there are 4 open chats. Then the last chat is closed automatically.
     title: 'Back-End Engineer', //We allow each user to setup a title for their profile in settings.
     about: 'Been really busy lately!', //& An about
     firstName: 'John',
@@ -193,42 +193,50 @@ let activeChats = [
       {
         from: 1,
         data: 'Haha dude, have you seen the project we had to review?', //message contents
-        date: '', time: '1471121731354' //the date & time this was sent on
+        date: '', time: '1471121731354', //the date & time this was sent on
+        unread: false
       },
       {
         from: 3,
         data: 'What about it??',
-        date: '', time: '1471122731354'
+        date: '', time: '1471122731354',
+        unread: false
       },
       {
         from: 1,
         data: 'It\'s horrible! Ours is like 5 times better and is a real usecase!',
-        date: '', time: '1471123731354'
+        date: '', time: '1471123731354',
+        unread: false
       },
       {
         from: 3,
         data: 'Good! I hope our marks reflect that...',
-        date: '', time: '1471129321354'
+        date: '', time: '1471129321354',
+        unread: false
       },
       {
         from: 3,
         data: 'oi man i need help...',
-        date: '', time: '1471129421354'
+        date: '', time: '1471129421354',
+        unread: true
       },
       {
         from: 3,
         data: 'r u there???',
-        date: '', time: '1471129521354'
+        date: '', time: '1471129521354',
+        unread: true
       },
       {
         from: 3,
         data: 'seriously!',
-        date: '', time: '1471129611354'
+        date: '', time: '1471129611354',
+        unread: true
       },
       {
         from: 3,
         data: 'hellloooo',
-        date: '', time: '1471129811354'
+        date: '', time: '1471129811354',
+        unread: true
       }
     ]
   },
@@ -539,20 +547,246 @@ let mySettings = {
     chatsPerRow: 3
   },
   navigation: 1,
-  appName: 'mumble',
+  appName: 'mumble-static',
   theme: 'Blue',
   mnumber: 0
 }
 
 @inject(EventAggregator)
 export class WebAPI {
-  isRequesting = false;
-
   constructor(ea) {
+    this.isRequesting = true;
+    this.isLoaded = false;
+    this.myAccount;
     this.ea = ea;
     ea.subscribe('saveTheme', theme => this.updateTheme(theme));
     ea.subscribe('saveLayout', layout => this.updateLayout(layout));
+    ea.subscribe('extractData', chatsActive => this.extractData(chatsActive));
+    ea.subscribe('registerAccount', user => this.deployAccount(user));
+    var config = {
+      apiKey: "AIzaSyDuvCKBC1I9c5laWNFH0P4ML6bSgEgw3OQ",
+      authDomain: "mumble-cce1c.firebaseapp.com",
+      databaseURL: "https://mumble-cce1c.firebaseio.com",
+      storageBucket: "",
+    };
+    firebase.initializeApp(config);
+    //REFERENCES TO DB
+    this.database = firebase.database();
+    this.rootDB = firebase.database().ref();
+    this.settingsDB = this.rootDB.child("settings");
+    this.loadAccount();
   }
+  loadAccount() {
+    var _this = this;
+    firebase.auth().onAuthStateChanged(function (user) { //MAKE SURE ACCOUNT IS LOGGED IN
+      if (user) {
+        _this.user = user;
+        _this.isRequesting = true;
+        var contactsExtract;
+        console.log('User authenticated in WEBAPI');
+        _this.accountDB = _this.rootDB.child("users/" + user.uid);
+        _this.accountDB.once('value', function (accountDB) {
+          console.log('Publishing myAccount: ', accountDB.val());
+          _this.ea.publish('myAccount', accountDB.val());
+          _this.myAccount = accountDB.val();
+          _this.isRequesting = false;
+          _this.isLoaded = true;
+        });
+        _this.contactsDB = _this.rootDB.child("users/" + user.uid + "/contacts");
+        _this.contactsDB.on('child_added', function (contact) {
+          let contactExtract = contact.val();
+          console.log('finding contact: ', contact);
+          let contactDB = _this.rootDB.child("users/" + contactExtract);
+          contactDB.once('value', function (accountDB) {
+            console.log('Publishing contact: ', accountDB.val());
+            _this.ea.publish('contactLoaded', accountDB.val());
+          });
+        });
+        _this.chatsDB = _this.rootDB.child("chats/" + user.uid);
+        _this.chatsDB.once('value', function (chatDB) {
+          console.log('Publishing chats: ', chatDB.val());
+          _this.ea.publish('chatsLoaded', chatDB.val());
+        });
+      }
+      else {
+        _this.isLoaded = true;
+        _this.isRequesting = false;
+      }
+    });
+  }
+  extractData(chatsActive) {
+    var _this = this;
+    _this.isRequesting = true;
+    _this.isLoaded = false;
+    var publishedChats = false;
+    this.chats = [];
+    for (var index = 0; index < chatsActive.length; index++) {
+      var chat = chatsActive[index];
+      this.chatsDB = this.rootDB.child("chats/" + this.user.uid + "/" + chat.chatId);
+      this.chatsDB.on('value', function (chatDB) {
+        console.log('Found specific chat: ', chatDB.val());
+        _this.chats.push(chatDB.val());
+        if (index <= chatsActive.length) {
+          _this.isLoaded = true;
+        }
+      });
+    }
+    
+    setInterval(() => {
+      if (this.isLoaded && publishedChats == false) {
+        _this.ea.publish('chatLoaded', this.chats);
+        publishedChats = true;
+        _this.isRequesting = false;
+        _this.isLoaded = true;
+        return this.chats;
+      }
+    }, 150);
+  }
+  deployAccount(user) {
+    var settings = {
+      id: 1,
+      layout: {
+        id: 3,
+        name: "Full Height, 3 Chats per row, 1 row",
+        rows: 1,
+        maximumChats: 3,
+        chatsPerRow: 3
+      },
+      navigation: 1,
+      appName: "mumble-new",
+      theme: "Blue",
+      mnumber: 0
+    }
+    var details = {
+      uid: user.uid,
+      title: '',
+      about: '',
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phone: '',
+      status: 'online',
+      unreadMsgs: 0,
+      icon: 'face.ico'
+    }
+    var chatsActive = [
+      {
+        chatId: 'default',
+        chatType: 'message',
+        closed: 'false',
+        cooldown: 'false',
+        isOpen: true,
+        row: 1,
+        styles: {
+          height: '100%'
+        },
+        unreadMsgs: 0
+      }
+    ]
+    var contacts = ['uid']
+    firebase.database().ref('users/' + user.uid).set({
+      settings: settings,
+      details: details,
+      chatsActive: chatsActive,
+      contacts: contacts
+    });
+    console.log('added user');
+  }
+  addContact(contactEmail) {
+    var _this = this;
+    console.log('Looking for: ', contactEmail);
+    firebase.database().ref('users').orderByChild('details/email')
+    .startAt(contactEmail)
+    .endAt(contactEmail)
+    .once('value', function(snap){
+         var foundUser = snap.val();
+         _this.getContactbyEmail(contactEmail)
+         this.user = firebase.auth().currentUser;
+         var found = false;
+         for (var index = 0; index < _this.myAccount.contacts.length; index++) {
+           var contact = _this.myAccount.contacts[index];
+           if (Object.keys(foundUser)[0] == contact) {
+             found = true;
+           }
+         }
+         var d = new Date();
+         var timeNow = d.getTime();
+         var initializeChat = {
+           from: Object.keys(foundUser)[0],
+           type: 'message',
+           messages: [
+             {
+               from: this.user.uid,
+               time: timeNow,
+               data: _this.myAccount.details.firstName + ' has requested to add ' + contactEmail
+             }
+           ]
+         }
+        _this.myAccount.contacts.push(Object.keys(foundUser));
+         if (found == false) {
+            firebase.database().ref('users/' + this.user.uid + '/contacts').set(_this.myAccount.contacts);
+            firebase.database().ref('chats/' + this.user.uid + '/' + Object.keys(foundUser)[0]).set(initializeChat);
+            firebase.database().ref('chats/' + Object.keys(foundUser)[0] + '/' + this.user.uid).set(initializeChat);
+         }
+    });
+  }
+  getChats() {
+    this.getContactbyEmail('email').then(function(res) {
+      // do whatever with res here = res = contact
+      
+    });
+  }
+  getContactbyEmail(contactEmail) {
+    var _this = this;
+    console.log('Looking for: ', contactEmail);
+    firebase.database().ref('users').orderByChild('details/email')
+    .startAt(contactEmail)
+    .endAt(contactEmail)
+    .once('value', function(snap){
+         var foundUser = snap.val();
+         var user = firebase.auth().currentUser;
+         return foundUser;
+    });
+  }
+  removeContact(contactEmail) {
+    var _this = this;
+    console.log('Looking for: ', contactEmail);
+    firebase.database().ref('users').orderByChild('details/email')
+    .startAt(contactEmail)
+    .endAt(contactEmail)
+    .once('value', function(snap){
+         var foundUser = snap.val();
+         var user = firebase.auth().currentUser;
+         var found = 0;
+         for (var index = 0; index < _this.myAccount.contacts.length; index++) {
+           var contact = _this.myAccount.contacts[index];
+           console.log('This contact: ', contact, Object.keys(foundUser));
+           if (Object.keys(foundUser)[0] == contact) {
+             found = true;
+             _this.myAccount.contacts.splice(index, 1);
+             console.log('New contacts', _this.myAccount.contacts);
+           }
+           else {
+             console.log('Not this one', contact);
+           }
+         }
+         if (found == true) {
+            firebase.database().ref('users/' + user.uid + '/contacts').set(_this.myAccount.contacts);
+            return 'removed succesfully';
+         }
+         else {
+           return 'not found';
+         }
+    });
+  }
+  arraysIdentical(a, b) {
+    var i = a.length;
+    if (i != b.length) return false;
+    while (i--) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+  };
   updateTheme(theme) {
     mySettings.theme = theme;
   }
@@ -655,8 +889,18 @@ export class WebAPI {
     return found;
   }
   getChatIdDetails(chatId) {
-    let found = activeChats.filter(x => x.id === chatId)[0];
-    return found;
+    this.isRequesting = true;
+    var user = firebase.auth().currentUser;
+    var _this = this;
+    return new Promise(resolve => {
+      this.chatsDB = this.rootDB.child("chats/" + this.user.uid + "/" + id);
+      this.chatsDB.once('value', function (chatDB) {
+        console.log('Found specific chat: ', chatDB.val());
+        _this.ea.publish('chatLoaded', chatDB.val());
+        resolve(chatDB.val());
+        _this.isRequesting = false;
+      });
+    });
   }
   getProfile() {
     return myAccount;

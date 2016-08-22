@@ -17,6 +17,7 @@
             </div>
               <div show.bind="addingIcon == true" id="addIcon">
                 <form>
+                  ${response}
                   <div class="form-group">
                       <div class="col-lg-12">
                         <div class="centered-50">
@@ -24,7 +25,7 @@
                               Browse: 
                               <input class="upload-icon" type="file">
                           </label>
-                          <img class="icon small" src="images/${account.icon}" alt="">
+                          <img class="icon small" src="images/${myAccount.details.icon}" alt="">
                         </div>
                       </div>
                       <div class="col-md-12">
@@ -48,20 +49,59 @@
                 <label for="message-text" class="control-label">Full Name:</label>
               </div>
               <div class="col-lg-7 float-right">
-                <a href="#" click.trigger="displayAddName()" show.bind="showAddName == true" bootstrap-tooltip data-toggle="tooltip" data-placement="left" title="${fullName()}">
+                <a href="#" id="displayAddName" click.trigger="displayAddName()" show.bind="showAddName == true" bootstrap-tooltip data-toggle="tooltip" data-placement="left" title="Name: ${myAccount.details.firstName}">
                    <icon class="fa fa-sort-alpha-asc" aria-hidden="true"></icon> Change your name.
                 </a>
               </div>
             </div>
               <div show.bind="addingName == true" id="addName">
                 <form>
+                  ${response}
                   <div class="form-group">
                       <div class="col-lg-12">
                         <div class="col-lg-6">
-                           <input value.bind="account.firstName" placeholder="Enter your current email address: " class="form-control" id="message-text">
+                           <input value.bind="myAccount.details.firstName" placeholder="Enter your first name: " class="form-control" id="message-text">
                         </div>
                         <div class="col-lg-6">
-                           <input value.bind="account.lastName" placeholder="Enter your new email address: " class="form-control" id="message-text">
+                           <input value.bind="myAccount.details.lastName" placeholder="Enter your last name: " class="form-control" id="message-text">
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                       <div class="centered-50">
+                            <label class="control-label col-md-6" style="margin-top: 10px;"><a class=
+                            "btn btn-default btn-cancel" style="width: 100%" click.trigger="cancel('name')"><i class="fa fa-cancel"></i>
+                            cancel</a></label>
+                            <label class="control-label col-md-6" style="float:right; margin-top: 10px;"><a class=
+                            "btn btn-default btn-save" style="width: 100%" click.trigger="saveName()"><i class="fa fa-lock"></i>
+                            save</a></label>
+                        </div>
+                      </div>
+                      <input type="submit" style="display: none" click.trigger="saveName()" value="Submit">
+                  </div>
+               </form>
+              </div>
+          </div>
+          <div id="fullName" class="form-group">
+            <div class="row">
+              <div class="col-lg-3">
+                <label for="message-text" class="control-label">Title:</label>
+              </div>
+              <div class="col-lg-7 float-right">
+                <a href="#" click.trigger="displayAddTitle()" show.bind="showAddTitle == true" bootstrap-tooltip data-toggle="tooltip" data-placement="left" title="Set your tile/about me.">
+                   <icon class="fa fa-sort-alpha-asc" aria-hidden="true"></icon> Change your title / about.
+                </a>
+              </div>
+            </div>
+              <div show.bind="addingTitle == true" id="addTitle">
+                <form>
+                  ${response}
+                  <div class="form-group">
+                      <div class="col-lg-12">
+                        <div class="col-lg-6">
+                           <input value.bind="myAccount.details.title" placeholder="Title " class="form-control" id="message-text">
+                        </div>
+                        <div class="col-lg-6">
+                           <input value.bind="myAccount.details.about" placeholder="About me " class="form-control" id="message-text">
                         </div>
                       </div>
                       <div class="col-md-12">
@@ -85,13 +125,14 @@
                 <label for="message-text" class="control-label">Email Address:</label>
               </div>
               <div class="col-lg-7 float-right">
-                <a href="#" click.trigger="displayAddEmail()" show.bind="showAddEmail == true" bootstrap-tooltip data-toggle="tooltip" data-placement="left" title="${account.email}">
+                <a href="#" id="displayAddEmail" click.trigger="displayAddEmail()" show.bind="showAddEmail == true" bootstrap-tooltip data-toggle="tooltip" data-placement="left" title="${myAccount.details.email}">
                   <icon class="fa fa-envelope-o" aria-hidden="true"></icon> Change your email address.
                 </a>
               </div>
             </div>
               <div show.bind="addingMail == true" id="addMail">
                 <form>
+                  ${response}
                   <div class="form-group">
                       <div class="col-lg-12">
                         <div class="col-lg-6">
@@ -102,9 +143,12 @@
                         </div>
                       </div>
                       <div class="row">
-                        <div style="width: 50%; margin: auto;">
-                            <label class="full control-label" style="float:right; margin-top: 10px;"><a class=
-                            "btn btn-default" style="width: 100%" click.trigger="saveMail()"><i class="fa fa-lock"></i>
+                       <div class="centered-50">
+                            <label class="control-label col-md-6" style="margin-top: 10px;"><a class=
+                            "btn btn-default btn-cancel" style="width: 100%" click.trigger="cancel('email')"><i class="fa fa-cancel"></i>
+                            cancel</a></label>
+                            <label class="control-label col-md-6" style="float:right; margin-top: 10px;"><a class=
+                            "btn btn-default btn-save" style="width: 100%" click.trigger="saveEmail()"><i class="fa fa-lock"></i>
                             save</a></label>
                         </div>
                       </div>
@@ -130,6 +174,7 @@
               </div>
               <div show.bind="addingPhone == true" id="addPhone">
                 <form>
+                  ${response}
                   <div class="form-group">
                       <div class="col-sm-12">
                           <input value.bind="saveNumber" placeholder="Enter your phone number: " class="form-control" id="message-text">

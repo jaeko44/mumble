@@ -1,5 +1,7 @@
 <template>
-  <div class="page-host">
+  <loading-indicator loading.bind="router.isNavigating || api.isRequesting"></loading-indicator>
+
+  <div show.bind="api.isLoaded" class="page-host">
     <router-view layout="views/layout-app"></router-view>
   </div>
 </template>

@@ -3,11 +3,11 @@
     <!-- menu profile quick info -->
     <div class="profile">
         <div class="profile_pic">
-           <img src="images/${account.icon}" alt="..." class="img-circle profile_img">
+           <img src="images/${myAccount.details.icon}" alt="..." class="img-circle profile_img">
         </div>
         <div class="profile_info">
           <span>Welcome,</span>
-          <h2>${fullName()}</h2>
+          <h2>${myAccount.details.firstName} ${myAccount.details.lastName}</h2>
         </div>
     </div>
 </template> 

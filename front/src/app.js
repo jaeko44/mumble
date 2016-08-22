@@ -1,27 +1,32 @@
 import {Router} from 'aurelia-router';
 import {$} from 'jquery';
 import {inject} from 'aurelia-framework';
+import {WebAPI} from './data/web-api';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import toastr from 'toastr';
+import 'firebase';
 
-@inject(Router, EventAggregator)
+@inject(Router, EventAggregator, WebAPI)
 export class App {
-  constructor(router, ea) {
+  constructor(router, ea, api) {
+    this.api = api;
     this.ea = ea;
     ea.subscribe('loggedSuccesfully', account => this.loggedSuccesfully(account));
     this.router = router;
     this.router.configure(this.configureRoutes);
     this.loggedIn = false;
+
   }
 
   loggedSuccesfully(account) {
+
     this.loggedIn = true;
     toastr.options.progressBar = true;
     toastr.options.closeButton = true;
     toastr.options.closeMethod = 'slideUp';
     toastr.options.hideMethod = 'slideUp';
     toastr.options.showMethod = 'slideDown';
-    toastr.success('Welcome ' + account.firstName, 'You are now connected.');
+    toastr.success('Welcome ' + account.firstName, 'You are now connected to :' + this.appNametxt);
   }
 
   configureRoutes(cfg, navigationInstruction) {
