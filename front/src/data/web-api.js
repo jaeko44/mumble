@@ -583,10 +583,11 @@ export class WebAPI {
         _this.user = user;
         _this.isRequesting = true;
         var contactsExtract;
-        console.log('User authenticated in WEBAPI');
+        console.log('User authenticated in WEBAPI : ' + user.uid);
         _this.accountDB = _this.rootDB.child("users/" + user.uid);
         _this.accountDB.once('value', function (accountDB) {
           console.log('Publishing myAccount: ', accountDB.val());
+          var value = accountDB.val();
           _this.ea.publish('myAccount', accountDB.val());
           _this.myAccount = accountDB.val();
           _this.isRequesting = false;
@@ -596,16 +597,42 @@ export class WebAPI {
         _this.contactsDB.on('child_added', function (contact) {
           let contactExtract = contact.val();
           console.log('finding contact: ', contact);
-          let contactDB = _this.rootDB.child("users/" + contactExtract);
-          contactDB.once('value', function (accountDB) {
-            console.log('Publishing contact: ', accountDB.val());
-            _this.ea.publish('contactLoaded', accountDB.val());
+          if (contactExtract != "uid") {
+            let contactDB = _this.rootDB.child("users/" + contactExtract);
+            contactDB.once('value', function (accountDB) {
+              var value = accountDB.val();
+              console.log('Publishing contact: ', accountDB.val().details);
+              _this.ea.publish('contactLoaded', accountDB.val().details);
+            });
+          }
+        });
+        _this.contactsDB.on('child_removed', function (contact) {
+          let contactExtract = contact.val();
+          console.log('finding contact: ', contact);
+          if (contactExtract != "uid") {
+            let contactDB = _this.rootDB.child("users/" + contactExtract);
+            contactDB.once('value', function (accountDB) {
+              var value = accountDB.val();
+              console.log('Publishing contact: ', accountDB.val().details);
+              _this.ea.publish('contactRemoved', accountDB.val().details);
+            });
+          }
+        });
+        _this.chatsActiveDB = _this.rootDB.child("users/" + user.uid + "/chatsActive");
+        _this.chatsActiveDB.on('child_added', function (chatActive) {
+          let chatActiveExtract = chatActive.val();
+          console.log('finding chat: ', chatActiveExtract);
+          let chatFound = _this.rootDB.child("chats/" + user.uid + "/" + chatActiveExtract.chatId);
+          chatFound.once('value', function (chatDB) {
+            if (chatDB.val()) {
+              _this.ea.publish('ChatOpened', chatDB.val());
+            }
           });
         });
-        _this.chatsDB = _this.rootDB.child("chats/" + user.uid);
-        _this.chatsDB.once('value', function (chatDB) {
-          console.log('Publishing chats: ', chatDB.val());
-          _this.ea.publish('chatsLoaded', chatDB.val());
+        _this.allChatsDB = _this.rootDB.child("chats/" + user.uid);
+        _this.allChatsDB.on('child_added', function (chatDB) {
+            console.log('chatLoaded CALLED: ', chatDB.val());
+            _this.ea.publish('chatLoaded', chatDB.val());
         });
       }
       else {
@@ -614,35 +641,50 @@ export class WebAPI {
       }
     });
   }
+  
   extractData(chatsActive) {
     var _this = this;
     _this.isRequesting = true;
     _this.isLoaded = false;
-    var publishedChats = false;
-    this.chats = [];
-    for (var index = 0; index < chatsActive.length; index++) {
-      var chat = chatsActive[index];
-      this.chatsDB = this.rootDB.child("chats/" + this.user.uid + "/" + chat.chatId);
-      this.chatsDB.on('value', function (chatDB) {
-        console.log('Found specific chat: ', chatDB.val());
-        _this.chats.push(chatDB.val());
-        if (index <= chatsActive.length) {
+    return new Promise(resolve => {
+      var publishedChats = false;
+      this.chats = [
+        {
+          chatsOpen: 0
+        }
+      ];
+      for (var index = 0; index < chatsActive.length; index++) {
+        var chat = chatsActive[index];
+        if (chat.chatId != 'default') {
+          this.chatsDB = this.rootDB.child("chats/" + this.user.uid + "/" + chat.chatId);
+          this.chatsDB.on('value', function (chatDB) {
+            console.log('Found specific chat: ', chatDB.val());
+            if (chatDB.val() != null) {
+              _this.chats.push(chatDB.val());
+              _this.chats[0].chatsOpen++;
+            }
+            if (index >= chatsActive.length) {
+              _this.isLoaded = true;
+            }
+          });
+        }
+      }
+      setInterval(() => {
+        if (this.isLoaded == true && publishedChats == false) {
+          console.log('Publising chatsLoaded - ', _this.chats);
+          _this.ea.publish('chatsLoaded', _this.chats);
+          resolve(_this.chats);
+          publishedChats = true;
+          _this.isRequesting = false;
           _this.isLoaded = true;
         }
-      });
-    }
-    
-    setInterval(() => {
-      if (this.isLoaded && publishedChats == false) {
-        _this.ea.publish('chatLoaded', this.chats);
-        publishedChats = true;
-        _this.isRequesting = false;
-        _this.isLoaded = true;
-        return this.chats;
-      }
-    }, 150);
+      }, 150);
+    });
   }
+
   deployAccount(user) {
+    var d = new Date();
+    var timeNow = d.getTime();
     var settings = {
       id: 1,
       layout: {
@@ -656,7 +698,7 @@ export class WebAPI {
       appName: "mumble-new",
       theme: "Blue",
       mnumber: 0
-    }
+    };
     var details = {
       uid: user.uid,
       title: '',
@@ -667,8 +709,10 @@ export class WebAPI {
       phone: '',
       status: 'online',
       unreadMsgs: 0,
-      icon: 'face.ico'
-    }
+      icon: 'faceDefault.png',
+      chatId: user.uid,
+      created: timeNow
+    };
     var chatsActive = [
       {
         chatId: 'default',
@@ -682,52 +726,121 @@ export class WebAPI {
         },
         unreadMsgs: 0
       }
-    ]
-    var contacts = ['uid']
+    ];
+    var notifications = [
+      {
+        notification: 'Welcome to mubmle, something you\'ll never be leaving behind frmo now on.',
+        time: timeNow,
+        read: false
+      }
+    ];
+    var contacts = ['uid'];
     firebase.database().ref('users/' + user.uid).set({
       settings: settings,
       details: details,
       chatsActive: chatsActive,
-      contacts: contacts
+      contacts: contacts,
+      notifications: notifications
     });
     console.log('added user');
   }
   addContact(contactEmail) {
     var _this = this;
+    this.isRequesting = true;
     console.log('Looking for: ', contactEmail);
     firebase.database().ref('users').orderByChild('details/email')
     .startAt(contactEmail)
     .endAt(contactEmail)
     .once('value', function(snap){
          var foundUser = snap.val();
-         _this.getContactbyEmail(contactEmail)
-         this.user = firebase.auth().currentUser;
-         var found = false;
-         for (var index = 0; index < _this.myAccount.contacts.length; index++) {
-           var contact = _this.myAccount.contacts[index];
-           if (Object.keys(foundUser)[0] == contact) {
-             found = true;
-           }
+         if (foundUser) {
+            var foundUserDetails = foundUser[Object.keys(foundUser)[0]].details;
+            //  _this.getContactbyEmail(contactEmail);
+            var user = firebase.auth().currentUser;
+            var found = false;
+            for (var index = 0; index < _this.myAccount.contacts.length; index++) {
+              var contact = _this.myAccount.contacts[index];
+              if (Object.keys(foundUser)[0] == contact) {
+                found = true;
+              }
+            }
+            var d = new Date();
+            var timeNow = d.getTime();
+            var initializeChat = {
+              from: Object.keys(foundUser)[0],
+              outgoing: _this.myAccount.details,
+              incoming: foundUserDetails,
+              type: 'message',
+              messages: [
+                {
+                  from: user.uid,
+                  direction: 'outgoing',
+                  time: timeNow,
+                  data: _this.myAccount.details.firstName + ' has requested to add ' + contactEmail,
+                  unread: false,
+                }
+              ]
+            }
+            var initializeChatIncoming = {
+              from: _this.myAccount.details.uid,
+              outgoing: foundUserDetails,
+              incoming: _this.myAccount.details,
+              type: 'message',
+              messages: [
+                {
+                  direction: 'incoming',
+                  time: timeNow,
+                  data: _this.myAccount.details.firstName + ' has requested to add ' + contactEmail,
+                  unread: true,
+                }
+              ]
+            }
+            var initializeActiveChats = {
+                  chatId: Object.keys(foundUser)[0],
+                  chatType: 'message',
+                  closed: 'false',
+                  cooldown: 'false',
+                  isOpen: true,
+                  row: 1,
+                  styles: {
+                    height: '100%'
+                  },
+                  unreadMsgs: 0
+            }
+            var initializeActiveChatsIncoming = {
+                  chatId: user.uid,
+                  chatType: 'message',
+                  closed: 'false',
+                  cooldown: 'false',
+                  isOpen: true,
+                  row: 1,
+                  styles: {
+                    height: '100%'
+                  },
+                  unreadMsgs: 0
+            }
+            _this.myAccount.contacts.push(Object.keys(foundUser));
+            _this.myAccount.chatsActive.unshift(initializeActiveChats);
+            foundUser[Object.keys(foundUser)[0]].contacts.push(user.uid);
+            foundUser[Object.keys(foundUser)[0]].chatsActive.unshift(initializeActiveChatsIncoming);
+            while (_this.myAccount.settings.layout.maximumChats < _this.myAccount.chatsActive.length - 1) {
+                var last = _this.myAccount.chatsActive[_this.myAccount.chatsActive.length - 1];
+                var chatClosing = _this.myAccount.chatsActive.pop();
+                _this.ea.publish('ChatClosedSuccesfully', last.chatId);
+            }
+            if (found == false) {
+                firebase.database().ref('users/' + user.uid + '/contacts').set(_this.myAccount.contacts);
+                firebase.database().ref('users/' + user.uid + '/chatsActive').set(_this.myAccount.chatsActive);
+                firebase.database().ref('chats/' + user.uid + '/' + Object.keys(foundUser)[0]).set(initializeChat);
+                firebase.database().ref('chats/' + Object.keys(foundUser)[0] + '/' + user.uid).set(initializeChatIncoming);
+                firebase.database().ref('users/' + Object.keys(foundUser)[0] + '/chatsActive').set(foundUser[Object.keys(foundUser)[0]].chatsActive);
+                firebase.database().ref('users/' + Object.keys(foundUser)[0] + '/contacts').set(foundUser[Object.keys(foundUser)[0]].contacts);
+            }
          }
-         var d = new Date();
-         var timeNow = d.getTime();
-         var initializeChat = {
-           from: Object.keys(foundUser)[0],
-           type: 'message',
-           messages: [
-             {
-               from: this.user.uid,
-               time: timeNow,
-               data: _this.myAccount.details.firstName + ' has requested to add ' + contactEmail
-             }
-           ]
+         else {
+           _this.ea.publish('ContactNotFound', 'Error: Email entered was not found');
          }
-        _this.myAccount.contacts.push(Object.keys(foundUser));
-         if (found == false) {
-            firebase.database().ref('users/' + this.user.uid + '/contacts').set(_this.myAccount.contacts);
-            firebase.database().ref('chats/' + this.user.uid + '/' + Object.keys(foundUser)[0]).set(initializeChat);
-            firebase.database().ref('chats/' + Object.keys(foundUser)[0] + '/' + this.user.uid).set(initializeChat);
-         }
+         _this.isRequesting = false;
     });
   }
   getChats() {
@@ -819,24 +932,21 @@ export class WebAPI {
       }, latency);
     });
   }
+  
   getMsgs() {
+    var _this = this;
+    var user = firebase.auth().currentUser;
     this.isRequesting = true;
     return new Promise(resolve => {
-      setTimeout(() => {
-        let results = activeChats.map(x => {
-          return {
-            id: x.id,
-            chatId: x.chatId,
-            type: x.type,
-            from: x.from,
-            messages: x.messages
-          };
-        });
-        resolve(results);
-        this.isRequesting = false;
-      }, latency);
-    });
+      firebase.database().ref('chats' + user.uid).orderByChild('isOpen')
+      .equalTo(true)
+      .once('value', function(snap){
+          var foundChats = snap.val();
+          resolve(foundChats);
+      });
+    });    
   }
+
   getChannelList() {
     this.isRequesting = true;
     return new Promise(resolve => {
@@ -864,8 +974,17 @@ export class WebAPI {
     return found;
   }
   getContactDetails(id) {
-    let found = contacts.filter(x => x.id === id)[0];
-    return found;
+    this.isRequesting = true;
+    var _this = this;
+    return new Promise(resolve => {
+      console.log('finding contact: ', id);
+      let contactDB = _this.rootDB.child("users/" + id);
+      contactDB.once('value', function (accountDB) {
+        console.log('Found contact: ', accountDB.val().details);
+        resolve(accountDB.val().details);
+        _this.isRequesting = false;
+      });
+    });
   }
   getContactbyChatId(id) {
     let found = contacts.filter(x => x.chatId === id)[0];

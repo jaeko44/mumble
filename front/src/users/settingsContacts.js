@@ -8,17 +8,21 @@ import $ from 'jquery';
 export class settingsContacts {
 
   constructor(profile, api, ea) {
+    this.contacts = [];
+    this.response = '';
     ea.subscribe('myAccount', account => this.myAccount = account);
     ea.subscribe('contactLoaded', account => this.addContact(account));
+    ea.subscribe('ContactNotFound', response => this.response = response);
     this.api = api;
     this.profile = profile;
-    this.contacts = [];
     this.account = profile.getProfile();
     this.settings = profile.getSettings();
     this.contactEmail = '';
   }
 
   addContact(account) {
+    console.log('ADDING CONTACT IN SETTINGS CONTACTJS', account, this.contacts);
+    this.response = '';
     this.contacts.push(account);
   }
   removeContact(account) {

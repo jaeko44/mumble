@@ -16,9 +16,9 @@ export class ContactList {
     this.channels = [];
     this.chatsOpen = [];
     //Open chat, set unread messages to 0 and apply active class.
-    ea.subscribe(ChatOpened, contact => this.clear(contact));
+    ea.subscribe('ChatOpenedSuccesfully', chatId => this.clear(chatId));
     //Remove active class.
-    ea.subscribe(ChatClosed, contact => this.close(contact)); 
+    ea.subscribe('ChatClosedSuccesfully', contact => this.close(chatId)); 
     ea.subscribe('contactsLoaded', contacts => this.contacts = contacts); 
     ea.subscribe('contactLoaded', contact => this.addContact(contact)); 
     ea.subscribe('channelsLoaded', contacts => this.contacts = contacts); 
@@ -29,7 +29,10 @@ export class ContactList {
   }
 
   addContact(contact) {
-    this.contacts.push(contact);
+    if (contact) {
+      console.log('Contact list - adding contact', contact);
+      this.contacts.push(contact);
+    }
   }
 
   getChannels() {
@@ -39,16 +42,16 @@ export class ContactList {
     return this.api.getContactbyChatId(chatId);
   }
   open(contact) {
-    this.ea.publish(new ChatsUpdated(contact));
+    this.ea.publish('ChatOpened', contact.chatId);
   }
   
-  clear(contact) {
-    var foundContact = this.contacts.filter(x => x.chatId === contact.contact.chatId)[0];
-    var foundChannel = this.channels.filter(x => x.chatId === contact.contact.chatId)[0];
-    var foundContact = false;
+  clear(chatId) {
+    console.log('clear called', this.contacts);
     var foundChannel = false;
+    var foundContact = false;
     for (var i in this.contacts) {
-     if (this.contacts[i].chatId == contact.contact.chatId) {
+     if (this.contacts[i].chatId == chatId) {
+        this.contacts[i].isOpen = this.contacts[i].isOpen || true;
         this.contacts[i].isOpen = true;
         this.contacts[i].unreadMsgs = 0;
         this.contacts[i].alert = 0;
@@ -57,7 +60,7 @@ export class ContactList {
       }
     }
     for (var i in this.channels) {
-     if (this.channels[i].chatId == contact.contact.chatId) {
+     if (this.channels[i].chatId == chatId) {
         this.channels[i].isOpen = true;
         this.channels[i].unreadMsgs = 0;
         foundChannel = true;
@@ -66,14 +69,13 @@ export class ContactList {
     }
     if (foundChannel && foundContact == false) {
       console.log('not found: (contact.chatId) ', contact.contact.chatId);
-      console.log('Contact of not found', contact)
     }
   }
-  close(contact) {
+  close(chatId) {
     var foundContact = false;
     var foundChannel = false;
     for (var i in this.contacts) {
-     if (this.contacts[i].chatId == contact.contact.chatId) {
+     if (this.contacts[i].chatId == chatId) {
         this.contacts[i].isOpen = false;
         this.contacts[i].unreadMsgs = 0;
         this.contacts[i].alert = 0;
@@ -82,7 +84,7 @@ export class ContactList {
       }
     }
     for (var i in this.channels) {
-     if (this.channels[i].chatId == contact.contact.chatId) {
+     if (this.channels[i].chatId == chatId) {
         this.channels[i].isOpen = false;
         this.channels[i].unreadMsgs = 0;
         foundChannel = true;
@@ -90,8 +92,7 @@ export class ContactList {
       }
     }
     if (foundChannel && foundContact == false) {
-      console.log('not found: (contact.chatId) ', contact.contact.chatId);
-      console.log('Contact of not found', contact)
+      console.log('not found: ', chatId);
     }
   }
 

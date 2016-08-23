@@ -3,6 +3,7 @@
   <div class="row">
     <div class="container">
       <h1>Contacts:</h1>
+      <h2 style="text-align: center; color: red">${response}</h2>
       <div class="x_content">
         <div class="row">
           <div class="col-xs-4 col-xs-offset-3 text-center" style="margin-bottom: 15px;">
@@ -14,20 +15,20 @@
             </button>
           </div>
           <div class="clearfix"></div>
-          <div show.bind="$index > 0" class="col-md-4 col-sm-4 col-xs-12 profile_details" repeat.for="contact of contacts | filter:searchTerm">
+          <div class="col-md-4 col-sm-4 col-xs-12 profile_details" repeat.for="contact of contacts | filter:searchTerm">
             <div class="well profile_view">
               <div class="col-sm-12"> ${$index}
-                <h4 class="brief"><i>${contact.details.title}</i></h4>
+                <h4 class="brief"><i>${contact.title}</i></h4>
                 <div class="left col-xs-7">
-                  <h2 style="font-size: 22px;" >${contact.details.firstName} ${contact.details.lastName}</h2>
-                  <p><strong>About: </strong> ${contact.details.about}</p>
+                  <h2 style="font-size: 22px;" >${contact.details.firstName} ${contact.lastName}</h2>
+                  <p><strong>About: </strong> ${contact.about}</p>
                   <ul class="list-unstyled">
-                    <li><i class="fa fa-envelope"></i> Email: ${contact.details.email}</li>
-                    <li><i class="fa fa-phone"></i> Phone #: ${contact.details.phone}</li>
+                    <li><i class="fa fa-envelope"></i> Email: ${contact.email}</li>
+                    <li><i class="fa fa-phone"></i> Phone #: ${contact.phone}</li>
                   </ul>
                 </div>
                 <div class="right col-xs-5 text-center">
-                  <img src="images/${contact.details.icon}" alt="" class="img-circle img-responsive">
+                  <img src="images/${contact.icon}" alt="" class="img-circle img-responsive">
                 </div>
               </div>
               <div class="col-xs-12 bottom text-center">

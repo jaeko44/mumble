@@ -1,23 +1,23 @@
 <template>
     <require from="./limit-to"></require>
     <require from="./bootstrap-tooltip"></require>
-    <div repeat.for="chat of extractedChats | limitTo:layout.maximumChats" class="animate-chat layout-${layout.id} chats-row-${layout.chatsPerRow}" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'chats-row-closed' : ''">
-        <div css="height: ${chatsActive[chat.tmpId - 1].styles.height};" class="x_panel" class.bind="chatsActive[chat.tmpId - 1].closed == 'true'  ? 'closedchat' : '' " id="chat-${chat.tmpId}">
+    <div show.bind="chat.messages != null" repeat.for="chat of extractedChats | limitTo:layout.maximumChats + 1" class="animate-chat layout-${layout.id} chats-row-${layout.chatsPerRow}" class.bind="chatsActive[$index + 1].closed == 'true'  ? 'chats-row-closed' : ''">
+        <div css="height: ${chatsActive[$index + 1].styles.height};" class="x_panel" class.bind="chatsActive[$index + 1].closed == 'true'  ? 'closedchat' : '' " id="chat-${$index}">
             <div class="x_title">
                 <div class="col-md-12 pad-left">
                     <h2 if.bind="chat.type == 'channel'">
                         <i class="fa fa-hashtag"></i> 
-                        ${channelDetails(chat.from).channelName}
+                        ${channelDetails(chat.from).channelName} 
                         <small>${chat.type}</small>
                     </h2>
                     <h2 if.bind="chat.type == 'message'">
-                        <i class="fa" class.bind="userDetails(chat.from).status == 'online' ? 'fa-circle online' :
-                                                  userDetails(chat.from).status == 'away' ? 'fa-circle away' : ''"></i> 
+                        <i class="fa" class.bind="chat.incoming.status == 'online' ? 'fa-circle online' :
+                                                  chat.incoming.status == 'away' ? 'fa-circle away' : ''"></i> 
                         <i class="fa fa-user"></i> 
-                        ${userDetails(chat.from).firstName}
+                        ${chat.incoming.firstName}
                         <small>${chat.type}</small>
                     </h2>
-                    <a click.trigger="scroll(chat.tmpId)" show.bind="chatsActive[chat.tmpId - 1].unreadMsgs >= 1" class="badge bg-red unread-msgs">${chatsActive[chat.tmpId - 1].unreadMsgs} messages unread</a>
+                    <a click.trigger="scroll($index)" show.bind="chatsActive[$index + 1].unreadMsgs >= 1" class="badge bg-red unread-msgs">${chatsActive[$index + 1].unreadMsgs} messages unread</a>
                     <ul class="nav navbar-right panel_toolbox">
                     <li class="dropdown">
                         <a aria-expanded="false" class="dropdown-toggle"
@@ -25,7 +25,7 @@
                         "button"><i class="fa fa-chevron-down"></i></a>
                         <ul class="dropdown-menu" role="menu">
                             <li>
-                                <a click.trigger="appendMessage('received message', 2, chat.tmpId)" href="#"><i class="fa fa-meh-o"></i>
+                                <a click.trigger="appendMessage('received message', 2, $index)" href="#"><i class="fa fa-meh-o"></i>
                                 EXAMPLE MESSAGE BACK</a>
                             </li>
                             <li>
@@ -34,12 +34,12 @@
                             </li>
                         </ul>
                     </li>
-                    <li show.bind="chatsActive[chat.tmpId - 1].closed == 'true'">
-                        <a click.trigger="open(chat.tmpId)" class="open-link"><i class=
+                    <li show.bind="chatsActive[$index + 1].closed == 'true'">
+                        <a click.trigger="open($index)" class="open-link"><i class=
                         "fa fa-plus-square"></i></a>
                     </li>
-                    <li show.bind="chatsActive[chat.tmpId - 1].closed == 'false'">
-                        <a click.trigger="close(chat.tmpId)" class="close-link"><i class=
+                    <li show.bind="chatsActive[$index + 1].closed == 'false'">
+                        <a click.trigger="close($index)" class="close-link"><i class=
                         "fa fa-minus-square"></i></a>
                     </li>
                 </ul>
@@ -47,21 +47,32 @@
                 <div class="clearfix"></div>
             </div>
             <div class="x_content">
-                <div id="chat-content-${chat.tmpId}" class="dashboard-widget-content">
+                <div id="chat-content-${$index}" class="dashboard-widget-content">
                     <div class="col-md-12">
                         <ul class="list-unstyled msg_list">
-                            <li id="chat-${chat.tmpId}-message-${$index}" class="animate-chat" 
+                            <li id="chat-${$index}-message-${$index}" class="animate-chat" 
                             repeat.for="message of chat.messages" class.bind="message.from == 1 ? 'message_dark' : 
                                                                               message.unread == true ? 'message_highlighted' :
                                                                               message.unread == 'cooling' ? 'cooldown message_highlighted' : ''">
                                 <a>
-                                    <span class="image">
-                                        <img alt="img" src="images/${userDetails(message.from).icon}">
-                                    </span>
-                                    <span>
-                                        <span class="message-title">${userDetails(message.from).firstName} ${userDetails(message.from).lastName}</span>
-                                        <bootstrap-tooltip id="chat-${chat.tmpId}-timestamp-${$index}" data-toggle="tooltip" data-placement="top" title="" class="time">${timeStamps[chat.tmpId - 1][$index]}</bootstrap-tooltip>
-                                    </span>
+                                    <div if.bind="message.direction == 'outgoing'">
+                                        <span class="image">
+                                            <img alt="img" src="images/${userChat[$parent.$index].outgoing.icon}">
+                                        </span>
+                                        <span>
+                                            <span class="message-title">${userChat[$parent.$index].outgoing.firstName} ${userChat[$parent.$index].outgoing.lastName}</span>
+                                            <bootstrap-tooltip id="chat-${$parent.$index}-timestamp-${$index}" data-toggle="tooltip" data-placement="top" title="" class="time">${timeStamps[$parent.$index][$index]}</bootstrap-tooltip>
+                                        </span>
+                                    </div>
+                                    <div if.bind="message.direction == 'incoming'">
+                                        <span class="image">
+                                            <img alt="img" src="images/${userChat[$parent.$index].incoming.icon}">
+                                        </span>
+                                        <span>
+                                            <span class="message-title">${userChat[$parent.$index].incoming.firstName} ${userChat[$parent.$index].incoming.lastName}</span>
+                                            <bootstrap-tooltip id="chat-${$index}-timestamp-${$index}" data-toggle="tooltip" data-placement="top" title="" class="time">${timeStamps[$parent.$index][$index]}</bootstrap-tooltip>
+                                        </span>
+                                    </div>
                                     <span class="message">
                                         ${message.data}
                                         <div if.bind="message.attachments" id="attachments">
@@ -83,16 +94,16 @@
             </div>
             <form autocomplete="off">
                 <div class="form-group">
-                    <div class="col-lg-9 col-md-12" id="myDropZone-${chat.tmpId}">
-                        <input id="chat-input-${chat.tmpId}"" value.bind="tempMessage[chat.tmpId]" class="form-control tall-input"
-                        placeholder="Message..." tabindex="${chat.tmpId}" type="text">
+                    <div class="col-lg-9 col-md-12" id="myDropZone-${$index}">
+                        <input id="chat-input-${$index}"" value.bind="tempMessage[$index]" class="form-control tall-input"
+                        placeholder="Message..." tabindex="${$index}" type="text">
                     </div>
                     <div class="col-lg-3 col-md-12">
                         <label class="full control-label" style="float:right"><a class=
-                        "btn btn-app" click.trigger="sendMessage(chat.tmpId)"><i class="fa fa-envelope-o"></i>
+                        "btn btn-app" click.trigger="sendMessage($index)"><i class="fa fa-envelope-o"></i>
                         send</a></label>
                     </div>
-                    <input type="submit" style="display: none" click.trigger="sendMessage(chat.tmpId)" value="Submit">
+                    <input type="submit" style="display: none" click.trigger="sendMessage($index)" value="Submit">
                 </div>
             </form>
         </div>
