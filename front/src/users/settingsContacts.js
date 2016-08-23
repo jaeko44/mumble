@@ -26,10 +26,9 @@ export class settingsContacts {
     this.contacts.push(account);
   }
   removeContact(account) {
-    console.log('Removing contact: ', account);
-    this.api.removeContact(account.details.email);
-    for(var i = 1; i < this.contacts.length; i++) {
-      if(this.contacts[i].details.email == account.details.email) {
+    this.api.removeContact(account.email);
+    for(var i = 0; i < this.contacts.length; i++) {
+      if(this.contacts[i].email == account.email) {
           this.contacts.splice(i, 1);
           break;
       }

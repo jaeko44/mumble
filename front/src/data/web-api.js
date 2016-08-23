@@ -151,391 +151,6 @@ let channels = [
 ];
 
 id = 0;
-let activeChats = [
-  {
-    id: 1,
-    type: 'message', //message or channel
-    from: 2, //What channel or user it is from
-    messages: [ //array of messages (store only upto 100 messages locally, rest should be archived.)
-      {
-        from: 2, //user who sent this message
-        data: 'Hey bro, I really need your help on some stuff..', //message contents
-        date: '', time: '1471129731354' //the timestamp utilizes JS Date.getTime() method which returns the number of milliseconds since 1970
-      },
-      {
-        from: 1,
-        data: 'What do you need?',
-        date: '', time: '1471125331354'
-      },
-      {
-        from: 2,
-        data: 'Im stuck on this issue, and cannot debug it.. Can you help?',
-        date: '', time: '1471129323354',
-        attachments: [
-          {
-            type: 'image',
-            id: 'error.png'
-          }
-        ],
-      },
-      {
-        from: 1,
-        data: 'That means that you are breaking the syntax rules, you need to check the documentation and follow their parameters.',
-        date: '', time: '1471129723354'
-      }
-    ]
-  },
-  {
-    id: 2,
-    type: 'message',
-    from: 3,
-    messages: [
-      {
-        from: 1,
-        data: 'Haha dude, have you seen the project we had to review?', //message contents
-        date: '', time: '1471121731354', //the date & time this was sent on
-        unread: false
-      },
-      {
-        from: 3,
-        data: 'What about it??',
-        date: '', time: '1471122731354',
-        unread: false
-      },
-      {
-        from: 1,
-        data: 'It\'s horrible! Ours is like 5 times better and is a real usecase!',
-        date: '', time: '1471123731354',
-        unread: false
-      },
-      {
-        from: 3,
-        data: 'Good! I hope our marks reflect that...',
-        date: '', time: '1471129321354',
-        unread: false
-      },
-      {
-        from: 3,
-        data: 'oi man i need help...',
-        date: '', time: '1471129421354',
-        unread: true
-      },
-      {
-        from: 3,
-        data: 'r u there???',
-        date: '', time: '1471129521354',
-        unread: true
-      },
-      {
-        from: 3,
-        data: 'seriously!',
-        date: '', time: '1471129611354',
-        unread: true
-      },
-      {
-        from: 3,
-        data: 'hellloooo',
-        date: '', time: '1471129811354',
-        unread: true
-      }
-    ]
-  },
-  {
-    id: 3,
-    type: 'message',
-    from: 4,
-    messages: [
-      {
-        from: 4,
-        data: 'The weather is crazy! Can you pick me up!', //message contents
-        date: '', time: '1471129731354' //the date & time this was sent on
-      },
-      {
-        from: 1,
-        data: 'My cars in the repair shop man, Im sorry. Maybe angela can pick you up.',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 4,
-        data: 'She\'s stuck up! I doubt it',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'I can tell her for you if you want??.',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 4,
-        data: 'Please do asap im waiting in the rain... this is horrible',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'ok one sec brb',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 4,
-        data: 'what did sshe say???',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'shes on her way now, see not so bad.',
-        date: '', time: '1471129731354'
-      }
-    ]
-  },
-  {
-    id: 4,
-    type: 'message',
-    from: 5,
-    messages: [
-      {
-        from: 5,
-        data: 'lololol so bored wanna play league of legends??', //message contents
-        date: '', time: '1471129731354' //the date & time this was sent on
-      },
-      {
-        from: 1,
-        data: 'yee lets go ranked!',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 5,
-        data: 'pls carry me ye?',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'im the man for that job :D',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'yee lets go ranked!',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 5,
-        data: 'pls carry me ye?',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'im the man for that job :D',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'yee lets go ranked!',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 5,
-        data: 'Im bored, lets do something?',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: '',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'yee lets go ranked!',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 5,
-        data: 'Im bored, lets do something?',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'ummmm....',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'How about a game of league??',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 5,
-        data: 'Why the hell not?',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'Sounds like a plan, ranked or normals?',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'I wanna rank tbh',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 5,
-        data: 'pls carry me ye?',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'im the man for that job :D',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'yee lets go ranked!',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 5,
-        data: 'now that\'s what im talking about!',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'cool stuff',
-        date: '', time: '1471129731354'
-      }
-    ]
-  },
-  {
-    id: 5,
-    type: 'message',
-    from: 6,
-    messages: [
-      {
-        from: 1,
-        data: 'Oi do you have task4 ready so we can submit the assignment?',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 6,
-        data: 'No you do it, I dont like working on this assignment',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'That\s unsportsmanlike man!',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 6,
-        data: 'IDC ! I got better things to worry about!',
-        date: '', time: '1471129731354'
-      }
-    ]
-  },
-  {
-    id: 6,
-    type: 'channel',
-    from: 1,
-    messages: [
-      {
-        from: 5,
-        data: 'Can someone give me the docs of the framework Aurelia we are using?!',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'Here you go!',
-        date: '', time: '1471129731354',
-        attachments: [
-          {
-            type: 'web',
-            id: 'http://aurelia.io/hub.html#/doc/persona/developer'
-          }
-        ]
-      },
-      {
-        from: 4,
-        data: 'I\'s im learning it quickly! :)',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 2,
-        data: 'Yeah, and its simple and effective.',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 3,
-        data: 'Dont forget the backend',
-        date: '', time: '1471129731354'
-      }
-    ]
-  },
-  {
-    id: 7,
-    type: 'channel',
-    from: 2,
-    messages: [
-      {
-        from: 5,
-        data: 'Can someone link me with a good Ember tutorial?',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: '',
-        date: '', time: '1471129731354',
-        attachments: [
-          {
-            type: 'video',
-            id: 'T1SC44NJA_A'
-          }
-        ]
-      },
-      {
-        from: 4,
-        data: 'Very informative.',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 3,
-        data: 'Who can link me with a borat movie!',
-        date: '', time: '1471129731354'
-      }
-    ]
-  },
-  {
-    id: 8,
-    type: 'channel',
-    from: 3,
-    messages: [
-      {
-        from: 5,
-        data: 'What does the current logo look like?',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 1,
-        data: 'This is the temporary logo, just waiting on Morgan to get the logo done.',
-        date: '', time: '1471129731354',
-        attachments: [
-          {
-            type: 'image',
-            id: 'logo-attachment.png'
-          }
-        ]
-      },
-      {
-        from: 3,
-        data: 'I think we should just keep this tbh.',
-        date: '', time: '1471129731354'
-      },
-      {
-        from: 2,
-        data: 'Looks good enough, but any imrpovement is acceptable!',
-        date: '', time: '1471129731354'
-      }
-    ]
-  }
-]
 
 let mySettings = {
   id: 1,
@@ -598,7 +213,7 @@ export class WebAPI {
           let contactExtract = contact.val();
           console.log('finding contact: ', contact);
           if (contactExtract != "uid") {
-            let contactDB = _this.rootDB.child("users/" + contactExtract);
+            let contactDB = _this.rootDB.child("users/" + contactExtract[0]);
             contactDB.once('value', function (accountDB) {
               var value = accountDB.val();
               console.log('Publishing contact: ', accountDB.val().details);
@@ -610,7 +225,7 @@ export class WebAPI {
           let contactExtract = contact.val();
           console.log('finding contact: ', contact);
           if (contactExtract != "uid") {
-            let contactDB = _this.rootDB.child("users/" + contactExtract);
+            let contactDB = _this.rootDB.child("users/" + contactExtract[0]);
             contactDB.once('value', function (accountDB) {
               var value = accountDB.val();
               console.log('Publishing contact: ', accountDB.val().details);
@@ -633,6 +248,18 @@ export class WebAPI {
         _this.allChatsDB.on('child_added', function (chatDB) {
             console.log('chatLoaded CALLED: ', chatDB.val());
             _this.ea.publish('chatLoaded', chatDB.val());
+            let chatMessages = _this.rootDB.child("chats/" + user.uid + "/" + chatDB.val().from + "/messages");
+            console.log("Monitoring: chats/" + user.uid + "/" + chatDB.val().from + "/messages");
+            chatMessages.on('child_added', function (messageDB) {
+              if (messageDB.val()) {
+                var appendMessage = {
+                  chatId: chatDB.val(),
+                  message: messageDB.val()
+                }
+                console.log('Appending message', appendMessage);
+                _this.ea.publish('appendMessage', appendMessage);
+              }
+            });
         });
       }
       else {
@@ -641,7 +268,13 @@ export class WebAPI {
       }
     });
   }
-  
+  pushMessage(chatId, message, msgId) {
+    console.log('This chatID sending to: ', chatId);
+    console.log('This message sending: ', message);
+    firebase.database().ref('chats/' + this.user.uid + '/' + chatId + '/messages/' + msgId).set(message);
+    message.direction = 'incoming';
+    firebase.database().ref('chats/' + chatId + '/' + this.user.uid + '/messages/' + msgId).set(message);
+  }
   extractData(chatsActive) {
     var _this = this;
     _this.isRequesting = true;
@@ -745,12 +378,15 @@ export class WebAPI {
     console.log('added user');
   }
   addContact(contactEmail) {
+    if (contactEmail == this.user.email) {
+      this.ea.publish('ContactNotFound', 'Error: You cannot add your self');
+      return;
+    }
     var _this = this;
     this.isRequesting = true;
     console.log('Looking for: ', contactEmail);
     firebase.database().ref('users').orderByChild('details/email')
-    .startAt(contactEmail)
-    .endAt(contactEmail)
+    .equalTo(contactEmail)
     .once('value', function(snap){
          var foundUser = snap.val();
          if (foundUser) {
@@ -853,8 +489,7 @@ export class WebAPI {
     var _this = this;
     console.log('Looking for: ', contactEmail);
     firebase.database().ref('users').orderByChild('details/email')
-    .startAt(contactEmail)
-    .endAt(contactEmail)
+    .equalTo(contactEmail)
     .once('value', function(snap){
          var foundUser = snap.val();
          var user = firebase.auth().currentUser;
@@ -865,8 +500,7 @@ export class WebAPI {
     var _this = this;
     console.log('Looking for: ', contactEmail);
     firebase.database().ref('users').orderByChild('details/email')
-    .startAt(contactEmail)
-    .endAt(contactEmail)
+    .equalTo(contactEmail)
     .once('value', function(snap){
          var foundUser = snap.val();
          var user = firebase.auth().currentUser;

@@ -33,8 +33,23 @@ export class chatTile {
         ea.subscribe('myAccount', account => this.accountLoaded(account));
         ea.subscribe('contactsLoaded', contacts => this.contacts = contacts); 
         ea.subscribe('contactLoaded', contact => this.addContact(contact)); 
+        ea.subscribe('appendMessage', messageContents => this.appendMessageNew(messageContents)); 
         ea.subscribe('chatLoaded', chat => this.chatLoaded(chat));
         console.log('sending this chatsActive', this.chatsActive);
+    }
+    appendMessageNew(messageContents) {
+        var chatId = messageContents.chatId;
+        var message = messageContents.message;
+        this.extractedChats.forEach(function(chat) {
+            if (chat.from == chatId) {
+                chat.push(message);
+            }
+        }, this);
+        this.allChats.forEach(function(chat) {
+            if (chat.from == chatId) {
+                chat.push(message);
+            }
+        }, this);
     }
     addContact(contact) {
         if (contact) {
@@ -127,7 +142,6 @@ export class chatTile {
             }
             else {
                 for (var index = 0; index < chat.messages.length; index++) {
-                    console.log('Read message: ', chat.messages[index].data);
                     this.updateTimeStamp(chatId, index);
                 }
             }
@@ -181,7 +195,7 @@ export class chatTile {
         this.api.extractData(chatsActive).then(chats => this.chatsLoaded(chats));
     }
     chatsLoaded(chats) {
-        this.chatsExtracted = true;
+        this.chatsExtracted = chats;
         console.log('This extractedChats now: ', this.extractedChats);
         chats.forEach(function (chat) { console.log('chat: ', chat); });
         this.updateTimeStamps();
@@ -341,8 +355,10 @@ export class chatTile {
                         outgoing: chat.outgoing,
                         incoming: chat.incoming
                     }
+
                     _this.userChat.push(userChat);
                     this.extractedChats.push(chat);
+                    console.log('This extractedChats now after openchats: ', this.extractedChats);
                 }
             }
         }, this);
@@ -436,6 +452,7 @@ export class chatTile {
         }
         let msgId = this.extractedChats[chatId].messages.length;
         this.open(chatId + 1);
+        this.api.pushMessage(this.extractedChats[chatId].from, message, this.extractedChats[chatId].messages.length);
         this.extractedChats[chatId].messages.push(message);
         var _this = this;
         setTimeout(function () {

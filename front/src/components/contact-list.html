@@ -5,7 +5,7 @@
             <i class="fa fa-hashtag"></i> Channels <span class="fa fa-chevron-down"></span>
         </a>
         <ul class="nav child_menu" style="display: none;">
-            <li class="current-page"><a href="#">New Channel <span class="fa fa-plus"></span></a></li>
+            <li class="current-page"><a>New Channel <span class="fa fa-plus"></span></a></li>
             <li click.trigger="open(channel)" repeat.for="channel of channels"  class.bind="channel.isOpen == true ? 'selected' : ''"><a href="#">${channel.channelName}</a></li>
         </ul>
     </li>
@@ -14,7 +14,8 @@
             <i class="fa fa-envelope"></i> Messages <span class="fa fa-chevron-down"></span>
         </a>
         <ul class="nav child_menu" style="display: none;">
-            <li class="current-page"><a href="#">New Message <span class="fa fa-plus"></span></a></li>
+            <li class="current-page"><a route-href="route: settings;
+                                                    params.bind: { page: 'contacts' }" >Add Contact<span class="fa fa-plus"></span></a></li>
             <li click.trigger="open(contact)" repeat.for="contact of contacts" class.bind="contact.status == 'online' && contact.isOpen == true ? 'online selected' :
                                                                                             contact.status == 'away' && contact.isOpen == true ? 'away selected' :
                                                                                             contact.status == 'away' ? 'away' :
