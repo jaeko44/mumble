@@ -50,7 +50,7 @@
                 <div id="chat-content-${$index}" class="dashboard-widget-content">
                     <div class="col-md-12">
                         <ul class="list-unstyled msg_list">
-                            <li id="chat-${$index}-message-${$index}" class="animate-chat" 
+                            <li id="chat-${$parent.$index}-message-${$index}" class="animate-chat" 
                             repeat.for="message of chat.messages" class.bind="message.from == 1 ? 'message_dark' : 
                                                                               message.unread == true ? 'message_highlighted' :
                                                                               message.unread == 'cooling' ? 'cooldown message_highlighted' : ''">
@@ -70,7 +70,7 @@
                                         </span>
                                         <span>
                                             <span class="message-title">${userChat[$parent.$index].incoming.firstName} ${userChat[$parent.$index].incoming.lastName}</span>
-                                            <bootstrap-tooltip id="chat-${$index}-timestamp-${$index}" data-toggle="tooltip" data-placement="top" title="" class="time">${timeStamps[$parent.$index][$index]}</bootstrap-tooltip>
+                                            <bootstrap-tooltip id="chat-${$parent.$index}-timestamp-${$index}" data-toggle="tooltip" data-placement="top" title="" class="time">${timeStamps[$parent.$index][$index]}</bootstrap-tooltip>
                                         </span>
                                     </div>
                                     <span class="message">

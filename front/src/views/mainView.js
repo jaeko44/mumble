@@ -1,13 +1,15 @@
 import {Profile} from '../app/profile';
+import {WebAPI} from '../data/web-api';
 import {inject} from 'aurelia-framework';
 import { EventAggregator } from 'aurelia-event-aggregator';
 import * as toastr from "toastr";
 
-@inject(Profile, EventAggregator)
+@inject(Profile, EventAggregator, WebAPI)
 export class mainView {
 
-  constructor(profile, ea){
+  constructor(profile, ea, api){
     this.ea = ea;
+    this.api = api;
     ea.subscribe('saveTheme', theme => this.updateTheme(theme));
     ea.subscribe('updateTheme', theme => this.updateTheme(theme));
     ea.subscribe('isPhone', isPhone => this.updatePhoneClass(isPhone));
@@ -56,5 +58,6 @@ export class mainView {
     }, function(error) {
       alert('Failed to logout :(');
     });
+    this.api.setAccountStatus('offline');
   }
 }

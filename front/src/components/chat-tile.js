@@ -167,7 +167,7 @@ export class chatTile {
         else if (minutesDifference >= 1 && minutesDifference <= hours) {
             this.timeStamps[tmpId][messageId] = minutesDifference + ' minutes ago';
         }
-        else if (minutesDifference >= hours && minutesDifference / hours > 12 && minutesDifference / hours < 24) {
+        else if (minutesDifference >= hours && minutesDifference / hours < 24) {
             let hoursAgo = Math.floor(minutesDifference / hours);
             let remainder = minutesDifference % hours;
             this.timeStamps[tmpId][messageId] = hoursAgo + ' hours ago';
@@ -307,7 +307,7 @@ export class chatTile {
         this.chatsActive = purgedChat;
         this.ea.publish('ChatOpenedSuccesfully', chatId);
         setTimeout(function () {
-            let contentId = "chat-content-" + 1; //The chatbox ID.
+            let contentId = "chat-content-" + 0; //The chatbox ID.
             let contentEl = document.getElementById(contentId);
             $('#' + contentId).animate({ scrollTop: contentEl.scrollHeight }, 300); //We scroll to the bottom whenever we send a message.
             _this.updateTimeStamps();

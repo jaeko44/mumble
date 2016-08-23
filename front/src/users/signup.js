@@ -38,6 +38,7 @@ export class register {
                     email: _this.email
                 }
                 _this.ea.publish('registerAccount', newUser);
+                _this.api.loadAccount();
                 location.assign('#/home');
             }
         });

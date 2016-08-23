@@ -193,6 +193,7 @@ export class WebAPI {
   }
   loadAccount() {
     var _this = this;
+    this.isLoaded = false;
     firebase.auth().onAuthStateChanged(function (user) { //MAKE SURE ACCOUNT IS LOGGED IN
       if (user) {
         _this.user = user;
@@ -208,6 +209,7 @@ export class WebAPI {
           _this.isRequesting = false;
           _this.isLoaded = true;
         });
+        _this.isRequesting = true;
         _this.contactsDB = _this.rootDB.child("users/" + user.uid + "/contacts");
         _this.contactsDB.on('child_added', function (contact) {
           let contactExtract = contact.val();
@@ -218,9 +220,11 @@ export class WebAPI {
               var value = accountDB.val();
               console.log('Publishing contact: ', accountDB.val().details);
               _this.ea.publish('contactLoaded', accountDB.val().details);
+              _this.isRequesting = false;
             });
           }
         });
+        _this.isRequesting = true;
         _this.contactsDB.on('child_removed', function (contact) {
           let contactExtract = contact.val();
           console.log('finding contact: ', contact);
@@ -230,9 +234,11 @@ export class WebAPI {
               var value = accountDB.val();
               console.log('Publishing contact: ', accountDB.val().details);
               _this.ea.publish('contactRemoved', accountDB.val().details);
+              _this.isRequesting = false;
             });
           }
         });
+        _this.isRequesting = true;
         _this.chatsActiveDB = _this.rootDB.child("users/" + user.uid + "/chatsActive");
         _this.chatsActiveDB.on('child_added', function (chatActive) {
           let chatActiveExtract = chatActive.val();
@@ -241,9 +247,11 @@ export class WebAPI {
           chatFound.once('value', function (chatDB) {
             if (chatDB.val()) {
               _this.ea.publish('ChatOpened', chatDB.val());
+              _this.isRequesting = false;
             }
           });
         });
+        _this.isRequesting = true;
         _this.allChatsDB = _this.rootDB.child("chats/" + user.uid);
         _this.allChatsDB.on('child_added', function (chatDB) {
             console.log('chatLoaded CALLED: ', chatDB.val());
@@ -258,6 +266,7 @@ export class WebAPI {
                 }
                 console.log('Appending message', appendMessage);
                 _this.ea.publish('appendMessage', appendMessage);
+                _this.isRequesting = false;
               }
             });
         });
@@ -268,12 +277,31 @@ export class WebAPI {
       }
     });
   }
+  changePassword(currPass, newPass) {
+    this.isRequesting = true;
+    var _this = this;
+    if (this.user) {
+      this.user.updatePassword(newPass).then(function() {
+        _this.isRequesting = false;
+        _this.ea.publish('successSecurity', "Successfully changed password");
+      }, function(error) {
+        _this.isRequesting = false;
+        _this.ea.publish('errorSecurity', error);
+      });
+    }
+    else {
+      _this.isRequesting = false;
+      _this.ea.publish('errorSecurity', "Please reset your session by logging in again");
+    }
+  }
   pushMessage(chatId, message, msgId) {
+    _this.isRequesting = true;
     console.log('This chatID sending to: ', chatId);
     console.log('This message sending: ', message);
     firebase.database().ref('chats/' + this.user.uid + '/' + chatId + '/messages/' + msgId).set(message);
     message.direction = 'incoming';
     firebase.database().ref('chats/' + chatId + '/' + this.user.uid + '/messages/' + msgId).set(message);
+    this.isRequesting = false;
   }
   extractData(chatsActive) {
     var _this = this;

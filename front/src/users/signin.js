@@ -34,6 +34,7 @@ export class login {
             if (user) {
                 _this.showSpin = false;
                 console.log('User uid, token : ', user.uid, user.getToken());
+                _this.api.loadAccount();
                 location.assign('#/home');
             }
         });

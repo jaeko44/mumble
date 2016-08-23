@@ -12,7 +12,7 @@
           <div class="right_col" role="main">
             <compose show.bind="page == 'home'" view="../app/chatMain.html"></compose>
             <compose show.bind="page == 'profile'" view-model="../users/settingsProfile"></compose>
-            <compose show.bind="page == 'security'" view="../users/settingsSecurity.html"></compose>
+            <compose show.bind="page == 'security'" view-model="../users/settingsSecurity"></compose>
             <compose show.bind="page == 'appearance'" view-model="../users/settingsAppearance"></compose>
             <compose show.bind="page == 'channels'" view-model="../users/settingsChannels"></compose>
             <compose show.bind="page == 'contacts'" view-model="../users/settingsContacts"></compose>
