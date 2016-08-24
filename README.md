@@ -1,5 +1,4 @@
 # mumble
-<<<<<<< HEAD
 
 Mumble is a self hosted secure chat application meant for businesses and teams to collaborate inspired by Slack.
 
