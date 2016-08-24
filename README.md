@@ -1,9 +1,10 @@
 # mumble
+<<<<<<< HEAD
 
-Mumble is a self hosted secure chat application meant for businesses and teams to collaborate. 
+Mumble is a self hosted secure chat application meant for businesses and teams to collaborate inspired by Slack.
 
 ## HTML Demo
-[Mumble chat demo](http://philipos.me/mumble)
+[Mumble chat demo](http://mumble.philipos.me:9000)
 
 ## Front-End Dependancies:
 ```
@@ -11,6 +12,8 @@ Mumble is a self hosted secure chat application meant for businesses and teams t
 * Font Awesome
 * jQuery
 * AureliaJS
+* Firebase
+* nprogress
 ```
 
 ## Development Dependancies:
@@ -27,25 +30,19 @@ include 'framework' explicit code.
 
 * Install NodeJS >= 4.x
     * You can [download it here](https://nodejs.org/en/).
-* NPM >= 3
-    * This will automatically be installed with node, if it is already installed then make sure it is updated to >= version 3.
+* NPM latest version
+    * This will automatically be installed with node, if it is already installed then make sure to update it via npm install npm -g.
 
-Once you have the prerequisites installed, you can install the Aurelia CLI itself. From the command line, use npm to install the CLI globally:
-
-```
-npm install aurelia-cli -g
+Once you have the prerequisites installed, you can install the Aurelia CLI itself. From the command line, use npm to install the CLI globally also ensure that NPM is up to date:
 
 ```
-
-N̶o̶w̶,̶ ̶n̶a̶v̶i̶g̶a̶t̶e̶ ̶t̶o̶ ̶t̶h̶e̶ ̶'̶f̶r̶o̶n̶t̶'̶ ̶D̶i̶r̶e̶c̶t̶o̶r̶y̶ ̶&̶ ̶i̶n̶s̶t̶a̶l̶l̶ ̶i̶t̶'̶s̶ ̶d̶e̶p̶e̶n̶d̶a̶n̶c̶i̶e̶s̶ ̶(̶t̶h̶i̶s̶ ̶m̶i̶g̶h̶t̶ ̶t̶a̶k̶e̶ ̶a̶ ̶w̶h̶i̶l̶e̶)̶ (Bug):  [Github - Aurelia CLI issue #253](https://github.com/aurelia/cli/issues/253)
-
-```
-n̶p̶m̶ ̶i̶n̶s̶t̶a̶l̶l̶  (Currently there is a bug with trying to run apps that you have installed it's dependancies through NPM)
+npm install aurelia-cli npm -g
 
 ```
-Instead, create a new aurelia project and then copy it's tempProj/node_modules folder into the front DIR. You can then delete the tempProj folder.
+Now, navigate to the 'front' Directory and install it's dependancies (this might take a while)
+
 ```
-au new
+npm install
 ```
 
 Finally, we need to compile the scss files into css:
@@ -73,6 +70,8 @@ au run --watch
 
 If you get an error in the console when typing 'au run', please report it.
 
+> failed to load in the browser after launching
+
 However, sometimes trying to load the app in the browser will result in a blank screen. Right click and click 'Inspect'.
 Navigate to the 'console' tab, if you see an error at the top saying 'jQuery' cannot be detected. OR you scroll down and it says (0, bootstrap).*.... is not a function. 
 
@@ -87,6 +86,11 @@ Then follow these steps:
 This happens as sometimes JQuery is not detected and ends up cancelling out bootstrap (as bootstrap can't operate without JQuery) resulting in an unhandled error which 
 cancels the rendering of the UI.
 
+> failed to launch in a linux environment
+
+This is caused due to a bug in the Aurelia-CLI not being able to correctly find the dependancies, in order to fix this replace all '\\' in the front/aurelia_project/aurelia.json file into '/'.
+
+
 # License
 
 |                      |                                          |
@@ -94,8 +98,6 @@ cancels the rendering of the UI.
 | **Author:**          | Jonathan Phillipos [jaeko44](https://github.com/jaeko44)
 | 	                   | Geoffrey Grundy [geoffreygrundy](https://github.com/geoffreygrundy)
 | 	                   | Morgan A. Grice [morgangrice84](https://github.com/morgangrice84)
-| 	                   | Dan [s3573667](https://github.com/s3573667)
 | **Copyright:**       | Copyright (c) 2016 RMIT
-| **License:**         | *to be decided after a discussion with team
+| **License:**         | Apache License, Version 2.0
 
-Licensed * either opensource release after completion or kept private.
