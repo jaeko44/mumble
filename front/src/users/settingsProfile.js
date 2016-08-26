@@ -23,15 +23,19 @@ export class settingsProfile {
     this.myAccount = account;
     this.settings = account.settings;
     this.account = account.details;
-    console.log('this account: ', this.account);
+    console.log('settingsProfile.js (account.details) -> : ', this.account);
     this.appName = this.settings.appName;
     this.number = this.settings.mnumber;
     let addNameEl = document.getElementById("displayAddName");
     let addEmailEl = document.getElementById("displayAddEmail");
-    addEmailEl.setAttribute('data-original-title', this.account.email);
-    addNameEl.setAttribute('data-original-title', this.account.firstName);
-    $(addNameEl).tooltip('show').tooltip('hide');
-    $(addEmailEl).tooltip('show').tooltip('hide');
+    if (addNameEl) {
+      addNameEl.setAttribute('data-original-title', this.account.firstName);
+      $(addNameEl).tooltip('show').tooltip('hide');
+    }
+    if (addEmailEl) {
+      addEmailEl.setAttribute('data-original-title', this.account.email);
+      $(addEmailEl).tooltip('show').tooltip('hide');
+    }    
   }
   displayAddPhone() {
     this.cancel('name');
@@ -42,6 +46,9 @@ export class settingsProfile {
   }
   savePhone() {
     console.log(this.saveNumber);
+  }
+  saveIcon() {
+    console.log('todo');
   }
   saveEmail() {
     if (this.validateEmail(this.saveMail)) {

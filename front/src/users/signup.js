@@ -14,9 +14,20 @@ export class register {
         this.showSpin = false;
         this.email = '';
         this.response = 'none';
-        this.password = '';
-        this.firstName = '';
-        this.lastName = '';
+        this.password = null;
+        this.firstName = null;
+        this.lastName = null;
+        var _this = this;
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                _this.showSpin = false;
+                location.assign('#/home');
+            }
+            else {
+               
+            }
+        });
+        _this.showSpin = false;
     }
     register() {
         this.showSpin = true;
@@ -35,11 +46,20 @@ export class register {
                     uid: user.uid,
                     firstName: _this.firstName,
                     lastName: _this.lastName,
-                    email: _this.email
+                    email: _this.email,
+                    user: user
                 }
-                _this.ea.publish('registerAccount', newUser);
-                _this.api.loadAccount();
-                location.assign('#/home');
+                if (_this.firstName && _this.lastName && _this.password) {
+                    console.log('Signup.js -> : ', newUser + 'User: ', user);
+                    _this.ea.publish('registerAccount', newUser);
+                }
+                else {
+                    _this.response = 'Please enter all the fields';
+                    return;
+                }
+                _this.firstName = null;
+                _this.lastName = null;
+                _this.password = null;
             }
         });
     }

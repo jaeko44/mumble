@@ -4,7 +4,7 @@
         <section class="login_content">
           <form>
             <h1>Login Form</h1>
-            <span class="error" class.bind="response == 'none' ? 'hiddenerror' : ''">${response}</span>
+            <span show.bind="response" class="error" class.bind="response == 'none' ? 'hiddenerror' : ''">${response}</span>
             <div class="login-section">
               <div>
                 <input value.bind="email" type="text" class="form-control" placeholder="Enter your email." required="" />

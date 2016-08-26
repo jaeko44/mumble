@@ -189,87 +189,13 @@ export class WebAPI {
     this.database = firebase.database();
     this.rootDB = firebase.database().ref();
     this.settingsDB = this.rootDB.child("settings");
-    this.loadAccount();
-  }
-  loadAccount() {
     var _this = this;
-    this.isLoaded = false;
-    firebase.auth().onAuthStateChanged(function (user) { //MAKE SURE ACCOUNT IS LOGGED IN
+    firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
-        _this.user = user;
-        _this.isRequesting = true;
-        var contactsExtract;
-        console.log('User authenticated in WEBAPI : ' + user.uid);
-        _this.accountDB = _this.rootDB.child("users/" + user.uid);
-        _this.accountDB.once('value', function (accountDB) {
-          console.log('Publishing myAccount: ', accountDB.val());
-          var value = accountDB.val();
-          _this.ea.publish('myAccount', accountDB.val());
-          _this.myAccount = accountDB.val();
-          _this.isRequesting = false;
-          _this.isLoaded = true;
-        });
-        _this.isRequesting = true;
-        _this.contactsDB = _this.rootDB.child("users/" + user.uid + "/contacts");
-        _this.contactsDB.on('child_added', function (contact) {
-          let contactExtract = contact.val();
-          console.log('finding contact: ', contact);
-          if (contactExtract != "uid") {
-            let contactDB = _this.rootDB.child("users/" + contactExtract[0]);
-            contactDB.once('value', function (accountDB) {
-              var value = accountDB.val();
-              console.log('Publishing contact: ', accountDB.val().details);
-              _this.ea.publish('contactLoaded', accountDB.val().details);
-              _this.isRequesting = false;
-            });
-          }
-        });
-        _this.isRequesting = true;
-        _this.contactsDB.on('child_removed', function (contact) {
-          let contactExtract = contact.val();
-          console.log('finding contact: ', contact);
-          if (contactExtract != "uid") {
-            let contactDB = _this.rootDB.child("users/" + contactExtract[0]);
-            contactDB.once('value', function (accountDB) {
-              var value = accountDB.val();
-              console.log('Publishing contact: ', accountDB.val().details);
-              _this.ea.publish('contactRemoved', accountDB.val().details);
-              _this.isRequesting = false;
-            });
-          }
-        });
-        _this.isRequesting = true;
-        _this.chatsActiveDB = _this.rootDB.child("users/" + user.uid + "/chatsActive");
-        _this.chatsActiveDB.on('child_added', function (chatActive) {
-          let chatActiveExtract = chatActive.val();
-          console.log('finding chat: ', chatActiveExtract);
-          let chatFound = _this.rootDB.child("chats/" + user.uid + "/" + chatActiveExtract.chatId);
-          chatFound.once('value', function (chatDB) {
-            if (chatDB.val()) {
-              _this.ea.publish('ChatOpened', chatDB.val());
-              _this.isRequesting = false;
-            }
-          });
-        });
-        _this.isRequesting = true;
-        _this.allChatsDB = _this.rootDB.child("chats/" + user.uid);
-        _this.allChatsDB.on('child_added', function (chatDB) {
-            console.log('chatLoaded CALLED: ', chatDB.val());
-            _this.ea.publish('chatLoaded', chatDB.val());
-            let chatMessages = _this.rootDB.child("chats/" + user.uid + "/" + chatDB.val().from + "/messages");
-            console.log("Monitoring: chats/" + user.uid + "/" + chatDB.val().from + "/messages");
-            chatMessages.on('child_added', function (messageDB) {
-              if (messageDB.val()) {
-                var appendMessage = {
-                  chatId: chatDB.val(),
-                  message: messageDB.val()
-                }
-                console.log('Appending message', appendMessage);
-                _this.ea.publish('appendMessage', appendMessage);
-                _this.isRequesting = false;
-              }
-            });
-        });
+        if (!_this.isCreatingAccount) {
+          console.log('Detected account LOGGED in: ', user);
+          _this.loadAccount(user);
+        }
       }
       else {
         _this.isLoaded = true;
@@ -277,73 +203,86 @@ export class WebAPI {
       }
     });
   }
-  changePassword(currPass, newPass) {
+  loadAccount(user) {
+    var _this = this;
+    this.isLoaded = false;
     this.isRequesting = true;
-    var _this = this;
-    if (this.user) {
-      this.user.updatePassword(newPass).then(function() {
-        _this.isRequesting = false;
-        _this.ea.publish('successSecurity', "Successfully changed password");
-      }, function(error) {
-        _this.isRequesting = false;
-        _this.ea.publish('errorSecurity', error);
-      });
-    }
-    else {
+    var contactsExtract;
+    console.log('User authenticated in WEBAPI : ' + user.uid);
+    this.accountDB = this.rootDB.child("users/" + user.uid);
+    this.accountDB.once('value', function (accountDB) {
+      console.log('Publishing myAccount: ', accountDB.val());
+      var value = accountDB.val();
+      _this.ea.publish('myAccount', accountDB.val());
+      _this.myAccount = accountDB.val();
       _this.isRequesting = false;
-      _this.ea.publish('errorSecurity', "Please reset your session by logging in again");
-    }
-  }
-  pushMessage(chatId, message, msgId) {
-    _this.isRequesting = true;
-    console.log('This chatID sending to: ', chatId);
-    console.log('This message sending: ', message);
-    firebase.database().ref('chats/' + this.user.uid + '/' + chatId + '/messages/' + msgId).set(message);
-    message.direction = 'incoming';
-    firebase.database().ref('chats/' + chatId + '/' + this.user.uid + '/messages/' + msgId).set(message);
-    this.isRequesting = false;
-  }
-  extractData(chatsActive) {
-    var _this = this;
-    _this.isRequesting = true;
-    _this.isLoaded = false;
-    return new Promise(resolve => {
-      var publishedChats = false;
-      this.chats = [
-        {
-          chatsOpen: 0
-        }
-      ];
-      for (var index = 0; index < chatsActive.length; index++) {
-        var chat = chatsActive[index];
-        if (chat.chatId != 'default') {
-          this.chatsDB = this.rootDB.child("chats/" + this.user.uid + "/" + chat.chatId);
-          this.chatsDB.on('value', function (chatDB) {
-            console.log('Found specific chat: ', chatDB.val());
-            if (chatDB.val() != null) {
-              _this.chats.push(chatDB.val());
-              _this.chats[0].chatsOpen++;
-            }
-            if (index >= chatsActive.length) {
-              _this.isLoaded = true;
-            }
-          });
-        }
-      }
-      setInterval(() => {
-        if (this.isLoaded == true && publishedChats == false) {
-          console.log('Publising chatsLoaded - ', _this.chats);
-          _this.ea.publish('chatsLoaded', _this.chats);
-          resolve(_this.chats);
-          publishedChats = true;
+      _this.isLoaded = true;
+    });
+    this.isRequesting = true;
+    this.contactsDB = this.rootDB.child("users/" + user.uid + "/contacts");
+    this.contactsDB.on('child_added', function (contact) {
+      let contactExtract = contact.val();
+      console.log('finding contact: ', contact);
+      if (contactExtract != "uid") {
+        let contactDB = _this.rootDB.child("users/" + contactExtract[0]);
+        contactDB.once('value', function (accountDB) {
+          var value = accountDB.val();
+          console.log('Publishing contact: ', accountDB.val().details);
+          _this.ea.publish('contactLoaded', accountDB.val().details);
           _this.isRequesting = false;
-          _this.isLoaded = true;
+        });
+      }
+    });
+    this.isRequesting = true;
+    this.contactsDB.on('child_removed', function (contact) {
+      let contactExtract = contact.val();
+      console.log('finding contact: ', contact);
+      if (contactExtract != "uid") {
+        let contactDB = _this.rootDB.child("users/" + contactExtract[0]);
+        contactDB.once('value', function (accountDB) {
+          var value = accountDB.val();
+          console.log('Publishing contact: ', accountDB.val().details);
+          _this.ea.publish('contactRemoved', accountDB.val().details);
+          _this.isRequesting = false;
+        });
+      }
+    });
+    this.isRequesting = true;
+    this.chatsActiveDB = this.rootDB.child("users/" + user.uid + "/chatsActive");
+    this.chatsActiveDB.on('child_added', function (chatActive) {
+      let chatActiveExtract = chatActive.val();
+      console.log('finding chat: ', chatActiveExtract);
+      let chatFound = _this.rootDB.child("chats/" + user.uid + "/" + chatActiveExtract.chatId);
+      chatFound.once('value', function (chatDB) {
+        if (chatDB.val()) {
+          _this.ea.publish('ChatOpened', chatDB.val());
+          _this.isRequesting = false;
         }
-      }, 150);
+      });
+    });
+    this.isRequesting = true;
+    this.allChatsDB = this.rootDB.child("chats/" + user.uid);
+    this.allChatsDB.on('child_added', function (chatDB) {
+        console.log('chatLoaded CALLED: ', chatDB.val());
+        _this.ea.publish('chatLoaded', chatDB.val());
+        let chatMessages = _this.rootDB.child("chats/" + user.uid + "/" + chatDB.val().from + "/messages");
+        console.log("Monitoring: chats/" + user.uid + "/" + chatDB.val().from + "/messages");
+        chatMessages.on('child_added', function (messageDB) {
+          if (messageDB.val()) {
+            var appendMessage = {
+              chatId: chatDB.val(),
+              message: messageDB.val()
+            }
+            console.log('Appending message', appendMessage);
+            _this.ea.publish('appendMessage', appendMessage);
+            _this.isRequesting = false;
+          }
+        });
     });
   }
-
   deployAccount(user) {
+    var _this = this;
+    this.isCreatingAccount = true;
     var d = new Date();
     var timeNow = d.getTime();
     var settings = {
@@ -402,9 +341,78 @@ export class WebAPI {
       chatsActive: chatsActive,
       contacts: contacts,
       notifications: notifications
+    }).then(function(value) {
+      _this.loadAccount(user.user);
+      _this.isCreatingAccount = false;
     });
-    console.log('added user');
   }
+  changePassword(currPass, newPass) {
+    this.isRequesting = true;
+    var _this = this;
+      if (this.user) {
+        this.user.updatePassword(newPass).then(function() {
+          _this.isRequesting = false;
+          _this.ea.publish('successSecurity', "Successfully changed password");
+        }, function(error) {
+          _this.isRequesting = false;
+          _this.ea.publish('errorSecurity', error);
+        });
+      }
+      else {
+        _this.isRequesting = false;
+        _this.ea.publish('errorSecurity', "Please reset your session by logging in again");
+      }
+  }
+  pushMessage(chatId, message, msgId) {
+    _this.isRequesting = true;
+    console.log('This chatID sending to: ', chatId);
+    console.log('This message sending: ', message);
+    firebase.database().ref('chats/' + this.user.uid + '/' + chatId + '/messages/' + msgId).set(message);
+    message.direction = 'incoming';
+    firebase.database().ref('chats/' + chatId + '/' + this.user.uid + '/messages/' + msgId).set(message);
+    this.isRequesting = false;
+  }
+  extractData(chatsActive) {
+    var _this = this;
+    _this.isRequesting = true;
+    _this.isLoaded = false;
+    return new Promise(resolve => {
+      var publishedChats = false;
+      this.chats = [
+        {
+          chatsOpen: 0
+        }
+      ];
+      for (var index = 0; index < chatsActive.length; index++) {
+        var chat = chatsActive[index];
+        if (chat.chatId != 'default') {
+          this.chatsDB = this.rootDB.child("chats/" + this.user.uid + "/" + chat.chatId);
+          this.chatsDB.on('value', function (chatDB) {
+            console.log('Found specific chat: ', chatDB.val());
+            if (chatDB.val() != null) {
+              _this.chats.push(chatDB.val());
+              _this.chats[0].chatsOpen++;
+            }
+            if (index >= chatsActive.length) {
+              _this.isLoaded = true;
+            }
+          });
+        }
+      }
+      setInterval(() => {
+        if (this.isLoaded == true && publishedChats == false) {
+          console.log('Publising chatsLoaded - ', _this.chats);
+          _this.ea.publish('chatsLoaded', _this.chats);
+          resolve(_this.chats);
+          publishedChats = true;
+          _this.isRequesting = false;
+          _this.isLoaded = true;
+        }
+      }, 150);
+    });
+  }
+
+
   addContact(contactEmail) {
     if (contactEmail == this.user.email) {
       this.ea.publish('ContactNotFound', 'Error: You cannot add your self');

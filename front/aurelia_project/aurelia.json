@@ -92,31 +92,6 @@
           "scripts/require.js"
         ],
         "dependencies": [
-          "jquery",
-          {
-            "name": "bootstrap",
-            "path": "../node_modules/bootstrap/dist",
-            "main": "js/bootstrap",
-            "deps": [
-              "jquery"
-            ],
-            "exports": "$",
-            "resources": [
-              "css/bootstrap.css"
-             ]
-          },
-          {
-            "name": "firebase",
-            "path": "../node_modules/firebase",
-            "main": "firebase"
-          },
-          {
-            "name": "nprogress",
-            "path": "../node_modules/nprogress",
-            "main": "nprogress"
-          },
-          "dropzone",
-          "toastr", 
           "aurelia-binding",
           "aurelia-bootstrapper",
           "aurelia-dependency-injection",
@@ -157,7 +132,29 @@
             "path": "../node_modules/aurelia-testing/dist/amd",
             "main": "aurelia-testing",
             "env": "dev"
-          }
+          },
+          "jquery",
+          {
+            "name": "bootstrap",
+            "path": "../node_modules/bootstrap/dist",
+            "main": "js/bootstrap",
+            "exports": "$",
+            "resources": [
+              "css/bootstrap.css"
+             ]
+          },
+          {
+            "name": "firebase",
+            "path": "../node_modules/firebase",
+            "main": "firebase"
+          },
+          {
+            "name": "nprogress",
+            "path": "../node_modules/nprogress",
+            "main": "nprogress"
+          },
+          "dropzone",
+          "toastr"
         ]
       }
     ]

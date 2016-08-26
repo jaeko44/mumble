@@ -61,6 +61,7 @@ export class chatTile {
         this.displayChat(chat.from);
     }
     accountLoaded(account) {
+        console.log('ACcount loaded in chat-tile', account);
         this.myAccount = account;
         this.layout = account.settings.layout;
         this.settings = account.settings;
