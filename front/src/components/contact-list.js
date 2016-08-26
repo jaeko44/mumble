@@ -9,7 +9,7 @@ let alertDelay = 5000;
 
 export class ContactList {
 
-  constructor(api, ea){
+  constructor(api, ea) {
     this.api = api;
     this.ea = ea;
     this.contacts = [];
@@ -21,22 +21,19 @@ export class ContactList {
     ea.subscribe('ChatClosedSuccesfully', contact => this.close(chatId)); 
     ea.subscribe('contactsLoaded', contacts => this.contacts = contacts); 
     ea.subscribe('contactLoaded', contact => this.addContact(contact)); 
-    ea.subscribe('channelsLoaded', contacts => this.contacts = contacts); 
-  }
-
-  created(){
-    this.getChannels();
+    ea.subscribe('channelsLoaded', channels => this.channels = channels); 
+    ea.subscribe('channelLoaded', channel => this.addChannels(channel)); 
   }
 
   addContact(contact) {
     if (contact) {
-      console.log('Contact list - adding contact', contact);
       this.contacts.push(contact);
     }
   }
-
-  getChannels() {
-    this.api.getChannelList().then(channels => this.channels = channels);
+  addChannel(channel) {
+    if (channel) {
+      this.channels.push(channel);
+    }
   }
   getContactbyChatId(chatId) {
     return this.api.getContactbyChatId(chatId);

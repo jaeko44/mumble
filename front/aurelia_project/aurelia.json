@@ -137,11 +137,16 @@
           {
             "name": "bootstrap",
             "path": "../node_modules/bootstrap/dist",
-            "main": "js/bootstrap",
+            "main": "js/bootstrap.min",
             "exports": "$",
             "resources": [
               "css/bootstrap.css"
              ]
+          },
+          {
+            "name": "sweetalert",
+            "path": "../node_modules/sweetalert/dist",
+            "main": "sweetalert.min"
           },
           {
             "name": "firebase",

@@ -315,7 +315,7 @@ export class chatTile {
             //contentEl.scrollTop = contentEl.scrollHeight;
         }, 30);
         setTimeout(function () {
-            return function() {
+            return (function() {
                 if (unreadMsgs >= 1) {
                     purgedChat[0].cooldown = true;
                 }
@@ -325,10 +325,10 @@ export class chatTile {
                 }
                 _this.chatsActive = purgedChat;
                 _this.ea.publish('chatsActiveUpdated', this.chatsActive);
-            }
+            });
         }, 1000);
         setTimeout(function () {
-            return function() {
+            return (function() {
                 if (unreadMsgs >= 1) {
                     var messages = _this.chats[0].messages;
                     for (var index = messages.length - unreadMsgs; index < messages.length; index++) {
@@ -339,7 +339,7 @@ export class chatTile {
                 }
                 _this.chatsActive = purgedChat;
                 _this.ea.publish('chatsActiveUpdated', this.chatsActive);
-            }
+            });
         }, 5000);
     }
     openChats(chatsActive) {
@@ -355,8 +355,7 @@ export class chatTile {
                     var userChat = {
                         outgoing: chat.outgoing,
                         incoming: chat.incoming
-                    }
-
+                    };
                     _this.userChat.push(userChat);
                     this.extractedChats.push(chat);
                     console.log('This extractedChats now after openchats: ', this.extractedChats);
@@ -380,7 +379,7 @@ export class chatTile {
         );
     }
     sendMessage(id) {
-        if (this.tempMessage[id] == '') {
+        if (this.tempMessage[id] === '') {
             return;
         }
         this.appendMessage(this.tempMessage[id], 1, id);

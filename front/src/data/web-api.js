@@ -194,6 +194,7 @@ export class WebAPI {
       if (user) {
         if (!_this.isCreatingAccount) {
           console.log('Detected account LOGGED in: ', user);
+          
           _this.loadAccount(user);
         }
       }
@@ -414,109 +415,120 @@ export class WebAPI {
 
 
   addContact(contactEmail) {
-    if (contactEmail == this.user.email) {
-      this.ea.publish('ContactNotFound', 'Error: You cannot add your self');
-      return;
-    }
     var _this = this;
+    var user = firebase.auth().currentUser;
+    this.foundUserDetails = '';
     this.isRequesting = true;
-    console.log('Looking for: ', contactEmail);
-    firebase.database().ref('users').orderByChild('details/email')
-    .equalTo(contactEmail)
-    .once('value', function(snap){
-         var foundUser = snap.val();
-         if (foundUser) {
-            var foundUserDetails = foundUser[Object.keys(foundUser)[0]].details;
-            //  _this.getContactbyEmail(contactEmail);
-            var user = firebase.auth().currentUser;
-            var found = false;
-            for (var index = 0; index < _this.myAccount.contacts.length; index++) {
-              var contact = _this.myAccount.contacts[index];
-              if (Object.keys(foundUser)[0] == contact) {
-                found = true;
+    return new Promise( (resolve, reject) => {
+      if (contactEmail == user.email) {
+        throw 'You cannot add your self - thrown!';
+      }
+      firebase.database().ref('users').orderByChild('details/email')
+      .equalTo(contactEmail)
+      .once('value', snap => {
+          var foundUser = snap.val();
+          if (foundUser) {
+              var foundUserDetails = foundUser[Object.keys(foundUser)[0]].details;
+              this.foundUserDetails = foundUserDetails;
+              //  _this.getContactbyEmail(contactEmail);
+              var found = false;
+              for (var index = 0; index < _this.myAccount.contacts.length; index++) {
+                var contact = _this.myAccount.contacts[index];
+                if (Object.keys(foundUser)[0] == contact) {
+                  found = true;
+                  _this.isRequesting = false;
+                  reject('Rejected: You have already added ' + foundUserDetails.firstName);
+                }
               }
-            }
-            var d = new Date();
-            var timeNow = d.getTime();
-            var initializeChat = {
-              from: Object.keys(foundUser)[0],
-              outgoing: _this.myAccount.details,
-              incoming: foundUserDetails,
-              type: 'message',
-              messages: [
-                {
-                  from: user.uid,
-                  direction: 'outgoing',
-                  time: timeNow,
-                  data: _this.myAccount.details.firstName + ' has requested to add ' + contactEmail,
-                  unread: false,
-                }
-              ]
-            }
-            var initializeChatIncoming = {
-              from: _this.myAccount.details.uid,
-              outgoing: foundUserDetails,
-              incoming: _this.myAccount.details,
-              type: 'message',
-              messages: [
-                {
-                  direction: 'incoming',
-                  time: timeNow,
-                  data: _this.myAccount.details.firstName + ' has requested to add ' + contactEmail,
-                  unread: true,
-                }
-              ]
-            }
-            var initializeActiveChats = {
-                  chatId: Object.keys(foundUser)[0],
-                  chatType: 'message',
-                  closed: 'false',
-                  cooldown: 'false',
-                  isOpen: true,
-                  row: 1,
-                  styles: {
-                    height: '100%'
-                  },
-                  unreadMsgs: 0
-            }
-            var initializeActiveChatsIncoming = {
-                  chatId: user.uid,
-                  chatType: 'message',
-                  closed: 'false',
-                  cooldown: 'false',
-                  isOpen: true,
-                  row: 1,
-                  styles: {
-                    height: '100%'
-                  },
-                  unreadMsgs: 0
-            }
-            _this.myAccount.contacts.push(Object.keys(foundUser));
-            _this.myAccount.chatsActive.unshift(initializeActiveChats);
-            foundUser[Object.keys(foundUser)[0]].contacts.push(user.uid);
-            foundUser[Object.keys(foundUser)[0]].chatsActive.unshift(initializeActiveChatsIncoming);
-            while (_this.myAccount.settings.layout.maximumChats < _this.myAccount.chatsActive.length - 1) {
-                var last = _this.myAccount.chatsActive[_this.myAccount.chatsActive.length - 1];
-                var chatClosing = _this.myAccount.chatsActive.pop();
-                _this.ea.publish('ChatClosedSuccesfully', last.chatId);
-            }
-            if (found == false) {
-                firebase.database().ref('users/' + user.uid + '/contacts').set(_this.myAccount.contacts);
-                firebase.database().ref('users/' + user.uid + '/chatsActive').set(_this.myAccount.chatsActive);
-                firebase.database().ref('chats/' + user.uid + '/' + Object.keys(foundUser)[0]).set(initializeChat);
-                firebase.database().ref('chats/' + Object.keys(foundUser)[0] + '/' + user.uid).set(initializeChatIncoming);
-                firebase.database().ref('users/' + Object.keys(foundUser)[0] + '/chatsActive').set(foundUser[Object.keys(foundUser)[0]].chatsActive);
-                firebase.database().ref('users/' + Object.keys(foundUser)[0] + '/contacts').set(foundUser[Object.keys(foundUser)[0]].contacts);
-            }
-         }
-         else {
-           _this.ea.publish('ContactNotFound', 'Error: Email entered was not found');
-         }
-         _this.isRequesting = false;
+              var d = new Date();
+              var timeNow = d.getTime();
+              var initializeChat = {
+                from: Object.keys(foundUser)[0],
+                outgoing: _this.myAccount.details,
+                incoming: foundUserDetails,
+                type: 'message',
+                messages: [
+                  {
+                    from: user.uid,
+                    direction: 'outgoing',
+                    time: timeNow,
+                    data: _this.myAccount.details.firstName + ' has requested to add ' + contactEmail,
+                    unread: false,
+                  }
+                ]
+              }
+              var initializeChatIncoming = {
+                from: _this.myAccount.details.uid,
+                outgoing: foundUserDetails,
+                incoming: _this.myAccount.details,
+                type: 'message',
+                messages: [
+                  {
+                    direction: 'incoming',
+                    time: timeNow,
+                    data: _this.myAccount.details.firstName + ' has requested to add ' + contactEmail,
+                    unread: true,
+                  }
+                ]
+              }
+              var initializeActiveChats = {
+                    chatId: Object.keys(foundUser)[0],
+                    chatType: 'message',
+                    closed: 'false',
+                    cooldown: 'false',
+                    isOpen: true,
+                    row: 1,
+                    styles: {
+                      height: '100%'
+                    },
+                    unreadMsgs: 0
+              }
+              var initializeActiveChatsIncoming = {
+                    chatId: user.uid,
+                    chatType: 'message',
+                    closed: 'false',
+                    cooldown: 'false',
+                    isOpen: true,
+                    row: 1,
+                    styles: {
+                      height: '100%'
+                    },
+                    unreadMsgs: 0
+              }
+              _this.myAccount.contacts.push(Object.keys(foundUser));
+              _this.myAccount.chatsActive.unshift(initializeActiveChats);
+              foundUser[Object.keys(foundUser)[0]].contacts.push(user.uid);
+              foundUser[Object.keys(foundUser)[0]].chatsActive.unshift(initializeActiveChatsIncoming);
+              while (_this.myAccount.settings.layout.maximumChats < _this.myAccount.chatsActive.length - 1) {
+                  var last = _this.myAccount.chatsActive[_this.myAccount.chatsActive.length - 1];
+                  var chatClosing = _this.myAccount.chatsActive.pop();
+                  _this.ea.publish('ChatClosedSuccesfully', last.chatId);
+              }
+              if (found == false) {
+                  firebase.database().ref('users/' + user.uid + '/contacts').set(_this.myAccount.contacts);
+                  firebase.database().ref('users/' + user.uid + '/chatsActive').set(_this.myAccount.chatsActive);
+                  firebase.database().ref('chats/' + user.uid + '/' + Object.keys(foundUser)[0]).set(initializeChat);
+                  firebase.database().ref('chats/' + Object.keys(foundUser)[0] + '/' + user.uid).set(initializeChatIncoming);
+                  firebase.database().ref('users/' + Object.keys(foundUser)[0] + '/chatsActive').set(foundUser[Object.keys(foundUser)[0]].chatsActive);
+                  firebase.database().ref('users/' + Object.keys(foundUser)[0] + '/contacts').set(foundUser[Object.keys(foundUser)[0]].contacts);
+                  this.addedContact = true;
+              }
+          }
+          else {
+            _this.isRequesting = false;
+            reject('Email address not found.');
+          }
+      }).then(res => {
+        _this.isRequesting = false;
+        resolve('Succesfully added', this.foundUserDetails.firstName);
+      }).catch(e => {
+        _this.isRequesting = false;
+        reject('Error: ', e);
+      });
     });
   }
   getChats() {
-    this.getContactbyEmail('email').then(function(res) {
+    this.getContactbyEmail('email').then(res => {
       // do whatever with res here = res = contact
       
     });

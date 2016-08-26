@@ -36,6 +36,8 @@ export class login {
         this.showSpin = true;
         firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(function() {
             _this.response = "Succesfully Authenticated";
+            var accountEmail = this.email;
+            _this.ea.publish('loggedSuccesfully', accountEmail);
         }).catch(function(error) {
             var errorCode = error.code;
             _this.response = error.message;
