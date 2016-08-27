@@ -1,6 +1,29 @@
 # mumble
 
-Mumble is a self hosted secure chat application meant for businesses and teams to collaborate inspired by Slack.
+Mumble is a Chat Application (inspired by Slack) built on tomorrow's Web Standards (JavaScript [ES6], HTML, CSS), It's a thick client based application, instead of servers for the back-end it utilizes a Cloud Back-end as a Service (Firebase by Google) to host it's data. 
+We are currently in the process of migrating Firebase into a Self-Hosted Server Alternative - FeatherJS. To avoid lockins yet maintain the same features from Firebase.
+
+Mumble showcases the web of tomorrow, combining the power of NodeJS Real-Time applications with a thick client based application that relies on One Code base in order to be truly Cross Platform. 
+
+### Login page
+![Login page - Mumble](http://i.imgur.com/ATp7TC7.png)
+
+### Contacts
+
+Adding Contact Step 1:
+![Adding Contact Step 1 - Mumble](http://i.imgur.com/ehhvGmj.png)
+
+Adding Contact Successful: 
+![Adding Contact Successful - Mumble](http://i.imgur.com/2ZK0Ytp.png)
+
+### Homepage
+![](http://i.imgur.com/NuBtZMS.png)
+
+## Support
+
+Web Client
+Desktop Client (Linux, Windows, Mac) - Coming Soon with Electron
+Mobile Clients (Apple, Windows, Android) - Coming Soon with PhoneGap
 
 ## HTML Demo
 [Mumble chat demo](http://mumble.philipos.me:9000)
@@ -15,8 +38,18 @@ Mumble is a self hosted secure chat application meant for businesses and teams t
 * nprogress
 ```
 
+## Server Dependancies: 
+```
+* Node.JS
+* FeatherJS
+* Socket.io
+* neDB - a NodeJS Database
+```
+
 ## Development Dependancies:
 ```
+* NPM
+* Node
 * SASS
 * Gulp (Optional)
 ```
