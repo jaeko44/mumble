@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Mumble : mumble: a web based chat app for teams inspired by Slack.">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Mumble</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/jaeko44/mumble">View on GitHub</a>
+
+          <h1 id="project_title">Mumble</h1>
+          <h2 id="project_tagline">mumble: a web based chat app for teams inspired by Slack.</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/jaeko44/mumble/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/jaeko44/mumble/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="mumble" class="anchor" href="#mumble" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>mumble</h1>
+
+<p>Mumble is a Chat Application (inspired by Slack) built on tomorrow's Web Standards (JavaScript [ES6], HTML, CSS), It's a thick client based application, instead of servers for the back-end it utilizes a Cloud Back-end as a Service (Firebase by Google) to host it's data. </p>
+
+<p>Mumble showcases the web of tomorrow, moving from Server-Sided applications to a thick client based application that relies on One Code base in order to be truly Cross Platform. </p>
+
+<h3>
+<a id="login-page" class="anchor" href="#login-page" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Login page</h3>
+
+<p><img src="http://i.imgur.com/ATp7TC7.png" alt="Login page - Mumble"></p>
+
+<h3>
+<a id="contacts" class="anchor" href="#contacts" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Contacts</h3>
+
+<p>Adding Contact Step 1:
+<img src="http://i.imgur.com/ehhvGmj.png" alt="Adding Contact Step 1 - Mumble"></p>
+
+<p>Adding Contact Successful: 
+<img src="http://i.imgur.com/2ZK0Ytp.png" alt="Adding Contact Successful - Mumble"></p>
+
+<h3>
+<a id="homepage" class="anchor" href="#homepage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Homepage</h3>
+
+<p><img src="http://i.imgur.com/NuBtZMS.png" alt=""></p>
+
+<h2>
+<a id="support" class="anchor" href="#support" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Support</h2>
+
+<p>Web Client
+Desktop Client (Linux, Windows, Mac) - Coming Soon with Electron
+Mobile Clients (Apple, Windows, Android) - Coming Soon with PhoneGap</p>
+
+<h2>
+<a id="application-demo" class="anchor" href="#application-demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Application Demo</h2>
+
+<p><a href="http://mumble.philipos.me:9000">Mumble chat demo</a></p>
+
+<h2>
+<a id="front-end-dependancies" class="anchor" href="#front-end-dependancies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Front-End Dependancies:</h2>
+
+<pre><code>* Bootstrap
+* Font Awesome
+* jQuery
+* AureliaJS
+* Firebase
+* nprogress
+</code></pre>
+
+<h2>
+<a id="development-dependancies" class="anchor" href="#development-dependancies" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Development Dependancies:</h2>
+
+<pre><code>* SASS
+* Gulp (Optional)
+</code></pre>
+
+<h2>
+<a id="front-end-setup" class="anchor" href="#front-end-setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Front-End Setup</h2>
+
+<p>At the current stage I am experimenting with AureliaJS for client-side interaction, it uses Vanilla ES2016 JavaScript so development doesn't
+include 'framework' explicit code. </p>
+
+<ul>
+<li>Install NodeJS &gt;= 4.x
+
+<ul>
+<li>You can <a href="https://nodejs.org/en/">download it here</a>.</li>
+</ul>
+</li>
+<li>NPM latest version
+
+<ul>
+<li>This will automatically be installed with node, if it is already installed then make sure to update it via npm install npm -g.</li>
+</ul>
+</li>
+</ul>
+
+<p>Once you have the prerequisites installed, you can install the Aurelia CLI itself. From the command line, use npm to install the CLI globally also ensure that NPM is up to date:</p>
+
+<pre><code>npm install aurelia-cli npm -g
+
+</code></pre>
+
+<p>Now, navigate to the 'front' Directory and install it's dependancies (this might take a while)</p>
+
+<pre><code>npm install
+</code></pre>
+
+<p>Finally, we need to compile the scss files into css:</p>
+
+<pre><code>cd front
+sass --update scss:css
+</code></pre>
+
+<h2>
+<a id="running-the-app" class="anchor" href="#running-the-app" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Running the App</h2>
+
+<p>Now run the following command inside the 'front' directory.</p>
+
+<pre><code>au run 
+</code></pre>
+
+<blockquote>
+<p>Note: It should now be running in localhost:9000, </p>
+
+<p>(optional with --watch flag): Updating code will automatically build and refresh your browser. Good for development</p>
+
+<pre><code>au run --watch
+</code></pre>
+</blockquote>
+
+<h2>
+<a id="failed-to-launchload-in-browser" class="anchor" href="#failed-to-launchload-in-browser" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Failed to Launch/Load in Browser</h2>
+
+<p>If you get an error in the console when typing 'au run', please report it.</p>
+
+<blockquote>
+<p>failed to load in the browser after launching</p>
+</blockquote>
+
+<p>However, sometimes trying to load the app in the browser will result in a blank screen. Right click and click 'Inspect'.
+Navigate to the 'console' tab, if you see an error at the top saying 'jQuery' cannot be detected. OR you scroll down and it says (0, bootstrap).*.... is not a function. </p>
+
+<p>Then follow these steps: </p>
+
+<ol>
+<li>Navigate to /front/node_modules/jquery/dist</li>
+<li>Open the jquery.js file with a text editor.</li>
+<li>Comment or remove lines 7 through 9 (which starts with = 'if (typeof jQuery === 'undefined') {')</li>
+<li>Save</li>
+<li>Launch the application again.</li>
+</ol>
+
+<p>This happens as sometimes JQuery is not detected and ends up cancelling out bootstrap (as bootstrap can't operate without JQuery) resulting in an unhandled error which 
+cancels the rendering of the UI.</p>
+
+<blockquote>
+<p>failed to launch in a linux environment</p>
+</blockquote>
+
+<p>This is caused due to a bug in the Aurelia-CLI not being able to correctly find the dependancies, in order to fix this replace all '\' in the front/aurelia_project/aurelia.json file into '/'.</p>
+
+<h1>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h1>
+
+<table>
+<thead>
+<tr>
+<th align="left"></th>
+<th align="left"></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left"><strong>Author:</strong></td>
+<td align="left">Jonathan Phillipos <a href="https://github.com/jaeko44">jaeko44</a>
+</td>
+</tr>
+<tr>
+<td align="left"><strong>Copyright:</strong></td>
+<td align="left">Copyright (c) 2016 RMIT</td>
+</tr>
+<tr>
+<td align="left"><strong>License:</strong></td>
+<td align="left">Apache License, Version 2.0</td>
+</tr>
+</tbody>
+</table>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Mumble maintained by <a href="https://github.com/jaeko44">jaeko44</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
