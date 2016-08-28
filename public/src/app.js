@@ -6,17 +6,18 @@ import { EventAggregator } from 'aurelia-event-aggregator';
 import toastr from 'toastr';
 import 'firebase';
 import 'sweetalert';
+import io from 'socket.io-client';
+var socket = io('http://localhost:3030');
 
-@inject(Router, EventAggregator, WebAPI)
+@inject(Router, EventAggregator, WebAPI, io)
 export class App {
-  constructor(router, ea, api) {
+  constructor(router, ea, api, io) {
     this.api = api;
     this.ea = ea;
     ea.subscribe('loggedSuccesfully', accountEmail => this.loggedSuccesfully(accountEmail));
     this.router = router;
     this.router.configure(this.configureRoutes);
     this.loggedIn = false;
-
   }
 
   loggedSuccesfully(accountEmail) {
@@ -28,7 +29,11 @@ export class App {
     toastr.options.showMethod = 'slideDown';
     toastr.success('Welcome ' + accountEmail, 'You are now connected to :' + this.appNametxt);
   }
-
+  activate() {
+    socket.on('news', function(message) {
+      console.log('Got some news from the server: ', message);
+    });
+  }
   configureRoutes(cfg, navigationInstruction) {
     function step() {
       return step.run;
