@@ -379,6 +379,8 @@ export class chatTile {
         );
     }
     sendMessage(id) {
+        var messages = app.service('messages');
+        messages.create({text: 'Hello from Aurelia WEBSOCKET'});
         if (this.tempMessage[id] === '') {
             return;
         }

@@ -7,7 +7,9 @@ import toastr from 'toastr';
 import 'firebase';
 import 'sweetalert';
 import io from 'socket.io-client';
-var socket = io('http://localhost:3030');
+import feathers from 'feathers-client';
+var socket = io('http://localhost:3030', { transports: ['websocket'], forceNew: true });
+var featherApp = feathers();
 
 @inject(Router, EventAggregator, WebAPI, io)
 export class App {
@@ -30,8 +32,10 @@ export class App {
     toastr.success('Welcome ' + accountEmail, 'You are now connected to :' + this.appNametxt);
   }
   activate() {
-    socket.on('news', function(message) {
-      console.log('Got some news from the server: ', message);
+    featherApp.configure(feathers.socketio(socket));
+    var messages = featherApp.service('messages');
+    messages.on('created', message => {
+      console.log('Your message was detected Aurelia APPJS: ', message);
     });
   }
   configureRoutes(cfg, navigationInstruction) {

@@ -1,5 +1,7 @@
 import {EventAggregator} from 'aurelia-event-aggregator';
 import {inject} from 'aurelia-framework';
+import io from 'socket.io-client';
+import feathers from 'feathers-client';
 
 let latency = 200; //To mimic a real connection
 let id = 0;
@@ -178,6 +180,14 @@ export class WebAPI {
     ea.subscribe('saveLayout', layout => this.updateLayout(layout));
     ea.subscribe('extractData', chatsActive => this.extractData(chatsActive));
     ea.subscribe('registerAccount', user => this.deployAccount(user));
+    var socket = io('http://localhost:3030', { transports: ['websocket'], forceNew: true });
+    this.featherApp = feathers();
+    console.log('This featherApp, socket: ', this.featherApp, socket);
+    this.featherApp.configure(feathers.socketio(socket));
+    var messages = this.featherApp.service('messages');
+    messages.on('created', message => {
+      console.log('Your message was detected Aurelia WEBAPI: ', message);
+    });
     var config = {
       apiKey: "AIzaSyDuvCKBC1I9c5laWNFH0P4ML6bSgEgw3OQ",
       authDomain: "mumble-cce1c.firebaseapp.com",

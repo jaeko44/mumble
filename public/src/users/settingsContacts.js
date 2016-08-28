@@ -54,6 +54,8 @@ export class settingsContacts {
       if (_this.validateEmail(inputValue)) {
         var res = _this.api.addContact(inputValue).then(function(res) {
           swal("Contact Added.", res, "success");
+          messages.create({text: 'Succesfulyl added: ', res});
+        messages.create({text: 'Hello from Aurelia WEBSOCKET'});
         }).catch(function(e) {
           swal.showInputError(e);
         });
