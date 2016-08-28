@@ -181,12 +181,13 @@ export class WebAPI {
     ea.subscribe('extractData', chatsActive => this.extractData(chatsActive));
     ea.subscribe('registerAccount', user => this.deployAccount(user));
     var socket = io('http://localhost:3030', { transports: ['websocket'], forceNew: true });
-    this.featherApp = feathers();
-    console.log('This featherApp, socket: ', this.featherApp, socket);
-    this.featherApp.configure(feathers.socketio(socket));
-    var messages = this.featherApp.service('messages');
-    messages.on('created', message => {
-      console.log('Your message was detected Aurelia WEBAPI: ', message);
+    this.featherApp = feathers().configure(feathers.hooks()).configure(feathers.socketio(socket));
+    var messageService = this.featherApp.service('messages');
+    messageService.on('created', function(message) {
+      console.log('Someone created a message', message);
+    });
+    messageService.create({
+      text: 'Message from client'
     });
     var config = {
       apiKey: "AIzaSyDuvCKBC1I9c5laWNFH0P4ML6bSgEgw3OQ",
