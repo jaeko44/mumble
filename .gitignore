@@ -6,5 +6,5 @@
 /public/css
 /public/scripts/app-bundle.js**
 /public/scripts/vendor-bundle.js
-**/data/**.db
+**/data
 **/.log
