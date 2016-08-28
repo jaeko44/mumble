@@ -3,6 +3,8 @@
 **/.node_modules/
 **/node_modules/
 **/jspm_packages/
-/front/css
-/front/scripts/app-bundle.js**
-/front/scripts/vendor-bundle.js
+/public/css
+/public/scripts/app-bundle.js**
+/public/scripts/vendor-bundle.js
+**/data/**.db
+

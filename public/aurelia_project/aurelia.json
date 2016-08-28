@@ -123,6 +123,11 @@
             "main": "aurelia-templating-resources"
           },
           {
+            "name": "feathers-client",
+            "path": "../node_modules/feathers-client/dist",
+            "main": "feathers.min"
+          },
+          {
             "name": "aurelia-templating-router",
             "path": "../node_modules/aurelia-templating-router/dist/amd",
             "main": "aurelia-templating-router"
