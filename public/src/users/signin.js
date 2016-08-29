@@ -34,14 +34,23 @@ export class login {
     login() {
         var _this = this;
         this.showSpin = true;
-        firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(function() {
-            _this.response = "Succesfully Authenticated";
-            var accountEmail = this.email;
-            _this.ea.publish('loggedSuccesfully', accountEmail);
-        }).catch(function(error) {
-            var errorCode = error.code;
-            _this.response = error.message;
+        this.api.loginDefault(this.email, this.password).then(res => {
+            _this.response = res;
+            _this.ea.publish('loggedSuccesfully', this.email);
+            _this.showSpin = false;
+        }).catch(err => {
+            _this.response = err;
             _this.showSpin = false;
         });
+
+        // firebase.auth().signInWithEmailAndPassword(this.email, this.password).then(function() {
+        //     _this.response = "Succesfully Authenticated";
+        //     var accountEmail = this.email;
+        //     _this.ea.publish('loggedSuccesfully', accountEmail);
+        // }).catch(function(error) {
+        //     var errorCode = error.code;
+        //     _this.response = error.message;
+        //     _this.showSpin = false;
+        // });
     }
 }

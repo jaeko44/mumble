@@ -32,35 +32,50 @@ export class register {
     register() {
         this.showSpin = true;
         var _this = this;
-        firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(function() {
-            _this.response = "Succesfully Created Account";
-        }).catch(function(error) {
-            var errorCode = error.code;
-            _this.response = error.message;
-            _this.showSpin = false;
-        });
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                _this.showSpin = false;
-                var newUser = {
-                    uid: user.uid,
-                    firstName: _this.firstName,
-                    lastName: _this.lastName,
-                    email: _this.email,
-                    user: user
-                }
-                if (_this.firstName && _this.lastName && _this.password) {
-                    console.log('Signup.js -> : ', newUser + 'User: ', user);
-                    _this.ea.publish('registerAccount', newUser);
-                }
-                else {
-                    _this.response = 'Please enter all the fields';
-                    return;
-                }
-                _this.firstName = null;
-                _this.lastName = null;
-                _this.password = null;
-            }
-        });
+        if (this.email && this.firstName && this.lastName && this.password) {
+            this.api.registerDefault(this.email, this.password, this.firstName, this.lastName).then(res => {
+                //success
+                this.response = "Succesfully Created Account";
+                this.firstName = null;
+                this.email = null;
+                this.lastName = null;
+                this.password = null;
+                this.router('home');
+            })
+        }
+        else {
+            this.response = "Please enter all the fields required...";
+        }
+
+        // firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then(function() {
+        //     _this.response = "Succesfully Created Account";
+        // }).catch(function(error) {
+        //     var errorCode = error.code;
+        //     _this.response = error.message;
+        //     _this.showSpin = false;
+        // });
+        // firebase.auth().onAuthStateChanged(function(user) {
+        //     if (user) {
+        //         _this.showSpin = false;
+        //         var newUser = {
+        //             uid: user.uid,
+        //             firstName: _this.firstName,
+        //             lastName: _this.lastName,
+        //             email: _this.email,
+        //             user: user
+        //         }
+        //         if (_this.firstName && _this.lastName && _this.password) {
+        //             console.log('Signup.js -> : ', newUser + 'User: ', user);
+        //             _this.ea.publish('registerAccount', newUser);
+        //         }
+        //         else {
+        //             _this.response = 'Please enter all the fields';
+        //             return;
+        //         }
+        //         _this.firstName = null;
+        //         _this.lastName = null;
+        //         _this.password = null;
+        //     }
+        // });
     }
 }

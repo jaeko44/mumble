@@ -181,14 +181,19 @@ export class WebAPI {
     ea.subscribe('extractData', chatsActive => this.extractData(chatsActive));
     ea.subscribe('registerAccount', user => this.deployAccount(user));
     var socket = io('http://localhost:3030', { transports: ['websocket'], forceNew: true });
-    this.featherApp = feathers().configure(feathers.hooks()).configure(feathers.socketio(socket));
-    var messageService = this.featherApp.service('messages');
-    messageService.on('created', function(message) {
-      console.log('Someone created a message', message);
+    this.featherApp = feathers().configure(feathers.hooks())
+                                .configure(feathers.socketio(socket))
+                                .configure(feathers.authentication({
+                                  storage: window.localStorage
+                                }));
+    this.messageService = this.featherApp.service('messages');
+    this.startServices();
+    this.isLoggedIn().then(value => {
+      this.accountLoggedIn = true;
+    }).catch(value => {
+      this.accountLoggedIn = false;
     });
-    messageService.create({
-      text: 'Message from client'
-    });
+    //Firebase config
     var config = {
       apiKey: "AIzaSyDuvCKBC1I9c5laWNFH0P4ML6bSgEgw3OQ",
       authDomain: "mumble-cce1c.firebaseapp.com",
@@ -201,6 +206,7 @@ export class WebAPI {
     this.rootDB = firebase.database().ref();
     this.settingsDB = this.rootDB.child("settings");
     var _this = this;
+    // Firebase Authentication
     firebase.auth().onAuthStateChanged(function (user) {
       if (user) {
         if (!_this.isCreatingAccount) {
@@ -213,6 +219,38 @@ export class WebAPI {
         _this.isLoaded = true;
         _this.isRequesting = false;
       }
+    });
+  }
+  startServices() {
+    this.messageService.on('created', function(message) {
+      console.log('Someone created a message', message);
+    });
+    this.messageService.find().then(data => {
+      console.log('Found all messages: ', data);
+    });
+  }
+  loginDefault(email, password) {
+    return new Promise( (resolve, reject) => {
+      this.featherApp.authenticate({
+        type: 'local',
+        'email': email,
+        'password': password
+      }).then(result => resolve(result)).catch(erorr => reject(error));
+    });    
+  }
+  registerDefault(email, password, firstName, lastName) {
+    return new Promise ( (resolve, reject) => {
+      this.featherApp.service('users').create({
+        email: email,
+        password: password,
+        firstName: firstName,
+        lastName: lastName
+      }).then(result => resolve(result)).catch(erorr => reject(error));
+    });
+  }
+  isLoggedIn() {
+    return new Promise ((resolve, reject) => {
+      this.featherApp.authenticate().then(result => resolve(true)).catch(error => reject(false));
     });
   }
   loadAccount(user) {

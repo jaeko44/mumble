@@ -37,6 +37,11 @@ export class App {
     messages.on('created', message => {
       console.log('Your message was detected Aurelia APPJS: ', message);
     });
+    this.api.isLoggedIn().then(value => {
+      this.loggedIn = true;
+    }).catch(value => {
+      this.loggedIn = false;
+    });
   }
   configureRoutes(cfg, navigationInstruction) {
     function step() {
@@ -45,7 +50,7 @@ export class App {
     step.run = (navigationInstruction, next) => {
       return next();
     };
-    cfg.addAuthorizeStep(step);
+    cfg.addPipelineStep('authorize', AuthorizeStep);
     cfg.title = '... mumble';
     cfg.map([
       { route: '', name: 'login', moduleId: 'views/loginView', title: 'Account Mumble', settings: {page: 'login'} },
@@ -61,9 +66,9 @@ class AuthorizeStep {
   run(navigationInstruction, next) {
     if (navigationInstruction.getAllInstructions().some(i => i.config.auth)) {
       var isLoggedIn = App.loggedIn;
-      console.log('isLoggedIn var :', isLoggedIn);
+      console.log('isLoggedIn VARIABLE :', isLoggedIn);
       if (!isLoggedIn) {
-        return next.cancel(location.assign('#/home'));
+        return next.cancel(new Router('login'));
       }
     }
     return next();
