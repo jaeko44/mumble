@@ -26,7 +26,7 @@ Desktop Client (Linux, Windows, Mac) - Coming Soon with Electron
 Mobile Clients (Apple, Windows, Android) - Coming Soon with PhoneGap
 
 ## HTML Demo
-[Mumble chat demo](http://mumble.philipos.me:9000)
+[Mumble chat demo](http://mumble.netlify.com)
 
 ## Front-End Dependancies:
 ```
