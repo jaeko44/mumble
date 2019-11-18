@@ -22,25 +22,25 @@
     "mocha": "mocha test/ --recursive"
   },
   "dependencies": {
-    "body-parser": "^1.15.2",
-    "compression": "^1.6.2",
-    "cors": "^2.8.0",
-    "feathers": "^2.0.1",
-    "feathers-authentication": "^0.7.9",
-    "feathers-configuration": "^0.2.3",
-    "feathers-errors": "^2.4.0",
+    "body-parser": "^1.19.0",
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "feathers": "^2.3.5",
+    "@feathersjs/authentication": "^4.3.11",
+    "@feathersjs/configuration": "^4.3.11",
+    "@feathersjs/errors": "^4.3.11",
     "feathers-hooks": "^1.5.7",
-    "feathers-nedb": "^2.4.1",
-    "feathers-rest": "^1.4.4",
-    "feathers-socketio": "^1.4.1",
+    "feathers-nedb": "^5.1.0",
+    "@feathersjs/express": "^4.3.11",
+    "@feathersjs/socketio": "^4.3.11",
     "nedb": "^1.8.0",
-    "passport": "^0.3.2",
-    "serve-favicon": "^2.3.0",
-    "winston": "^2.2.0"
+    "passport": "^0.4.0",
+    "serve-favicon": "^2.5.0",
+    "winston": "^3.2.1"
   },
   "devDependencies": {
-    "jshint": "^2.9.3",
-    "mocha": "^3.0.2",
-    "request": "^2.74.0"
+    "jshint": "^2.10.3",
+    "mocha": "^6.2.2",
+    "request": "^2.88.0""
   }
 }
